@@ -69,25 +69,25 @@ ttc value colors
 
 2 . \ game state.
 
-: field: ( au-a) over constant + ;
+: field ( au-a) over constant + ;
 
 here 256 2dup erase allot
-210 field: well  \ 10 cols 23 rows of:
-20 field: vistop \  0 empty, 1 marked,
-0 field: welltop \  2-8 block colors.
-2 field: %show  \ n->0 line sweep timer.
-2 field: %grav  \ n->0 fall timer.
-2 field: lines  \ todo: gravity curve.
-2 field: seed   \ cannot be zero!
-1 field: kept   \ 0-6  hold, w/ pin bit.
-2 field: qp     \ mod8 queue index:
-8 field: queue  \ random shapes 0-6.
-2 field: b1     \ $yyxx block position.
-1 field: t1     \ 0-3   clkwise turns.
+210 field well  \ 10 cols 23 rows of:
+20 field vistop \  0 empty, 1 marked,
+0 field welltop \  2-8 block colors.
+2 field %show  \ n->0 line sweep timer.
+2 field %grav  \ n->0 fall timer.
+2 field lines  \ todo: gravity curve.
+2 field seed   \ cannot be zero!
+1 field kept   \ 0-6  hold, w/ pin bit.
+2 field qp     \ mod8 queue index:
+8 field queue  \ random shapes 0-6.
+2 field b1     \ $yyxx block position.
+1 field t1     \ 0-3   clkwise turns.
 queue value s1 \ cached queue addr.
-2 field: b0     \ $yyxx drawn previous
-1 field: t0     \ 0-3   frame, to be
-1 field: s0     \ 0-6   erased.
+2 field b0     \ $yyxx drawn previous
+1 field t0     \ 0-3   frame, to be
+1 field s0     \ 0-6   erased.
 ' well - ?dup 0= if\ rvs . cr abort
 
 3 . \ shapes queue.
@@ -129,10 +129,9 @@ create ssz 5 c: 0 0 4 4 5
 \ move unmarked lines down, erase top.
 : drain ( a-) welltop over - erase ;
 : 10move ( aa-) #10 move ;  12 profile
-: sweep ( -) well well begin
-  over c@ 1- if 2dup 10move #10 + then
-  >10+>  over welltop < 0= until
-  drain drop ;
+: sweep ( -) well well begin  over c@
+  1- if 2dup 10move #10 + then >10+>
+  over welltop < 0= until  drain drop ;
 
 \ whiten filled lines, give count (u).
 : line ( au-au) over 1- w! [ 10 ldy,#
