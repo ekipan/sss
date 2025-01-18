@@ -110,10 +110,10 @@ queue value s1 \ cached queue addr.
 : th-q ( i-a) qp c@ + 7 and queue + ;
 : q+ ( n-) qp +!  0 th-q to s1 ;
 : q! ( s-) 3 th-q c! ;
-: qdup ( sfi-sf) swap if drop 1 else:
+: qdup? ( sfi-sf) swap if drop 1 else:
   th-q c@ over = ;  15 profile
-: qtry ( sf-sf) if reroll 0 0 qdup
-  1 qdup 2 qdup 3 qdup else: 0 ;
+: qtry ( sf-sf) if reroll 0 0 qdup?
+  1 qdup? 2 qdup? 3 qdup? else: 0 ;
 : qnext ( -) 0 1 qtry qtry qtry
   if reroll then 1 q+ q! ;  7 profile
 
