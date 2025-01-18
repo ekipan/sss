@@ -2,18 +2,18 @@ marker --tet-- \ in durexforth v4.
 
 : .h ( u-) hex u. decimal ; \ devtools.
 : make ( -) --tet-- s" tet" included ;
-: b/, ( c-) lda,# $d020 dup eor, sta, ;
-: profile ( c-) here swap
-  dup b/, latest >xt jsr, b/, rts,
-  latest name>string + ! ;
-: if\ ( f-) if postpone \ then ;
-dup 1234 - if\ : profile  drop ;
+code p/  $d020 eor, $d020 sta, rts,
+: pro  if $4d else $60 then ['] p/ c! ;
+: profile ( c-) here swap dup lda,#
+  ['] p/ jsr, latest >xt jsr, lda,#
+  ['] p/ jmp, latest name>string + ! ;
 
 : else:  postpone exit        \ macros.
   postpone then ; immediate
 : dup>r  postpone >r dex, ; immediate
 
 : erase ( au-) 0 fill ;       \ basics.
+: bounds ( au-aa) over + swap ;
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 : w! ( n-) [ lsb lda,x msb ldy,x inx,
@@ -22,14 +22,12 @@ dup 1234 - if\ : profile  drop ;
 -1 value -1 3 value 3           \ math.
 10 value #10 23 value #23 40 value #40
 : >10+> swap #10 + swap ;
-: 0* drop 0 ;  : 10* 2* dup 2* 2* + ;
-: 40- #40 - ;  : 40* 2* 2* 10* ;
+: 0* drop 0 ;   : 10* 2* dup 2* 2* + ;
+: 40- #40 - ;   : 40* 2* 2* 10* ;
 
-: kb ( -c) key? if          \ keyboard.
-  [ 1 lda,# $28b sta, ] key else: 0 ;
-: kbrep ( -) [ $80 lda,# $28a sta, ] ;
-: kbflush ( -) [ 16 lda,# $28b sta,
-  0 lda,# $c6 sta, ] ;
+: kbrep ( -) $80 $28a c! ;  \ keyboard.
+: kbflush ( -) 16 $28b c! 0 $c6 c! ;
+: kb  key? if 1 $28b c! key else: 0 ;
 
 1 . \ piece definition.
 
@@ -61,14 +59,14 @@ ttc value colors
 \ compute 4 (b)lock coords $yyxx and a
 \ (c)olor for a piece given by origin,
 \ (t)urn count 0-3, and (s)hape 0-6.
-: b@+ ( ba-bba) dup>r @ over + swap
-  r> 2+ ;
+: b@+ ( ba-bba) dup>r @ bounds r> 2+ ;
 : piece ( bts-bbbbc) dup>r 2* 2* +
   2* 2* 2* patterns + b@+ b@+ b@+ b@+
   2drop r> colors + c@ ;  5 profile
 
 2 . \ game state.
 
+: if\ ( f-) if postpone \ then ;
 : field ( au-a) over constant + ;
 
 here 256 2dup erase allot
@@ -98,7 +96,7 @@ queue value s1 \ cached queue addr.
 : kept@ ( -s) kept c@ 7 and ;
 : pinned? ( -f) kept c@ 8 and ;
 : unpin ( -) kept@ kept! ;
-: keep ( -) kept@  s1 c@ 8 or kept!
+: keep ( -) kept@  s1 c@ 8 or  kept!
   s1 c! ;
 
 : roll ( u-u; xorshift-798.) [ seed 1+
@@ -110,12 +108,14 @@ queue value s1 \ cached queue addr.
 
 \ (f) reroll? if dupe, up to 4 times.
 : th-q ( i-a) qp c@ + 7 and queue + ;
-: q! ( s-) 3 th-q c! ;
-: q+ ( n-) qp +!  0 th-q to s1 ;
 : qdup ( sfi-sf) swap if drop 1 else:
   th-q c@ over = ;  15 profile
 : qtry ( sf-sf) if reroll 0 0 qdup
   1 qdup 2 qdup 3 qdup else: 0 ;
+: qgen ( -s) 0 1 qtry qtry qtry
+  if reroll then ;
+: q+ ( n-) qp +!  0 th-q to s1 ;
+: q! ( s-) 3 th-q c! ;
 : qnext ( -) 0 1 qtry qtry qtry
   if reroll then 1 q+ q! ;  7 profile
 
@@ -148,8 +148,8 @@ create ssz 5 c: 0 0 4 4 5
 4 profile
 : h? ( bf-f) swap dup split #23 u<
   swap #10 u< and if th-b c@ then or ;
-: l! ( bc-c) tuck swap th-b c! ;
 : hit? ( bbbbc-f) 0* h? h? h? h? 0<> ;
+: l! ( bc-c) tuck swap th-b c! ;
 : lock ( bbbbc-) l! l! l! l! drop ;
 
 \ 4.5.  draw/update shared state.
@@ -178,9 +178,8 @@ create ssz 5 c: 0 0 4 4 5
 : go? ( fbt-f) rot 0= if 2drop 0 else:
   over b1 @ +  over t1@+  s1 c@
   piece hit? if 2drop 1 else:
-  t1@+ t1 c!  b1 +!  0 &curr iv! ;
+  t1@+ t1 c!  b1 +!  &curr iv! 0 ;
 $-100 constant down
-: shift? ( b-f) 1 swap 0 go? ;
 : turnkick ( t-) dup>r 0 i go? i i go?
   0 i - i go? down i go? down i + i go?
   down i - r> go? drop ;
@@ -189,15 +188,14 @@ $-100 constant down
 : enter ( -) $1305 b1 ! 0 t1 c! ;
 : trykeep ( -) pinned? if else:
   keep enter &kept &curr or iv! ;
-: fall? ( -g) 12 %grav !  down shift?
+: fall? ( -g) 12 %grav !  1 down 0 go?
   0= if 0 else:  kbflush unpin
   curr piece lock  curr-r mark ?dup if
     lines +! 11 %show ! 3 %grav !
   &well else &next &+ then iv!  enter
   qnext  curr touch  curr piece hit? ;
 : init ( u-) seed !  well seed well -
-  erase  enter qflush  curr touch
-  kbrep ;
+  erase  enter qflush  curr touch ;
 
 : tick? ( a-f) -1 over +! c@ 0= ;
 : update ( -g) %show c@ if  %show tick?
@@ -206,8 +204,8 @@ $-100 constant down
   kb $7f and case  0 of endof
   'j' of -1 turnkick endof
   'k' of 1 turnkick endof
-  's' of -1 shift? drop endof
-  'f' of 1 shift? drop endof
+  's' of 1 -1 0 go? drop endof
+  'f' of 1 1 0 go? drop endof
   'd' of fall? exit endof
   'l' of trykeep endof
   drop 1 exit endcase 0 ;
@@ -251,10 +249,10 @@ $db7d value colormem \ of well.
 : dw  0 q+ -1 iv! draw ;
 : da  11 0 hue page canvas help dw ;
 
-\ main loop.
+\ 7.  main loop.
 
-: r  da begin update draw until ;
+: r  kbrep da begin update draw until ;
 : fresh ( -u) $a1 @ 1 or ;
-: new  fresh init r ;
-3 init cr help
+: new  0 pro fresh init r ;
+3 init cr help ' help start !
 
