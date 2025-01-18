@@ -159,7 +159,7 @@ create ssz 5 c: 0 0 4 4 5
 0 value inval
 : iv? ( v-f) inval and ;
 : iv! ( v-) inval or to inval ;
-: &+ ( v-) dup 1- or ;
+: &+ ( v-v) dup 1- or ;
 
 \ 'draw' touches the drawn piece to
 \ erase next frame. touch a new one
