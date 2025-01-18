@@ -112,8 +112,6 @@ queue value s1 \ cached queue addr.
   th-q c@ over = ;  15 profile
 : qtry ( sf-sf) if reroll 0 0 qdup
   1 qdup 2 qdup 3 qdup else: 0 ;
-: qgen ( -s) 0 1 qtry qtry qtry
-  if reroll then ;
 : q+ ( n-) qp +!  0 th-q to s1 ;
 : q! ( s-) 3 th-q c! ;
 : qnext ( -) 0 1 qtry qtry qtry
