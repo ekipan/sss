@@ -1,8 +1,8 @@
-marker --tet-- \ in durexforth v4.
+marker --tet-- \ tested w/ durexfth 4.
 
 : .h ( u-) hex u. decimal ; \ devtools.
 : make ( -) --tet-- s" tet" included ;
-code p/  $d020 eor, $d020 sta, rts,
+: p/ ( -) [ $d020 eor, $d020 sta, ] ;
 : pro  if $4d else $60 then ['] p/ c! ;
 : profile ( c-) here swap dup lda,#
   ['] p/ jsr, latest >xt jsr, lda,#
@@ -21,9 +21,9 @@ code p/  $d020 eor, $d020 sta, rts,
 
 -1 value -1 3 value 3           \ math.
 10 value #10 23 value #23 40 value #40
-: >10+> swap #10 + swap ;
-: 0* drop 0 ;   : 10* 2* dup 2* 2* + ;
-: 40- #40 - ;   : 40* 2* 2* 10* ;
+: 40- #40 - ; : >10+> swap #10 + swap ;
+: 4* 2* 2* ;  : 10* 2* dup 4* + ;
+: 0* drop 0 ; : 40* 4* 10* ;
 
 : kbrep ( -) $80 $28a c! ;  \ keyboard.
 : kbflush ( -) 16 $28b c! 0 $c6 c! ;
@@ -33,53 +33,53 @@ code p/  $d020 eor, $d020 sta, rts,
 
 : n: ( -?) parse-name evaluate ;
 : c: ( u-) 0 do n: c, loop ;
-: p: ( -) hex 8 0 do n: dup 4 lshift
-  or $f0f and 2 - , loop decimal ;
+: >b ( c-u) dup 4* 4* or $f0f and 2 - ;
+: b:  hex 8 0 do n: >b , loop decimal ;
 
-create patterns \ compiled as $0y0x-2.
-p: 00 01 02 03  02 12 22 32  \ oiii
-p: 00 01 02 03  02 12 22 32  \
-p:  03 11 12 13  01 02 12 22 \    jjj
-p:  01 02 03 11  02 12 22 23 \   .  j
-p: 01 11 12 13  02 12 22 21  \  lll
-p: 01 02 03 13  03 02 12 22  \ .l
-p:  02 11 12 13  02 11 12 22 \    ttt
-p:  01 02 03 12  02 12 13 22 \   . t
-p: 01 02 12 13  02 11 12 21  \   ss
-p: 01 02 12 13  02 11 12 21  \ .ss
-p:  03 02 11 12  02 12 13 23 \    zz
-p:  03 02 11 12  02 12 13 23 \   . zz
-p: 01 02 11 12  01 02 11 12  \  oo
-p: 01 02 11 12  01 02 11 12  \ .oo
+create blocks \ compiled as $0y0x-2.
+b: 00 01 02 03  02 12 22 32  \ oiii
+b: 00 01 02 03  02 12 22 32  \
+b:  03 11 12 13  01 02 12 22 \    jjj
+b:  01 02 03 11  02 12 22 23 \   .  j
+b: 01 11 12 13  02 12 22 21  \  lll
+b: 01 02 03 13  03 02 12 22  \ .l
+b:  02 11 12 13  02 11 12 22 \    ttt
+b:  01 02 03 12  02 12 13 22 \   . t
+b: 01 02 12 13  02 11 12 21  \   ss
+b: 01 02 12 13  02 11 12 21  \ .ss
+b:  03 02 11 12  02 12 13 23 \    zz
+b:  03 02 11 12  02 12 13 23 \   . zz
+b: 01 02 11 12  01 02 11 12  \  oo
+b: 01 02 11 12  01 02 11 12  \ .oo
 
 create ttc 7 c: 3 8 6 4 5 2 7
 create tgm 7 c: 2 8 6 3 4 5 7
 ttc value colors
 
-\ compute 4 (b)lock coords $yyxx and a
-\ (c)olor for a piece given by origin,
-\ (t)urn count 0-3, and (s)hape 0-6.
+\ given a (b)lock origin $yyxx, (t)urn
+\ count 0-3, and (s)hape 0-6, fetch 4
+\ (b)locks and a (c)olor.
 : b@+ ( ba-bba) dup>r @ bounds r> 2+ ;
-: piece ( bts-bbbbc) dup>r 2* 2* +
-  2* 2* 2* patterns + b@+ b@+ b@+ b@+
-  2drop r> colors + c@ ;  5 profile
+: piece ( bts-bbbbc) dup>r 4* + 4* 2*
+  blocks + b@+ b@+ b@+ b@+ 2drop r>
+  colors + c@ ;  5 profile
 
 2 . \ game state.
 
 : if\ ( f-) if postpone \ then ;
 : field ( au-a) over constant + ;
 
-here 256 2dup erase allot
+here 256 allot
 210 field well  \ 10 cols 23 rows of:
 20 field vistop \  0 empty, 1 marked,
 0 field welltop \  2-8 block colors.
 2 field %show  \ n->0 line sweep timer.
 2 field %grav  \ n->0 fall timer.
 2 field lines  \ todo: gravity curve.
-2 field seed   \ cannot be zero!
 1 field kept   \ 0-6  hold, w/ pin bit.
 2 field qp     \ mod8 queue index:
 8 field queue  \ random shapes 0-6.
+2 field seed   \ cannot be zero!
 2 field b1     \ $yyxx block position.
 1 field t1     \ 0-3   clkwise turns.
 queue value s1 \ cached queue addr.
@@ -96,7 +96,7 @@ queue value s1 \ cached queue addr.
 : kept@ ( -s) kept c@ 7 and ;
 : pinned? ( -f) kept c@ 8 and ;
 : unpin ( -) kept@ kept! ;
-: keep ( -) kept@  s1 c@ 8 or  kept!
+: keep ( -) kept@  s1 c@  8 or kept!
   s1 c! ;
 
 : roll ( u-u; xorshift-798.) [ seed 1+
@@ -135,10 +135,9 @@ create ssz 5 c: 0 0 4 4 5
 : line ( au-au) over 1- w! [ 10 ldy,#
   w lda,(y) 1 bne, rts, dey, -8 bne, ]
   over #10 1 fill  1+ ;  1 profile
-: mark ( a-u) dup #40 + >r 0 begin
-  line >10+>  over r@ < 0= until
+: mark ( y-u) 10* well + dup #40 + >r 0
+  begin line >10+>  over r@ < 0= until
   nip r> drop ;
-: th-r ( y-a) 10* well + ;
 
 \ check well, store into well.
 \ h? reuses oob indices as true flag.
@@ -167,7 +166,7 @@ create ssz 5 c: 0 0 4 4 5
 : touch ( bts-) s0 c! t0 c! b0 ! ;
 : drawn ( -bts) b0 @ t0 c@ s0 c@ ;
 : curr  ( -bts) b1 @ t1 c@ s1 c@ ;
-: curr-r ( -a) b1 1+ c@ th-r ;
+: curr-y ( -y) b1 1+ c@ ;
 
 5 . \ player update.
 
@@ -185,14 +184,14 @@ $-100 constant down
 \ (g)ameover if entry blocked.
 : enter ( -) $1305 b1 ! 0 t1 c! ;
 : trykeep ( -) pinned? if else:
-  keep enter &kept &curr or iv! ;
+  keep enter  &kept &curr or iv! ;
 : fall? ( -g) 12 %grav !  1 down 0 go?
   0= if 0 else:  kbflush unpin
-  curr piece lock  curr-r mark ?dup if
+  curr piece lock  curr-y mark ?dup if
     lines +! 11 %show ! 3 %grav !
   &well else &next &+ then iv!  enter
   qnext  curr touch  curr piece hit? ;
-: init ( u-) seed !  well seed well -
+: init ( u-) seed !  well seed over -
   erase  enter qflush  curr touch ;
 
 : tick? ( a-f) -1 over +! c@ 0= ;
@@ -238,19 +237,17 @@ $db7d value colormem \ of well.
     3 th-q c@ $0a0d slot
   then  0 to inval ;
 
-: help ( -) ." cmds: new r(esume)"
-  ."    keys: sdf jkl q" cr ;
-: hue ( fg $bgbd ) $d020 ! $286 c! ;
-: rblank ( au-) $a0 fill ;
-: canvas ( -) screen 38 + 21 0 do dup
-  19 rblank 40- loop 2+ #10 rblank ;
-: dw  0 q+ -1 iv! draw ;
-: da  11 0 hue page canvas help dw ;
+: dr ( -) -1 iv! draw ;
+: help ( -) ." keys: sdf jkl q"
+  ."       cmds: new r(esume)" cr ;
+: prep ( -) kbrep 0 q+ 11 $286 c!
+  0 $d020 ! page help  screen 38 +
+  21 0 do dup 19 $a0 fill 40- loop
+  2+ #10 $a0 fill  dr ;
 
 \ 7.  main loop.
 
-: r  kbrep da begin update draw until ;
+: r ( -) prep begin update draw until ;
 : fresh ( -u) $a1 @ 1 or ;
-: new  0 pro fresh init r ;
-3 init cr help ' help start !
-
+: new ( -) 0 pro fresh init r ;
+3 init ' help start !
