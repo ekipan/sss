@@ -1,33 +1,43 @@
 marker --tet-- \ tested w/ durexfth 4.
 
-: .h ( u-) hex u. decimal ; \ devtools.
-: make ( -) --tet-- s" tet" included ;
-: p/ ( -) [ $d020 eor, $d020 sta, ] ;
-: pro  if $4d else $60 then ['] p/ c! ;
-: profile ( c-) here swap dup lda,#
-  ['] p/ jsr, latest >xt jsr, lda,#
-  ['] p/ jmp, latest name>string + ! ;
-
 : else:  postpone exit        \ macros.
   postpone then ; immediate
 : dup>r  postpone >r dex, ; immediate
 
+: .h ( u-) hex u. decimal ; \ devtools.
+: make ( -) --tet-- s" tet" included ;
+: p/ ( -) [ $d020 eor,  $d020 sta, ] ;
+: pro  if $4d else $60 then ['] p/ c! ;
+: profile ( c-) here swap  dup lda,#
+  ['] p/ jsr,  latest >xt jsr,  lda,#
+  ['] p/ jmp,  latest name>string + ! ;
+
+: kbrep ( -) $80 $28a c! ;  \ hardware.
+: kbflush ( -) 16 $28b c! 0 $c6 c! ;
+: kb  key? if 1 $28b c! key else: 0 ;
+: fresh ( -u; rng seed.) $a1 @ 1 or ;
+: sync ( -) [ $d5 lda,#  $d012 cmp,
+  -5 bne, ] ;  13 profile
+
 : erase ( au-) 0 fill ;       \ basics.
 : bounds ( au-aa) over + swap ;
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
-  msb lda,x msb sty,x ] pushya ;
-: w! ( n-) [ lsb lda,x msb ldy,x inx,
-  w sta, w 1+ sty, ] ;
+  msb lda,x  msb sty,x ] pushya ;
+: w! ( a-) [ lsb lda,x  msb ldy,x  inx,
+  w sta,  w 1+ sty,  0 ldy,# ] ;
+: >w@@+> ( nn-nn) [ clc, w lda,(y) iny,
+  lsb 1+ dup adc,x sta,x w lda,(y) iny,
+  msb 1+ dup adc,x sta,x ] ;
 
 -1 value -1 3 value 3           \ math.
 10 value #10 23 value #23 40 value #40
 : 40- #40 - ; : >10+> swap #10 + swap ;
 : 4* 2* 2* ;  : 10* 2* dup 4* + ;
 : 0* drop 0 ; : 40* 4* 10* ;
-
-: kbrep ( -) $80 $28a c! ;  \ keyboard.
-: kbflush ( -) 16 $28b c! 0 $c6 c! ;
-: kb  key? if 1 $28b c! key else: 0 ;
+: xsh ( u-u; xorshift-798.) [ msb lda,x
+  ror,a lsb lda,x ror,a msb eor,x
+  msb sta,x ror,a lsb eor,x lsb sta,x
+  msb eor,x msb sta,x ] ;
 
 1 . \ piece definition.
 
@@ -59,9 +69,9 @@ ttc value colors
 \ given a (b)lock origin $yyxx, (t)urn
 \ count 0-3, and (s)hape 0-6, fetch 4
 \ (b)locks and a (c)olor.
-: b@+ ( ba-bba) dup>r @ bounds r> 2+ ;
+: b@+ ( b-bb) dup >w@@+> ;
 : piece ( bts-bbbbc) dup>r 4* + 4* 2*
-  blocks + b@+ b@+ b@+ b@+ 2drop r>
+  blocks + w! b@+ b@+ b@+ b@+ drop r>
   colors + c@ ;  5 profile
 
 2 . \ game state.
@@ -69,7 +79,7 @@ ttc value colors
 : if\ ( f-) if postpone \ then ;
 : field ( au-a) over constant + ;
 
-here 256 allot
+here 257 allot
 210 field well  \ 10 cols 23 rows of:
 20 field vistop \  0 empty, 1 marked,
 0 field welltop \  2-8 block colors.
@@ -82,7 +92,7 @@ here 256 allot
 2 field seed   \ cannot be zero!
 2 field b1     \ $yyxx block position.
 1 field t1     \ 0-3   clkwise turns.
-queue value s1 \ cached queue addr.
+1 field s1     \ 0-6   shape ijltszo.
 2 field b0     \ $yyxx drawn previous
 1 field t0     \ 0-3   frame, to be
 1 field s0     \ 0-6   erased.
@@ -99,23 +109,20 @@ queue value s1 \ cached queue addr.
 : keep ( -) kept@  s1 c@  8 or kept!
   s1 c! ;
 
-: roll ( u-u; xorshift-798.) [ seed 1+
-  lda, ror,a seed lda, ror,a seed 1+
-  dup eor, sta, ror,a seed dup eor,
-  sta, seed 1+ dup eor, sta, tay, seed
-  lda, ] pushya um* nip ;  5 profile
+: roll ( u-u) seed @ xsh dup seed !
+  um* nip ;  5 profile
 : reroll ( s-s) drop 7 roll ;
 
 \ (f) reroll? if dupe, up to 4 times.
 : th-q ( i-a) qp c@ + 7 and queue + ;
-: q+ ( n-) qp +!  0 th-q to s1 ;
 : q! ( s-) 3 th-q c! ;
 : qdup? ( sfi-sf) swap if drop 1 else:
   th-q c@ over = ;  15 profile
 : qtry ( sf-sf) if reroll 0 0 qdup?
   1 qdup? 2 qdup? 3 qdup? else: 0 ;
 : qnext ( -) 0 1 qtry qtry qtry
-  if reroll then 1 q+ q! ;  7 profile
+  if reroll then 1 qp +! q!
+  0 th-q c@ s1 c! ;  7 profile
 
 \ open w/ ijlt, bias against sz.
 create ssz 5 c: 0 0 4 4 5
@@ -132,8 +139,8 @@ create ssz 5 c: 0 0 4 4 5
   over welltop < 0= until  drain drop ;
 
 \ whiten filled lines, give count (u).
-: line ( au-au) over 1- w! [ 10 ldy,#
-  w lda,(y) 1 bne, rts, dey, -8 bne, ]
+: line ( au-au) over #10 bounds do
+  i c@ 0= if unloop exit then loop
   over #10 1 fill  1+ ;  1 profile
 : mark ( y-u) 10* well + dup #40 + >r 0
   begin line >10+>  over r@ < 0= until
@@ -163,9 +170,11 @@ create ssz 5 c: 0 0 4 4 5
 \ 'draw' touches the drawn piece to
 \ erase next frame. touch a new one
 \ to leave the old one on screen.
-: touch ( bts-) s0 c! t0 c! b0 ! ;
-: drawn ( -bts) b0 @ t0 c@ s0 c@ ;
-: curr  ( -bts) b1 @ t1 c@ s1 c@ ;
+: p@ ( a-bts) dup @ swap 2+ @ split ;
+: p! ( btsa) tuck 3 + c! tuck 2+ c! ! ;
+: touch ( -) b1 b0 4 move ;
+: drawn ( -bts) b0 p@ ;
+: curr  ( -bts) b1 p@ ;
 : curr-y ( -y) b1 1+ c@ ;
 
 5 . \ player update.
@@ -189,21 +198,21 @@ $-100 constant down
   0= if 0 else:  kbflush unpin
   curr piece lock  curr-y mark ?dup if
     lines +! 11 %show ! 3 %grav !
-  &well else &next &+ then iv!  enter
-  qnext  curr touch  curr piece hit? ;
+  &well else &next &+ then iv!
+  qnext enter touch  curr piece hit? ;
 : init ( u-) seed !  well seed over -
-  erase  enter qflush  curr touch ;
+  erase  qflush enter touch ;
 
 : tick? ( a-f) -1 over +! c@ 0= ;
 : update ( -g) %show c@ if  %show tick?
     if sweep &well &+ iv! then 0
   else:  %grav tick? if fall? else:
-  kb $7f and case  0 of endof
+  kb case  0 of endof
+  's' of 1 -1 0 go? drop endof
+  'd' of fall? exit endof
+  'f' of 1 1 0 go? drop endof
   'j' of -1 turnkick endof
   'k' of 1 turnkick endof
-  's' of 1 -1 0 go? drop endof
-  'f' of 1 1 0 go? drop endof
-  'd' of fall? exit endof
   'l' of trykeep endof
   drop 1 exit endcase 0 ;
 
@@ -213,14 +222,11 @@ $077d value screen   \ bottom left
 $db7d value colormem \ of well.
 
 : th-cm ( b-a) split 40* - colormem + ;
-6 profile
 : p! ( bc-c) tuck swap th-cm c! ;
 : plot ( bbbbc-) p! p! p! p! drop ;
 : slot ( sb-) dup th-cm 2 - dup 40-
   4 erase 4 erase 0 rot piece plot ;
 
-: sync ( -) [ $c5 lda,# $d012 cmp,
-  -5 bne, ] ;  11 profile
 : draw ( -) &curr iv?  sync  if
     drawn piece 0* plot
   then  &well iv? if
@@ -228,26 +234,25 @@ $db7d value colormem \ of well.
     2dup 10move >10+> 40-
     over vistop < 0= until  2drop
   then  &curr iv? if
-    curr piece plot  curr touch
+    curr piece plot  touch
   then  &kept iv? if
     kept@ $060d slot
   then  &next iv? if
     1 th-q c@ $100d slot
     2 th-q c@ $0d0d slot
     3 th-q c@ $0a0d slot
-  then  0 to inval ;
+  then  0 to inval ; 6 profile
 
 : dr ( -) -1 iv! draw ;
 : help ( -) ." keys: sdf jkl q"
   ."       cmds: new r(esume)" cr ;
-: prep ( -) kbrep 0 q+ 11 $286 c!
-  0 $d020 ! page help  screen 38 +
-  21 0 do dup 19 $a0 fill 40- loop
-  2+ #10 $a0 fill  dr ;
+: prep ( -) kbrep 11 $286 c! 0 $d020 !
+  page help screen 38 + 21 0 do dup 19
+  $a0 fill 40- loop 2+ #10 $a0 fill
+  dr ;
 
 \ 7.  main loop.
 
 : r ( -) prep begin update draw until ;
-: fresh ( -u) $a1 @ 1 or ;
 : new ( -) 0 pro fresh init r ;
 3 init ' help start !
