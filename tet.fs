@@ -6,11 +6,12 @@ marker --tet-- \ tested w/ durexfth 4.
 
 : .h ( u-) hex u. decimal ; \ devtools.
 : redo ( -) --tet-- s" tet" included ;
-: p/ ( -) [ $d020 eor, $d020 sta, ] ;
-: pro  if $4d else $60 then ['] p/ c! ;
+: b/ ( -) [ $d020 eor, $d020 sta, ] ;
+: pro ( f-; flash border?) if
+  $4d else $60 then ['] b/ c! ;
 : profile ( c-) here swap  dup lda,#
-  ['] p/ jsr, latest >xt jsr, lda,#
-  ['] p/ jmp,  latest name>string + ! ;
+  ['] b/ jsr, latest >xt jsr, lda,#
+  ['] b/ jmp,  latest name>string + ! ;
 
 : kbrep ( -) $80 $28a c! ;  \ hardware.
 : kbflush ( -) 16 $28b c! 0 $c6 c! ;
@@ -19,23 +20,23 @@ marker --tet-- \ tested w/ durexfth 4.
 : sync ( -) [ $d5 lda,# $d012 cmp,
   -5 bne, ] ;  13 profile
 
--1 value -1 3 value 3           \ math.
+-1 value -1 3 value 3         \ basics.
 10 value #10 23 value #23 40 value #40
 : 40- #40 - ; : >10+> swap #10 + swap ;
 : 4* 2* 2* ;  : 10* 2* dup 4* + ;
 : 0* drop 0 ; : 40* 4* 10* ;
-: xsh ( u-u; xorshift-798.) [ msb lda,x
-  ror,a lsb lda,x ror,a msb eor,x
-  msb sta,x ror,a lsb eor,x lsb sta,x
-  msb eor,x msb sta,x ] ;
-
-: erase ( au-) 0 fill ;       \ basics.
+: erase ( au-) 0 fill ;
 : bounds ( au-aa) over + swap ;
+
+: xsh ( u-u; xorshift-798.)    \ optim.
+  [ msb lda,x ror,a lsb lda,x ror,a
+  msb eor,x msb sta,x ror,a lsb eor,x
+  lsb sta,x msb eor,x msb sta,x ] ;
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 : w! ( a-) [ lsb lda,x msb ldy,x inx,
   w sta, w 1+ sty, 0 ldy,# ] ;
-: wb+ ( nn-nn) [ clc, w lda,(y) iny,
+: b@+ ( b-bb) dup [ clc, w lda,(y) iny,
   lsb 1+ dup adc,x sta,x w lda,(y) iny,
   msb 1+ dup adc,x sta,x ] ;
 
@@ -43,7 +44,7 @@ marker --tet-- \ tested w/ durexfth 4.
 
 : n: ( -?) parse-name evaluate ;
 : c: ( u-) 0 do n: c, loop ;
-: >b ( c-u) dup 4* 4* or $f0f and 2 - ;
+: >b ( c-b) dup 4* 4* or $f0f and 2 - ;
 : b:  hex 8 0 do n: >b , loop decimal ;
 
 create blocks \ compiled as $0y0x-2.
@@ -69,7 +70,6 @@ ttc value colors
 \ given a (b)lock origin $yyxx, (t)urn
 \ count 0-3, and (s)hape 0-6, fetch 4
 \ (b)locks and a (c)olor.
-: b@+ ( b-bb) dup wb+ ;
 : piece ( bts-bbbbc) dup>r 4* + 4* 2*
   blocks + w! b@+ b@+ b@+ b@+ drop r>
   colors + c@ ;  5 profile
@@ -98,7 +98,7 @@ here 257 allot
 1 field s0     \ 0-6   erased.
 ' well - ?dup 0= if\ rvs . cr abort
 
-3 . \ shapes queue.
+3 . \ tgmlike randomizer.
 
 \ usually called a 'hold piece' but
 \ i don't want to clash w/ 'hold'.
@@ -121,7 +121,7 @@ here 257 allot
 : qtry ( sf-sf) if reroll 0 0 qdup?
   1 qdup? 2 qdup? 3 qdup? else: 0 ;
 : qnext ( -) 0 1 qtry qtry qtry
-  if reroll then 1 qp +! q!
+  if reroll then  1 qp +! q!
   0 th-q c@ s1 c! ;  7 profile
 
 \ open w/ ijlt, bias against sz.
