@@ -5,29 +5,19 @@ marker --tet-- \ tested w/ durexfth 4.
 : dup>r  postpone >r dex, ; immediate
 
 : .h ( u-) hex u. decimal ; \ devtools.
-: make ( -) --tet-- s" tet" included ;
-: p/ ( -) [ $d020 eor,  $d020 sta, ] ;
+: redo ( -) --tet-- s" tet" included ;
+: p/ ( -) [ $d020 eor, $d020 sta, ] ;
 : pro  if $4d else $60 then ['] p/ c! ;
 : profile ( c-) here swap  dup lda,#
-  ['] p/ jsr,  latest >xt jsr,  lda,#
+  ['] p/ jsr, latest >xt jsr, lda,#
   ['] p/ jmp,  latest name>string + ! ;
 
 : kbrep ( -) $80 $28a c! ;  \ hardware.
 : kbflush ( -) 16 $28b c! 0 $c6 c! ;
 : kb  key? if 1 $28b c! key else: 0 ;
 : fresh ( -u; rng seed.) $a1 @ 1 or ;
-: sync ( -) [ $d5 lda,#  $d012 cmp,
+: sync ( -) [ $d5 lda,# $d012 cmp,
   -5 bne, ] ;  13 profile
-
-: erase ( au-) 0 fill ;       \ basics.
-: bounds ( au-aa) over + swap ;
-: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
-  msb lda,x  msb sty,x ] pushya ;
-: w! ( a-) [ lsb lda,x  msb ldy,x  inx,
-  w sta,  w 1+ sty,  0 ldy,# ] ;
-: >w@@+> ( nn-nn) [ clc, w lda,(y) iny,
-  lsb 1+ dup adc,x sta,x w lda,(y) iny,
-  msb 1+ dup adc,x sta,x ] ;
 
 -1 value -1 3 value 3           \ math.
 10 value #10 23 value #23 40 value #40
@@ -38,6 +28,16 @@ marker --tet-- \ tested w/ durexfth 4.
   ror,a lsb lda,x ror,a msb eor,x
   msb sta,x ror,a lsb eor,x lsb sta,x
   msb eor,x msb sta,x ] ;
+
+: erase ( au-) 0 fill ;       \ basics.
+: bounds ( au-aa) over + swap ;
+: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
+  msb lda,x msb sty,x ] pushya ;
+: w! ( a-) [ lsb lda,x msb ldy,x inx,
+  w sta, w 1+ sty, 0 ldy,# ] ;
+: wb+ ( nn-nn) [ clc, w lda,(y) iny,
+  lsb 1+ dup adc,x sta,x w lda,(y) iny,
+  msb 1+ dup adc,x sta,x ] ;
 
 1 . \ piece definition.
 
@@ -69,7 +69,7 @@ ttc value colors
 \ given a (b)lock origin $yyxx, (t)urn
 \ count 0-3, and (s)hape 0-6, fetch 4
 \ (b)locks and a (c)olor.
-: b@+ ( b-bb) dup >w@@+> ;
+: b@+ ( b-bb) dup wb+ ;
 : piece ( bts-bbbbc) dup>r 4* + 4* 2*
   blocks + w! b@+ b@+ b@+ b@+ drop r>
   colors + c@ ;  5 profile
@@ -246,10 +246,10 @@ $db7d value colormem \ of well.
 : dr ( -) -1 iv! draw ;
 : help ( -) ." keys: sdf jkl q"
   ."       cmds: new r(esume)" cr ;
-: prep ( -) kbrep 11 $286 c! 0 $d020 !
-  page help screen 38 + 21 0 do dup 19
-  $a0 fill 40- loop 2+ #10 $a0 fill
-  dr ;
+: prep ( -) 11 $286 c! 0 $d020 !
+  page help screen 38 + 21 0 do
+  dup 19 $a0 fill 40- loop
+  2+ #10 $a0 fill dr kbrep ;
 
 \ 7.  main loop.
 
