@@ -11,7 +11,7 @@ create 'bx  $d020 eor, $d020 sta, rts,
   $4d else $60 then 'bx c! ;
 : profile ( c-) here swap  dup lda,#
   'bx jsr, latest >xt jsr, lda,#
-  'bx jmp, latest name>string + ! ;
+  'bx jmp,  latest name>string + ! ;
 
 : kbrep ( -) $80 $28a c! ;  \ hardware.
 : kbflush ( -) 16 $28b c! 0 $c6 c! ;
