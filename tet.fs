@@ -119,9 +119,9 @@ b: 01 02 11 12  01 02 11 12  \ ox
   0 th-q c@ s1 c! ;  7 profile
 
 \ open w/ ijlt, bias against sz.
-here 5 c: 0 0 4 4 5
-: qflush ( -) 6 kept! literal qp 5 move
-  4 roll q!  qnext qnext qnext ;
+create ssz 5 c: 0 0 4 4 5
+: qflush ( -) 2 roll 4 + kept!  ssz qp
+  5 move 4 roll q!  qnext qnext qnext ;
 
 4 . \ the well.
 
