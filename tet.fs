@@ -2,6 +2,17 @@ marker --tet-- \ tested w/ durexforth4.
 
 \ 0.  groundwork.
 
+: else:  postpone exit        \ syntax.
+  postpone then ; immediate
+: erase ( au-) 0 fill ;       \ basics.
+: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
+  msb lda,x msb sty,x ] pushya ;
+-1 value -1 3 value 3       \ fastmath.
+10 value #10 22 value #22 40 value #40
+: 40- #40 - ; : >10+> swap #10 + swap ;
+: 4* 2* 2* ;  : 10* 2* dup 4* + ;
+: 0* drop 0 ; : 40* 4* 10* ;
+
 : h. ( u-) hex u. decimal ; \ devtools.
 : redo ( -) --tet-- s" tet" included ;
 create bd/  $d020 eor, $d020 sta, rts,
@@ -12,23 +23,11 @@ create bd/  $d020 eor, $d020 sta, rts,
   lda,# bd/ jsr, jsr, lda,# bd/ jmp, ;
 \ : pro drop ; : profile drop ;
 
-: else:  postpone exit        \ macros.
-  postpone then ; immediate
-: dup>r  postpone >r dex, ; immediate
-: erase ( au-) 0 fill ;       \ basics.
-: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
-  msb lda,x msb sty,x ] pushya ;
--1 value -1 3 value 3       \ fastmath.
-10 value #10 22 value #22 40 value #40
-: 40- #40 - ; : >10+> swap #10 + swap ;
-: 4* 2* 2* ;  : 10* 2* dup 4* + ;
-: 0* drop 0 ; : 40* 4* 10* ;
-
 : sync ( -) [ $d5 lda,#     \ hardware.
   $d012 cmp, -5 bne, ] ;  13 profile
 : hue ( fg $bgbd -- ) $d020 ! $286 c! ;
 : entropy ( -u) $a1 @ 1 or ;
-: kbflush ( -) $c80 $28a ! 0 $c6 c! ;
+: kbflush ( -) $b80 $28a ! 0 $c6 c! ;
 : kb ( -c; w/ hacky fast repeat.)
   key? if 1 $28b c! key else: 0 ;
 
@@ -38,8 +37,8 @@ create bd/  $d020 eor, $d020 sta, rts,
   lsb sta,x msb eor,x msb sta,x ] ;
 : wy! ( nn-) [ lsb ldy,x inx, lsb lda,x
   w sta, msb lda,x w 1+ sta, inx, ] ;
-: full? ( a-f) 1- #10 wy! [ w lda,(y)
-  6 beq, dey, -7 bne, ] 1 exit 0 ;
+: full? ( a-f) 9 wy! [ w lda,(y)
+  6 beq, dey, -7 bpl, ] 1 exit 0 ;
 : b@+ ( b-bb) dup [ clc, w lda,(y) iny,
   lsb 1+ dup adc,x sta,x w lda,(y) iny,
   msb 1+ dup adc,x sta,x ] ;
@@ -71,7 +70,7 @@ b: 01 02 11 12  01 02 11 12  \ ox
 \ given a (b)lock origin $yyxx, (t)urn
 \ count 0-3, and (s)hape 0-6, fetch 4
 \ (b)locks and a (c)olor.
-: piece ( bts-bbbbc) dup>r 4* + 4* 2*
+: piece ( bts-bbbbc) dup >r 4* + 4* 2*
   blocks + 0 wy! b@+ b@+ b@+ b@+ drop
   r> colors + c@ ;  5 profile
 
@@ -80,7 +79,7 @@ b: 01 02 11 12  01 02 11 12  \ ox
 : if\ ( f-) if postpone \ then ;
 : field ( au-a) over constant + ;
 
-here 247 allot
+247 constant /game  here /game allot
 210 field well  \ 10 cols 22 rows of:
 10 field vistop \  0 empty, 1 marked,
 0 field welltop \  2-8 block colors.
@@ -102,7 +101,7 @@ here 247 allot
 3 . \ tgmlike randomizer.
 
 \ usually called a 'hold piece' but
-\ i don't want to clash w/ 'hold'.
+\ avoid name clash w/ 'hold'.
 : kept! ( s-) kept c! ;
 : kept@ ( -s) kept c@ 7 and ;
 : pinned? ( -f) kept c@ 8 and ;
@@ -132,25 +131,22 @@ create ssz 5 c: 0 0 4 4 5
 
 4 . \ the well.
 
-\ move unmarked lines down, erase top.
-: drain ( a-) welltop over - erase ;
-: 10move ( aa-) #10 move ;  12 profile
-: sweep ( -) well well begin  over c@
-  1- if 2dup 10move #10 + then >10+>
-  over welltop = until  drain drop ;
-
-\ whiten filled lines, give count (u).
+\ whiten and count, move down lines.
 : th-r ( y-a) 10* well + ;
 : m+ ( au-au) over full? if  1+ over
-  #10 1 fill then  >10+> ;  9 profile
+  #10 1 fill then  >10+> ;  12 profile
 : mark ( y-u) th-r 0 m+ m+ m+ m+ nip ;
+: s+ ( aa-aa) over c@ 1- if  2dup #10
+  move #10 + then  >10+> ;  12 profile
+: sweep ( -) well well begin
+  s+ over welltop = until
+  welltop over - erase  drop ;
 
-\ check well, store into well.
-\ h? reuses oob indices as true flag.
+\ check, store into well.
 : th-b ( b-a) split 10* + well + ;
   4 profile
-: h? ( bf-f) swap dup split #22 u<
-  swap #10 u< and if th-b c@ then or ;
+: h? ( bf-f) swap dup  split #22 u<
+  swap #10 u< and  if th-b c@ then or ;
 : hit? ( bbbbc-f) 0* h? h? h? h? 0<> ;
 : l! ( bc-c) tuck swap th-b c! ;
 : lock ( bbbbc-) l! l! l! l! drop ;
@@ -161,53 +157,53 @@ create ssz 5 c: 0 0 4 4 5
 2 constant &next \ queue. set bits
 4 constant &well \ to request
 8 constant &kept \ redraw.
-0 value invalid
-: inv? ( v-f) invalid and ;
-: inv! ( v-) invalid or to invalid ;
+0 value dirty
 : &+ ( v-v) dup 1- or ;
+: iv! ( v-) dirty or to dirty ;
+: iv? ( v-f) dirty and ;
 
 \ the drawn piece is touched to erase
 \ next frame. touch a new one to leave
 \ the old one on screen.
-: touch ( -) b1 b0 4 move ;
+: touch ( -) b1 @ b0 ! t1 @ t0 ! ;
 : drawn ( -bts) b0 @ t0 @ split ;
-: curr  ( -bts) b1 @ t1 @ split ;
+: curr ( -bts) b1 @ t1 @ split ;
 : curr-y ( -y) b1 1+ c@ ;
 
-5 . \ player update.
+5 . \ game rules.
 
-\ move piece. kick into turn direction.
+\ movement. bias kicks ccw>l cw>r.
 $-100 constant down
 : t1@+ ( t-t) t1 c@ + 3 and ;
-: go? ( fbt-f) rot 0= if 2drop 0 else:
-  over b1 @ +  over t1@+  s1 c@
-  piece hit? if 2drop 1 else:
-  t1@+ t1 c!  b1 +!  &curr inv! 0 ;
-: turnkick ( t-) dup>r 0 i go? i i go?
-  0 i - i go? down i go? down i + i go?
-  down i - r> go? drop ;
+: go? ( bt-f) over b1 @ +  over t1@+
+  s1 c@  piece hit? if 2drop 0 else:
+  t1@+ t1 c!  b1 +!  &curr iv! 1 ;
+: tk ( bt-) go? if r> r> 2drop then ;
+: turnkick ( t-) >r  0 r@ tk  r@ r@ tk
+  0 r@ - r@ tk  down r@ tk  down r@ +
+  r@ tk  down r@ - r@ tk  r> drop ;
 
 \ (g)ameover if entry blocked.
 : enter ( -) $1305 b1 ! 0 t1 c! ;
 : trykeep ( -) pinned? if else:
-  keep enter  &kept &curr or inv! ;
-: fall ( -g) 12 %grav !  1 down 0 go?
-  0= if 0 else:  kbflush unpin
+  keep enter  &kept &curr or iv! ;
+: fall ( -g) 12 %grav !  down 0 go?
+  if 0 else:  kbflush unpin
   curr piece lock  curr-y mark ?dup if
     lines +! 12 %show !
-  &well else &next &+ then  inv!
+  &well else  &next &+ then  iv!
   qnext enter touch  curr piece hit? ;
-: init ( u-) well seed well - erase
-  seed !  qflush enter touch ;
+: init ( u-) well /game erase  seed !
+  qflush enter touch ;
 
 : tick? ( a-f) -1 over +! c@ 0= ;
 : update ( -g) %show c@ if  %show tick?
-    if sweep &well &+ inv! then 0
+    if sweep &well &+ iv! then 0
   else:  %grav tick? if fall else:
   kb case  0 of endof
-  's' of 1 -1 0 go? drop endof
+  's' of -1 0 go? drop endof
   'd' of fall exit endof
-  'f' of 1 1 0 go? drop endof
+  'f' of 1 0 go? drop endof
   'j' of -1 turnkick endof
   'k' of 1 turnkick endof
   'l' of trykeep endof
@@ -224,22 +220,22 @@ $db7d value colormem \ of well.
 : slot ( sb-) dup th-cm 2 - dup 40-
   4 erase 4 erase 0 rot piece plot ;
 
-: draw ( -) &curr inv?  sync  if
+: draw ( -) &curr iv?  sync  if
     drawn piece 0* plot
-  then  &well inv? if
+  then  &well iv? if
     well colormem begin
-    2dup 10move >10+> 40-
+    2dup #10 move  >10+> 40-
     over vistop = until  2drop
-  then  &curr inv? if
+  then  &curr iv? if
     curr piece plot  touch
-  then  &kept inv? if
+  then  &kept iv? if
     kept@ $060d slot
-  then  &next inv? if
+  then  &next iv? if
     1 th-q c@ $100d slot
     2 th-q c@ $0d0d slot
     3 th-q c@ $0a0d slot
-  then  0 to invalid ;  6 profile
-: dr ( -) -1 inv! draw ;
+  then  0 to dirty ;  6 profile
+: dr ( -) -1 iv! draw ;
 
 \ 7.  main loop.
 
