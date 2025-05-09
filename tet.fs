@@ -1,6 +1,6 @@
-marker --tet-- \ tested w/ durexfth 4.
+marker --tet-- \ for durexforth 4.
 
-\ 0.  groundwork.
+\ 0 . groundwork.
 
 : h. ( u-) hex u. decimal ; \ devtools.
 : redo ( -) --tet-- s" tet" included ;
@@ -12,36 +12,37 @@ create bd/  $d020 dup eor, sta, rts,
   lda,# bd/ jsr, jsr, lda,# bd/ jmp, ;
 \ : pro drop ; : profile drop ;
 
-: else:  postpone exit        \ syntax.
-  postpone then ; immediate
-: erase ( au-) 0 fill ;       \ basics.
-: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
-  msb lda,x msb sty,x ] pushya ;
--1 value -1 3 value 3       \ fastmath.
-10 value #10 22 value #22 40 value #40
-: 40- #40 - ; : >10+> swap #10 + swap ;
-: 4* 2* 2* ;  : 10* 2* dup 4* + ;
-: 0* drop 0 ; : 40* 4* 10* ;
-
 : sync ( -) [ $d5 lda,#     \ hardware.
   $d012 cmp, -5 bne, ] ;  13 profile
-: hue ( fg $bgbd -- ) $d020 ! $286 c! ;
+: theme ( uu-) $d020 ! $286 c! ;
 : entropy ( -u) $a1 @ dup 0= + ;
-: kbflush ( -) $b80 $28a ! 0 $c6 c! ;
+: kinit ( -) $b80 $28a ! 0 $c6 c! ;
 : kb ( -c; w/ fast repeat hack.) key?
-  if 1 $28b c! key else: 0 ;
-: w! ( a-) [ lsb lda,x w sta,  \ optim.
-  msb lda,x w 1+ sta, inx, 0 ldy,# ] ;
+  if 1 $28b c! key else 0 then ;
+: w! ( a-) [ lsb ldy,x w sty,    \ opt.
+  msb ldy,x w 1+ sty, inx, 0 ldy,# ] ;
 : p@+ ( p-pp) dup [ clc, w lda,(y) iny,
   lsb 1+ dup adc,x sta,x w lda,(y) iny,
   msb 1+ dup adc,x sta,x ] ;
+: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
+  msb lda,x msb sty,x ] pushya ;
 
-1 . \ piece definition.
-
+-1 value -1 3 value 3           \ math.
+10 value #10 22 value #22 40 value #40
+: 40- #40 - ; : >10+> swap #10 + swap ;
+: 4*  2* 2* ; : 10*  2* dup 4* + ;
+: 0* drop 0 ; : 40*  4* 10* ;
+: erase ( au-) 0 fill ;       \ basics.
+: else: ( -) postpone exit
+  postpone then ; immediate
+: if\ ( f-) if postpone \ then ;
+: field ( au-a) over constant + ;
 : n: ( -?) parse-name evaluate ;
 : c: ( u-) 0 do n: c, loop ;
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p:  hex 8 0 do n: >p , loop decimal ;
+
+1 . \ piece definition.
 
 create colors 7 c: 3 8 6 4 5 2 7
 create blocks \ compiled as $0y0x-2.
@@ -63,16 +64,13 @@ p: 01 02 11 12  01 02 11 12  \ ox
 \ given a piece (p)osition $yyxx,
 \ (t)urn count 0-3, and (s)hape 0-6,
 \ fetch 4 blocks and a (c)olor.
-: piece ( pts-ppppc) dup >r 4* + 4* 2*
-  blocks + w! p@+ p@+ p@+ p@+ drop
-  r> colors + c@ ;  5 profile
+: piece ( pts-ppppc) dup colors + c@ >r
+  4* + 4* 2* blocks + w! p@+ p@+ p@+
+  p@+ drop r> ;  5 profile
 
 2 . \ game state.
 
-: if\ ( f-) if postpone \ then ;
-: field ( au-a) over constant + ;
-
-here 247 2dup 1 fill allot
+here 247  2dup 1 fill  allot
 210 field well \ 10 cols 22 rows of:
 10 field spill \  0 empty, 1 marked,
 0 field top    \  2-8 block colors.
@@ -114,7 +112,7 @@ here 247 2dup 1 fill allot
   if reroll then  1 qp +!  3 th-q c!
   0 th-q c@ s1 c! ;  7 profile
 create ssz 5 c: 0 0 4 4 5 \ bias -s/z.
-: qflush ( -) sz-ijlt  3 th-q c!  kept!
+: qinit ( -) sz-ijlt  3 th-q c!  kept!
   ssz qp 5 move  qnext qnext qnext ;
 
 4 . \ the well.
@@ -132,7 +130,7 @@ create ssz 5 c: 0 0 4 4 5 \ bias -s/z.
 : s+ ( aa-aa) over c@ 1- if  2dup #10
   move #10 + then  >10+> ;  12 profile
 : sweep ( -) well well begin s+ s+ over
-  top = until  top over - erase  drop ;
+  top = until  nip top over - erase ;
 
 \ check, store into well.
 : h? ( pf-f) swap dup  split #22 u<
@@ -178,13 +176,13 @@ $-100 constant down
 : trykeep ( -) pinned? if else:
   keep enter  &kept &curr or iv! ;
 : fall ( -g) 12 %grav !  down 0 go?
-  if 0 else:  kbflush unpin
+  if 0 else:  kinit unpin
   curr piece lock  curr-y mark ?dup if
     lines +! 12 %show !
   &well else  &next &+ then  iv!
   qnext enter touch  curr piece hit? ;
 : init ( u-) well ['] well over - erase
-  seed !  qflush enter touch ;
+  seed !  qinit enter touch ;
 
 : tick? ( a-f) -1 over +! c@ 0= ;
 : update ( -g) %show c@ if  %show tick?
@@ -205,7 +203,9 @@ $-100 constant down
 $0400 + value screen
 $d800 + value colormem
 
-: canvas ( ) screen 38 + 21 0 do dup 19
+\ rvspace $a0, bg color squares. also
+\ ignored by forth for easier testing.
+: bg ( -) screen 38 + 21 0 do  dup 19
   $a0 fill 40- loop  2+ #10 $a0 fill ;
 
 : th-cm ( p-a) split 40* - colormem + ;
@@ -219,8 +219,8 @@ $d800 + value colormem
 : draw ( -) &curr iv?  sync  if
     drawn piece 0* plot
   then  &well iv? if
-    well colormem begin
-    w+ over spill = until  2drop
+    well colormem begin  w+ w+ w+
+    over spill = until  2drop
   then  &curr iv? if
     curr piece plot  touch
   then  &kept iv? if
@@ -232,11 +232,11 @@ $d800 + value colormem
   then  0 to inval ;  6 profile
 : dr ( -) -1 iv! draw ;
 
-\ 8.  main loop.
+\ 8 . main loop words (-).
 
-: help ( -) ." cmds: new r(esume)"
+: prep  kinit 11 0 theme page bg dr ;
+: r  pre begin update draw until ;
+: new  0 pro entropy init r ;
+: help  ." cmds: new r(esume)"
   ."   keys: sdf jkl q " ;
-: r ( -) kbflush 11 0 hue page canvas
-  dr begin update draw until ;
-: new ( -) 0 pro entropy init r ;
-1234 init ' help start !
+1234 init  ' help start !
