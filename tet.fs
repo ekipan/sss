@@ -234,7 +234,7 @@ $d800 + value colormem
 
 \ 8 . main loop words (-).
 
-: prep  kinit 11 0 theme page bg dr ;
+: pre  kinit 11 0 theme page bg dr ;
 : r  pre begin update draw until ;
 : new  0 pro entropy init r ;
 : help  ." cmds: new r(esume)"
