@@ -1,25 +1,26 @@
-marker --tet-- \ for durexforth 4.
+marker --tet-- \ durexforth 4 tested.
 
-\ 0 . groundwork.
+\ 0 . hardware.
 
 : h. ( u-) hex u. decimal ; \ devtools.
 : redo ( -) --tet-- s" tet" included ;
-create bd/  $d020 dup eor, sta, rts,
-: pro ( enable? -- ) if
-  $4d else $60 then bd/ c! ;
+create bd/  $d020 eor, $d020 sta, rts,
+: pro ( enable? -- )
+  if $4d else $60 then bd/ c! ;
 : profile ( color -- ) latest >xt over
-  here latest name>string + ! ( cxc)
-  lda,# bd/ jsr, jsr, lda,# bd/ jmp, ;
+  here latest name>string + !  lda,#
+  bd/ jsr, jsr, lda,# bd/ jmp, ;
 \ : pro drop ; : profile drop ;
 
-: sync ( -) [ $d5 lda,#     \ hardware.
-  $d012 cmp, -5 bne, ] ;  13 profile
+: entropy ( -u) $a1 @ dup 0= + ; \ i/o.
 : theme ( uu-) $d020 ! $286 c! ;
-: entropy ( -u) $a1 @ dup 0= + ;
+: sync ( -) [ $d5 lda,# $d012 cmp,
+  -5 bne, ] ;  13 profile
 : kinit ( -) $b80 $28a ! 0 $c6 c! ;
-: kb ( -c; w/ fast repeat hack.) key?
-  if 1 $28b c! key else 0 then ;
-: w! ( a-) [ lsb ldy,x w sty,    \ opt.
+: kpoll ( -c; w/ fast repeat hack.)
+  key? if 1 $28b c! key else 0 then ;
+
+: w! ( a-) [ lsb ldy,x w sty,  \ optim.
   msb ldy,x w 1+ sty, inx, 0 ldy,# ] ;
 : p@+ ( p-pp) dup [ clc, w lda,(y) iny,
   lsb 1+ dup adc,x sta,x w lda,(y) iny,
@@ -27,22 +28,26 @@ create bd/  $d020 dup eor, sta, rts,
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
--1 value -1 3 value 3           \ math.
-10 value #10 22 value #22 40 value #40
+1 . \ basics.
+
+-1 value -1   3 value 3   10 value #10
+22 value #22 40 value #40
 : 40- #40 - ; : >10+> swap #10 + swap ;
 : 4*  2* 2* ; : 10*  2* dup 4* + ;
 : 0* drop 0 ; : 40*  4* 10* ;
-: erase ( au-) 0 fill ;       \ basics.
+
+: erase ( au-) 0 fill ;
+: field ( au-a) over constant + ;
+: if\ ( f-) if postpone \ then ;
 : else: ( -) postpone exit
   postpone then ; immediate
-: if\ ( f-) if postpone \ then ;
-: field ( au-a) over constant + ;
+
 : n: ( -?) parse-name evaluate ;
 : c: ( u-) 0 do n: c, loop ;
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p:  hex 8 0 do n: >p , loop decimal ;
 
-1 . \ piece definition.
+2 . \ piece definition.
 
 create colors 7 c: 3 8 6 4 5 2 7
 create blocks \ compiled as $0y0x-2.
@@ -64,11 +69,13 @@ p: 01 02 11 12  01 02 11 12  \ ox
 \ given a piece (p)osition $yyxx,
 \ (t)urn count 0-3, and (s)hape 0-6,
 \ fetch 4 blocks and a (c)olor.
-: piece ( pts-ppppc) dup colors + c@ >r
-  4* + 4* 2* blocks + w! p@+ p@+ p@+
-  p@+ drop r> ;  5 profile
+\ p@+ is rewritten in assembler above.
+\ p@+ ( pa-ppa) dup >r @ bounds r> 2+ ;
+: piece ( pts-ppppc) dup >r 4* + 4* 2*
+  blocks + w! p@+ p@+ p@+ p@+ drop r>
+  colors + c@ ;  5 profile
 
-2 . \ game state.
+3 . \ game state.
 
 here 247  2dup 1 fill  allot
 210 field well \ 10 cols 22 rows of:
@@ -86,9 +93,9 @@ here 247  2dup 1 fill  allot
 1 field s1    \ 0-6   shape ijltszo.
 2 field p0    \ drawn previous frame,
 2 field t0    \ to be erased.
-' well - ?dup 0= if\ rvs . cr abort
+' well - ?dup 0=  if\ rvs . cr abort
 
-3 . \ hold, tgmlike random queue.
+4 . \ hold, tgmlike random queue.
 
 \ avoid name clash with forth 'hold'.
 : kept! ( s-) kept c! ;
@@ -115,7 +122,7 @@ create ssz 5 c: 0 0 4 4 5 \ bias -s/z.
 : qinit ( -) sz-ijlt  3 th-q c!  kept!
   ssz qp 5 move  qnext qnext qnext ;
 
-4 . \ the well.
+5 . \ the well.
 
 : th-y ( y-a) 10* well + ;
 : th-p ( p-a) split 10* + well + ;
@@ -139,7 +146,7 @@ create ssz 5 c: 0 0 4 4 5 \ bias -s/z.
 : l! ( pc-c) tuck swap th-p c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 
-5 . \ draw/update shared state.
+6 . \ draw/update shared state.
 
 1 constant &curr \ in(v)alidation
 2 constant &next \ queue. set bits
@@ -158,7 +165,7 @@ create ssz 5 c: 0 0 4 4 5 \ bias -s/z.
 : curr  ( -pts) p1 @ t1 @ split ;
 : curr-y ( -y) p1 1+ c@ ;
 
-6 . \ game rules.
+7 . \ game rules.
 
 \ movement. bias kicks ccw>l cw>r.
 $-100 constant down
@@ -188,7 +195,7 @@ $-100 constant down
 : update ( -g) %show c@ if  %show tick?
     if sweep &well &+ iv! then 0
   else:  %grav tick? if fall else:
-  kb case  0 of endof
+  kpoll case  0 of endof
   's' of -1 0 go? drop endof
   'd' of fall exit endof
   'f' of 1 0 go? drop endof
@@ -197,7 +204,7 @@ $-100 constant down
   'l' of trykeep endof
   drop 1 exit endcase 0 ;
 
-7 . \ drawing.
+8 . \ drawing.
 
 13 22 ( left bottom ) 40* + dup
 $0400 + value screen
@@ -230,10 +237,10 @@ $d800 + value colormem
     2 th-q c@ $0d0d slot
     3 th-q c@ $0a0d slot
   then  0 to inval ;  6 profile
-: dr ( -) -1 iv! draw ;
 
-\ 8 . main loop words (-).
+\ 9 . main loop (-).
 
+: dr  -1 iv! draw ;
 : pre  kinit 11 0 theme page bg dr ;
 : r  pre begin update draw until ;
 : new  0 pro entropy init r ;
