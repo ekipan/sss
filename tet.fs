@@ -8,7 +8,7 @@
 : 4*  2* 2* ; : 10*  2* dup 4* + ;
 : 0* drop 0 ; : 40*  4* 10* ;
 
-: h. ( n-) hex u. decimal ;    \ tools.
+: h. ( u-) hex u. decimal ;    \ tools.
 : .g ( -) here h. latest h. space .s ;
 : redo ( -) --tet-- s" tet" included ;
 create bx  $d020 eor, $d020 sta, rts,
@@ -51,7 +51,7 @@ $d800 + constant fgmem
 1 . \ piece definition, global state.
 
 create colors 7 c: 3 8 6 4 5 2 7
-create blocks \ compiled as $0y0x-2.
+create blocks \ stored as $0y0x - 2:
 p: 00 01 02 03  02 12 22 32  \ iixi
 p: 00 01 02 03  02 12 22 32  \
 p:  03 11 12 13  01 02 12 22 \   jjj
@@ -93,6 +93,7 @@ here 249  2dup 2 fill  allot
 2 field t0    \ 'touch' to remember.
 ' well - ?dup 0=  if\ rvs . cr abort
 
+\ index: fg, well, well rows, queue.
 : th-f ( p-a) split 40* - fgmem + ;
 : th-w ( p-a) split 10* + well + ;
 : th-y ( y-a) 10* well + ;
@@ -106,11 +107,12 @@ here 249  2dup 2 fill  allot
 : drawn ( -pts) p0 @ t0 @ split ;
 : touch ( -) p1 p0 4 move ;
 
+\ set dirty bits to request redraw:
+1 constant &curr  2 constant &next
+4 constant &well  8 constant &kept
 : d? ( d-f) dirty @ and ;
 : d! ( d-) dirty @ or dirty ! ;
 : && ( d-d) dup 1- or ;
-1 constant &curr   2 constant &next
-4 constant &well   8 constant &kept
 
 \ store color codes into fg color mem.
 : w+ ( aa-aa) 2dup #10 move >10+> 40- ;
