@@ -1,14 +1,13 @@
   marker --tet-- \ durexforth 4 tested.
 
-0 . \ hardware and low-level.
+cr .( base: )
 
--1 value -1   3 value 3         \ math.
-10 value #10 22 value #22 40 value #40
+-1 value -1  10 value #10     .( math )
 : 40- #40 - ; : >10+> swap #10 + swap ;
 : 4*  2* 2* ; : 10*  2* dup 4* + ;
 : 0* drop 0 ; : 40*  4* 10* ;
 
-: h. ( u-) hex u. decimal ;    \ tools.
+: h. ( u-) hex u. decimal ;  .( tools )
 : .g ( -) here h. latest h. space .s ;
 : redo ( -) --tet-- s" tet" included ;
 create bx  $d020 eor, $d020 sta, rts,
@@ -19,7 +18,7 @@ create bx  $d020 eor, $d020 sta, rts,
   bx jsr, jsr, lda,# bx jmp, ;
 \ : pro drop ; : profile drop ;
 
-13 22 ( left bottom ) 40* + dup   \ io.
+13 22 ( left bottom ) 40* + dup .( io )
 $0400 + constant tilemem
 $d800 + constant fgmem
 : theme ( fg $bgbd ) $d020 ! $286 c! ;
@@ -30,7 +29,7 @@ $d800 + constant fgmem
   key? if 1 $28b c! key else 0 then ;
 : entropy ( -u) $a1 @ dup 0= + ;
 
-: w! ( a-) [ lsb ldy,x w sty,  \ optim.
+: w! ( a) [ lsb ldy,x w sty, .( optim )
   msb ldy,x w 1+ sty, inx, 0 ldy,# ] ;
 : p@ ( p-pp)  dup [ clc, w lda,(y) iny,
   lsb 1+ dup adc,x sta,x w lda,(y) iny,
@@ -38,7 +37,7 @@ $d800 + constant fgmem
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
-: else: ( -) postpone exit    \ syntax.
+: else: ( -) postpone exit  .( syntax )
   postpone then ; immediate
 : if\ ( f-) if postpone \ then ;
 : field ( au-a) over constant + ;
@@ -48,16 +47,16 @@ $d800 + constant fgmem
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p:  hex 8 0 do n: >p , loop decimal ;
 
-1 . \ piece definition, global state.
+cr .( piece definition. )
 
 create colors 7 c: 3 8 6 4 5 2 7
-create blocks \ stored as $0y0x - 2:
+create blocks      \ center x at 02:
 p: 00 01 02 03  02 12 22 32  \ iixi
 p: 00 01 02 03  02 12 22 32  \
 p:  03 11 12 13  01 02 12 22 \   jjj
-p:  01 02 03 11  02 12 22 23 \    .j
+p:  01 02 03 11  02 12 22 23 \    xj
 p: 01 11 12 13  02 12 22 21  \ lll
-p: 01 02 03 13  03 02 12 22  \ l.
+p: 01 02 03 13  03 02 12 22  \ lx
 p:  02 11 12 13  02 11 12 22 \   ttt
 p:  01 02 03 12  02 12 13 22 \    x
 p: 01 02 12 13  02 11 12 21  \  ss
@@ -67,12 +66,16 @@ p:  03 02 11 12  02 12 13 23 \    xz
 p: 01 02 11 12  01 02 11 12  \ oo
 p: 01 02 11 12  01 02 11 12  \ ox
 
-\ given a piece (p)osition $yyxx,
-\ (t)urn count 0-3, and (s)hape 0-6,
-\ fetch 4 blocks and a (c)olor.
+\ given piece (p)osition $yyxx, (t)urn
+\ count 0-3, (s)hape 0-6, get 4 blocks
+\ and a (c)olor. blocks $yx above were
+\ precompiled into $0y0x minus center
+\ $02 for speed here. see p@ fetch/add.
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
   blocks + w! p@ p@ p@ p@ drop r>
   colors + c@ ;  14 profile
+
+cr .( global state. )
 
 here 249  2dup 2 fill  allot
 210 field well \ 10 cols 22 rows of:
@@ -93,26 +96,25 @@ here 249  2dup 2 fill  allot
 2 field t0    \ 'touch' to remember.
 ' well - ?dup 0=  if\ rvs . cr abort
 
-\ index: fg, well, well rows, queue.
 : th-f ( p-a) split 40* - fgmem + ;
 : th-w ( p-a) split 10* + well + ;
 : th-y ( y-a) 10* well + ;
 : th-q ( i-a) qp c@ + 7 and queue + ;
-
-2 . \ drawing.
 
 : kept@ ( -s) kept c@ 7 and ;
 : curr-y ( -y) p1 1+ c@ ;
 : curr  ( -pts) p1 @ t1 @ split ;
 : drawn ( -pts) p0 @ t0 @ split ;
 : touch ( -) p1 p0 4 move ;
-
-\ set dirty bits to request redraw:
-1 constant &curr  2 constant &next
-4 constant &well  8 constant &kept
 : d? ( d-f) dirty @ and ;
 : d! ( d-) dirty @ or dirty ! ;
-: && ( d-d) dup 1- or ;
+
+cr .( drawing. )
+
+\ set dirty bits d! to request redraw:
+1 constant &curr   2 constant &next
+4 constant &well   8 constant &kept
+: &etc ( d-d) dup 1- or ;
 
 \ store color codes into fg color mem.
 : w+ ( aa-aa) 2dup #10 move >10+> 40- ;
@@ -140,13 +142,13 @@ here 249  2dup 2 fill  allot
 \ 21*19 box of reverse spaces $a0.
 \ +38 = +40 next line -2 left wall.
 \ 19 = 2wall 10well 1wall 4next 2wall.
-: canvas ( -) kinit  11 0 theme  page
+: prep ( -) kinit  11 0 theme  page
   tilemem 38 + 21 0 do  dup 19 $a0 fill
   40- loop  2+ #10 $a0 fill  dr ;
 
-3 . \ rules: queue, well, movement.
+cr .( rules: )
 
-\ advance rng and get: 0 <= u2 < u1.
+( random: 0 <= u2 < u1. )    .( queue )
 : roll ( u-u) seed @ $7abd * $1b0f +
   dup seed !  um* nip ;
 : reroll ( s-s) drop 7 roll ;
@@ -168,11 +170,11 @@ here 249  2dup 2 fill  allot
 
 \ initial queue biases against s/z.
 create ssz 5 c: 0 0 4 4 5
-: qinit ( -) 2 roll 4 + ( sz) kept!
-  4 roll ( ijlt) 3 th-q c!
+: qinit ( -) 2 roll 4 + ( sz ) kept!
+  4 roll ( ijlt ) 3 th-q c!
   ssz qp 5 move  qnext qnext qnext ;
 
-\ count, whiten, drop filled lines.
+( count, whiten, drop lines.) .( well )
 : full? ( a-f) dup >10+> begin  dup c@
   while  1+ 2dup = until then  = ;
 : m+ ( au-au) over full? if  1+ over
@@ -191,7 +193,7 @@ create ssz 5 c: 0 0 4 4 5
 : lock ( ppppc-) l! l! l! l! drop ;
 
 \ shift, turn. bias kicks ccw>l cw>r.
-$-100 constant down
+$-100 constant down       .( movement )
 : t1@+ ( t-t) t1 c@ + 3 and ;
 : go? ( pt-f) over p1 @ +  over t1@+
   s1 c@  piece hit? if 2drop 0 else:
@@ -211,10 +213,10 @@ $-100 constant down
   if 0 else:  kinit unpin
   curr piece lock  curr-y mark ?dup if
     lines +! 12 %stop !
-  &well else  &next && then  d!
+  &well else  &next &etc then  d!
   qnext enter touch  curr piece hit? ;
 
-4 . \ main: timers, input.
+cr .( main: timers, input. )
 
 : help  cr ." - game paused -"
 cr ." enter [new] or [r]esume to play."
@@ -223,7 +225,7 @@ cr ." any other key to pause. " ;
 
 : tick? ( a-f) -1 over +! c@ 0= ;
 : step ( -g) %stop c@ if  %stop tick?
-    if sweep &well && d! then  0
+    if sweep &well &etc d! then  0
   else:  %grav tick? if fall else:
   kpoll case  0 of endof
   's' of -1 0 go? drop endof
@@ -234,6 +236,6 @@ cr ." any other key to pause. " ;
   'l' of trykeep endof
   page help exit endcase 0 ; 11 profile
 
-: r ( -) canvas begin step draw until ;
+: r ( -) prep begin step draw until ;
 : new ( -) 0 pro entropy init r ;
-1234 init  ' help start !  help
+cr  1234 init  ' help start !  help
