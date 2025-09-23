@@ -4,8 +4,8 @@ marker --tet-- decimal
 
 -1 value -1  10 value #10     .( math )
 : 40- #40 - ; : >10+> swap #10 + swap ;
-: 4*  2* 2* ; : 10*  2* dup 4* + ;
-: 0* drop 0 ; : 40*  4* 10* ;
+: 4*  2* 2* ; : 10*  dup 2* 2* + 2* ;
+: 0* drop 0 ; : 40*  10* 2* 2* ;
 
 : h. ( u-) hex u. decimal ;  .( tools )
 create bx  $d020 eor, $d020 sta, rts,
@@ -22,7 +22,7 @@ $d800 + constant colormem
 : theme ( fg $bgbd ) $d020 ! $286 c! ;
 : sync ( -) [ 213 lda,# $d012 cmp,
   -5 bne, ] ;  6 profile
-: kinit ( -) $b80 $28a ! 0 $c6 c! ;
+: kinit ( -) 0 $c6 c! $b80 $28a ! ;
 : kpoll ( -c; w/ fast repeat hack.)
   key? if 1 $28b c! key else 0 then ;
 : entropy ( -u) $a1 @ dup 0= + ;
@@ -169,7 +169,7 @@ here 5 c: -1 -1 4 4 5 \ discourage s/z.
 
 ( rules )
 
-( tgmlike, reroll dupes. )    .( next )
+( tgmlike, reroll dupes. )     .( rng )
 : reroll ( s-s) drop 7 roll ;
 : qdup? ( sfi-sf) swap if drop 1 else:
   th-q c@ over = ;  5 profile
@@ -238,11 +238,11 @@ cr ." any other key to pause. " ;
   page help exit endcase 0 ; 11 profile
 
 : new ( -) 0 prof entropy init qflush ;
-: r ( -) curr piece hit? if new else:
+: r ( -) curr piece hit? if new then
   kinit 11 0 theme page bg -1 d!
   begin draw step until ;
 : new new r ;  ' help start !  cr help
 
-\ : nt parse-name find-name ; nt redo
-\ nt fall latest - tuck - latest
-\ swap rot over to latest move
+\ : nt parse-name find-name ;
+\ nt redo nt fall latest - tuck -
+\ latest swap rot over to latest move
