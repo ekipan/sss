@@ -1,4 +1,4 @@
-\ \ tetrablocks, for durexforth 4. \ \
+\ ( tetris for durexforth 4. )
 marker --tet-- decimal
 : redo ( -) --tet-- s" tet" included ;
 
@@ -9,12 +9,12 @@ marker --tet-- decimal
 
 : h. ( u-) hex u. decimal ;  .( tools )
 create bx  $d020 eor, $d020 sta, rts,
-: pro ( enable-time-profiling? -- )
+: prof ( enable-time-profiling? -- )
   if $4d else $60 then bx c! ;
 : profile ( color -- ) latest >xt
   here latest name>string + !  over
   lda,# bx jsr, jsr, lda,# bx jmp, ;
-\ : pro drop ; : profile drop ;
+\ : prof drop ; : profile drop ;
 
 13 22 ( col row ) 40* + dup     .( io )
 $0400 + constant tilemem
@@ -108,11 +108,11 @@ create gravs 6 c: 33 25 21 17 15 13
 : curr  ( -pts) p1 @ t1 @ split ;
 : curr-y ( -y) p1 1+ c@ ;
 : t1@+ ( t-t) t1 c@ + 3 and ;
-: curr+ ( pt-pts)
-  swap p1 @ +  swap t1@+  s1 c@ ;
+: curr+ ( pt-pts) swap p1 @ +
+  swap t1@+  s1 c@ ;
 : curr+! ( pt-) t1@+ t1 c!  p1 +! ;
 : enter ( -) $1305 p1 ! 0 t1 c! ;
-: touch ( -) p1 @ p0 ! t1 @ t0 ! ;
+: touch ( -) p1 p0 4 move ;
 
 : pinned? ( -f) kept c@ 8 and ;
 : kept@ ( -s) kept c@ 7 and ;
@@ -169,7 +169,7 @@ here 5 c: -1 -1 4 4 5 \ discourage s/z.
 
 ( rules )
 
-( tgmlike, 4 rerolls. )       .( next )
+( tgmlike, reroll dupes. )    .( next )
 : reroll ( s-s) drop 7 roll ;
 : qdup? ( sfi-sf) swap if drop 1 else:
   th-q c@ over = ;  5 profile
@@ -210,11 +210,11 @@ $-100 constant down         .( player )
 : trykeep ( -) pinned? if else:
   keep enter  &kept &curr or d! ;
 : fall ( -g) down 0 go? if 0  else
-  kinit unpin  curr piece lock
-  curr-y mark ?dup if
-    lines +!  12 %stop !  &well else
-    &next &etc then d!  qnext
-  enter touch  curr piece hit? then
+    kinit unpin  curr piece lock
+    curr-y mark ?dup if
+      lines +!  12 %stop !  &well else
+      &next &etc then  d! qnext
+    enter touch  curr piece hit? then
   lines @ th-g c@ %grav ! ;
 
 .( main )
@@ -226,9 +226,9 @@ cr ." any other key to pause. " ;
 
 : tick? ( a-f) -1 over +! c@ 0= ;
 : step ( -g) %stop c@ if  %stop tick?
-    if sweep &well &etc d! then  0
-  else:  %grav tick? if fall else:
-  kpoll case  0 of endof
+    if sweep &well &etc d! then 0 else:
+  %grav tick? if fall else: kpoll case
+  0   of endof
   's' of -1 0 go? drop endof
   'd' of fall exit endof
   'f' of 1 0 go? drop endof
@@ -237,13 +237,12 @@ cr ." any other key to pause. " ;
   'l' of trykeep endof
   page help exit endcase 0 ; 11 profile
 
-: pre  kinit 11 0 theme page bg -1 d! ;
-: new  0 pro entropy init qflush ;
-: r  curr piece hit? if new else:
-  pre begin draw step until ;
-32 ' r 3 - c! \ patch new to fallthru.
-' help start !  cr help
+: new ( -) 0 prof entropy init qflush ;
+: r ( -) curr piece hit? if new else:
+  kinit 11 0 theme page bg -1 d!
+  begin draw step until ;
+: new new r ;  ' help start !  cr help
 
 \ : nt parse-name find-name ; nt redo
-\ nt pre latest - tuck - latest ( uaa)
+\ nt fall latest - tuck - latest
 \ swap rot over to latest move
