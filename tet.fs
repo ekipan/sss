@@ -2,7 +2,7 @@
 marker --tet-- decimal
 : redo ( -) --tet-- s" tet" included ;
 
--1 value -1   10 value #10    .( math )
+-1 value -1  4 value 4  10 value #10
 : 40- #40 - ; : >10+> swap #10 + swap ;
 : 4*  2* 2* ; : 10*  dup 2* 2* + 2* ;
 : 0* drop 0 ; : 40*  10* 2* 2* ;
@@ -38,6 +38,7 @@ $d800 + constant colormem
 : else: ( -) postpone exit  .( syntax )
   postpone then ; immediate
 : if\ ( f-) if postpone \ then ;
+: rdrop  pla, pla, ; immediate
 : field ( au-a) over constant + ;
 : erase ( au-) 0 fill ;
 : n:  parse-name evaluate ;
@@ -69,9 +70,9 @@ p: 01 02 11 12  01 02 11 12  \ ox
 \ and a (c)olor. blocks $yx above were
 \ precompiled into $0y0x minus center
 \ $02. see p: compile p@ fetch/add.
-: piece ( pts-ppppc) dup >r 4* + 4* 2*
-  blocks + w! p@ p@ p@ p@ drop r>
-  colors + c@ ;  14 profile
+: piece ( pts-ppppc) dup colors + c@ >r
+  4* + 4* 2* blocks + w! p@ p@ p@ p@
+  drop r> ;  14 profile
 
 .( core )
 
@@ -93,8 +94,8 @@ here 249  2dup 2 fill  allot
 2 field p0    \ drawn piece to erase,
 2 field t0    \ 'touch' to remember.
 ' well -  ?dup 0= if\ rvs . cr abort
+: vars ( -au) well ['] well well - ;
 
-create qinit 5 c: -1 -1 4 5 4 \ szs.
 create gravs 7 c: 33 25 21 17 15 13 12
 9 c: 10 8 7 6 5 4 3 3 2 \ frames.
 
@@ -120,17 +121,18 @@ create gravs 7 c: 33 25 21 17 15 13 12
 : unpin ( -) kept@ kept! ;
 : keep ( -) kept@  s1 c@  8 or kept!
   s1 c! ;
-: d? ( d-f) dirty @ and ;
-: d! ( d-) dirty @ or dirty ! ;
-: &etc ( d-d) dup 1- or ;
+: qput ( s-) 4 th-q c!  1 qtop +!
+  0 th-q c@  s1 c! ;
 
 : roll ( u-u; 0 <= u2 < u1.) seed @
   $7abd * $1b0f + dup seed !  um* nip ;
-: enqueue ( s-) 4 th-q c!  1 qtop +!
-  0 th-q c@  s1 c! ;
-: init ( u-) well ['] well well - erase
-  seed !  2 roll 4 + kept!  qinit qtop
-  5 move  4 roll enqueue  enter touch ;
+: init ( u-) vars erase seed ! 5 kept!
+  4 qput 5 qput 4 qput 4 roll qput
+  enter touch ;
+
+: d? ( d-f) dirty @ and ;
+: d! ( d-) dirty @ or dirty ! ;
+: &etc ( d-d) dup 1- or ;
 
 .( draw )
 
@@ -169,13 +171,13 @@ create gravs 7 c: 33 25 21 17 15 13 12
 ( rules )
 
 ( tgmlike, reroll dupes. )     .( rng )
-: reroll ( s-s) drop 7 roll ;
-: qdup? ( sfi-sf) swap if drop 1 else:
-  th-q c@ over = ;  5 profile
-: qroll ( sf-sf) if reroll 0 0 qdup?
-  1 qdup? 2 qdup? 3 qdup? else: 0 ;
-: qnext ( -) 0 1 qroll qroll qroll
-  if reroll then enqueue ;  12 profile
+: reroll ( s-s) drop 7 roll ; 5 profile
+: qdup? ( si-s) th-q c@ over =
+  if rdrop then ;
+: qtry ( s-s/s-) reroll 0 qdup? 1 qdup?
+  2 qdup? 3 qdup? qput rdrop ;
+: qnext ( -) 0 qtry qtry qtry reroll
+  qput ;  12 profile
 : qflush ( -) qnext qnext qnext ;
 
 ( count/whiten/del rows. )    .( well )
@@ -200,10 +202,10 @@ create gravs 7 c: 33 25 21 17 15 13 12
 $-100 constant down         .( player )
 : go ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 else: curr+! &curr d! 0 ;
-: tk ( pt) go 0= if r> r> 2drop then ;
+: tk ( pt) go 0= if rdrop rdrop then ;
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +
-  r@ tk  down r@ - r@ tk  r> drop ;
+  r@ tk  down r@ - r@ tk  rdrop ;
 : tally ( -) curr-y mark ?dup if
   lines +!  12 %stop !  &well else
   &next &etc then  d! ;
@@ -236,12 +238,14 @@ cr ." any other key to pause. " ;
   'l' of trykeep 0 else:
   page help ;  11 profile
 
+: scn ( -) 11 0 theme page bg -1 d! ;
 : new ( -) 0 prof entropy init qflush ;
 : r ( -) curr piece hit? if new then
-  kinit 11 0 theme page bg -1 d!
-  begin draw step until ;
+  scn kinit begin draw step until ;
 : new new r ;  ' help start !  cr help
 
 \ : nt parse-name find-name ;
 \ nt redo nt fall latest - tuck -
-\ latest swap rot over to latest move
+\ latest swap rot over to latest move\
+: ss vars $a000 swap move ; ss
+: ll $a000 vars move r ; : dd scn draw ;
