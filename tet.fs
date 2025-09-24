@@ -246,6 +246,6 @@ cr ." any other key to pause. " ;
 
 \ : nt parse-name find-name ;
 \ nt redo nt fall latest - tuck -
-\ latest swap rot over to latest move\
+\ latest swap rot over to latest move
 : ss vars $a000 swap move ; ss
 : ll $a000 vars move r ; : dd scn draw ;
