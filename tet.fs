@@ -1,8 +1,8 @@
-\ ( tetris for durexforth 4. )
+\ \ tetris for durexforth 4.
 marker --tet-- decimal
 : redo ( -) --tet-- s" tet" included ;
 
--1 value -1  4 value 4  10 value #10
+4 value 4  10 value #10
 : 40- #40 - ; : >10+> swap #10 + swap ;
 : 4*  2* 2* ; : 10*  dup 2* 2* + 2* ;
 : 0* drop 0 ; : 40*  10* 2* 2* ;
@@ -27,6 +27,8 @@ $d800 + constant colormem
   key? if 1 $28b c! key else 0 then ;
 : entropy ( -u) $a1 @ dup 0= + ;
 
+\ w! save table addr for: p@ scan+add
+\ to center (p)osition. see piece.
 : w! ( a) [ lsb ldy,x w sty, .( optim )
   msb ldy,x w 1+ sty, inx, 0 ldy,# ] ;
 : p@ ( p-pp)  dup [ clc, w lda,(y) iny,
@@ -35,10 +37,10 @@ $d800 + constant colormem
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
-: else: ( -) postpone exit  .( syntax )
+: else:  postpone exit      .( syntax )
   postpone then ; immediate
-: if\ ( f-) if postpone \ then ;
 : rdrop  pla, pla, ; immediate
+: if\ ( f-) if postpone \ then ;
 : field ( au-a) over constant + ;
 : erase ( au-) 0 fill ;
 : n:  parse-name evaluate ;
@@ -69,32 +71,32 @@ p: 01 02 11 12  01 02 11 12  \ ox
 \ count 0-3, (s)hape 0-6, get 4 blocks
 \ and a (c)olor. blocks $yx above were
 \ precompiled into $0y0x minus center
-\ $02. see p: compile p@ fetch/add.
-: piece ( pts-ppppc) dup colors + c@ >r
-  4* + 4* 2* blocks + w! p@ p@ p@ p@
-  drop r> ;  14 profile
+\ $02. see p: compile p@ scan.
+: piece ( pts-ppppc) dup >r 4* + 4* 2*
+  blocks + w! p@ p@ p@ p@ drop r>
+  colors + c@ ;  14 profile
 
 .( core )
 
-here 249  2dup 2 fill  allot
+here 249  2dup 2 fill  2dup allot
+: vars ( -au) literal literal ;
 210 field well \ 10 cols 22 rows of:
 10 field spill \  0 empty, 1 marked,
 0 field top    \  2-8 block colors.
-2 field dirty \ bitset to draw.
-2 field %stop \ n->0 line sweep timer.
-2 field %grav \ n->0 fall timer.
-2 field lines \ for gravity curve.
-2 field seed  \ for random generator.
-2 field qtop  \ mod8 queue index:
-8 field queue \ random shapes 0-6.
 2 field p1    \ $yyxx from bottom left.
 1 field t1    \ 0-3 clockwise turns.
 1 field s1    \ 0-6 shape ijltszo.
 1 field kept  \ 0-6 hold, w/ pin bit.
-2 field p0    \ drawn piece to erase,
-2 field t0    \ 'touch' to remember.
-' well -  ?dup 0= if\ rvs . cr abort
-: vars ( -au) well ['] well well - ;
+8 field queue \ 0-6*8 random shapes.
+2 field qtop  \ mod8 queue index.
+2 field seed  \ for random generator.
+2 field lines \ for gravity curve.
+2 field %stop \ n->0 line sweep timer.
+2 field %grav \ n->0 fall timer.
+2 field dirty \ bitset to draw.
+2 field p0    \ drawn piece to erase.
+2 field t0
+' vars -  ?dup 0= if\ rvs . cr abort
 
 create gravs 7 c: 33 25 21 17 15 13 12
 9 c: 10 8 7 6 5 4 3 3 2 \ frames.
@@ -113,7 +115,6 @@ create gravs 7 c: 33 25 21 17 15 13 12
   swap t1@+  s1 c@ ;
 : curr+! ( pt-) t1@+ t1 c!  p1 +! ;
 : enter ( -) $1305 p1 ! 0 t1 c! ;
-: touch ( -) p1 p0 4 move ;
 
 : pinned? ( -f) kept c@ 8 and ;
 : kept@ ( -s) kept c@ 7 and ;
@@ -121,18 +122,17 @@ create gravs 7 c: 33 25 21 17 15 13 12
 : unpin ( -) kept@ kept! ;
 : keep ( -) kept@  s1 c@  8 or kept!
   s1 c! ;
-: qput ( s-) 4 th-q c!  1 qtop +!
+: enqueue ( s-) 4 th-q c!  1 qtop +!
   0 th-q c@  s1 c! ;
 
 : roll ( u-u; 0 <= u2 < u1.) seed @
   $7abd * $1b0f + dup seed !  um* nip ;
 : init ( u-) vars erase seed ! 5 kept!
-  4 qput 5 qput 4 qput 4 roll qput
-  enter touch ;
+  4 enqueue 5 enqueue 4 enqueue
+  4 roll enqueue  enter ;
 
 : d? ( d-f) dirty @ and ;
 : d! ( d-) dirty @ or dirty ! ;
-: &etc ( d-d) dup 1- or ;
 
 .( draw )
 
@@ -142,9 +142,11 @@ create gravs 7 c: 33 25 21 17 15 13 12
 : bg ( -) tilemem 38 + 21 0 do  dup 19
   $a0 fill 40- loop  2+ #10 $a0 fill ;
 
-\ set dirty bits d! to request redraw:
-1 constant &curr   2 constant &next
-4 constant &well   8 constant &kept
+$01 constant &prev  \ dirty bits.
+$02 constant &curr  $03 constant &go
+$04 constant &queue $06 constant &next
+$08 constant &kept  $0b constant &keep
+$10 constant &well  $1e constant &all
 
 \ store color codes into fg color mem.
 : p! ( pc-c) dup rot th-c c! ;
@@ -153,14 +155,14 @@ create gravs 7 c: 33 25 21 17 15 13 12
   4 erase 4 erase 0 rot piece plot ;
 : w+ ( aa-aa) 2dup #10 move >10+> 40- ;
   5 profile
-: draw ( -) &curr d?  sync  if
+: draw ( -) &prev d?  sync  if
     drawn piece 0* plot
   then  &well d? if
     well colormem begin
     w+ over spill = until  2drop
   then  &curr d? if
-    curr piece plot  touch
-  then  &next d? if
+    curr piece plot  p1 p0 4 move
+  then  &queue d? if
     1 th-q c@ $100d slot
     2 th-q c@ $0d0d slot
     3 th-q c@ $0a0d slot
@@ -175,10 +177,10 @@ create gravs 7 c: 33 25 21 17 15 13 12
 : qdup? ( si-s) th-q c@ over =
   if rdrop then ;
 : qtry ( s-s/s-) reroll 0 qdup? 1 qdup?
-  2 qdup? 3 qdup? qput rdrop ;
+  2 qdup? 3 qdup? enqueue rdrop ;
 : qnext ( -) 0 qtry qtry qtry reroll
-  qput ;  12 profile
-: qflush ( -) qnext qnext qnext ;
+  enqueue ;  12 profile
+: init ( u-) init qnext qnext qnext ;
 
 ( count/whiten/del rows. )    .( well )
 : full? ( a-f) dup >10+> begin  dup c@
@@ -201,31 +203,31 @@ create gravs 7 c: 33 25 21 17 15 13 12
 \ shift turn fall. kickbias ccw>l cw>r.
 $-100 constant down         .( player )
 : go ( pt-f) 2dup curr+ piece hit?
-  if 2drop 1 else: curr+! &curr d! 0 ;
+  if 2drop 1 else: curr+! &go d! 0 ;
 : tk ( pt) go 0= if rdrop rdrop then ;
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +
   r@ tk  down r@ - r@ tk  rdrop ;
 : tally ( -) curr-y mark ?dup if
   lines +!  12 %stop !  &well else
-  &next &etc then  d! ;
+  &next then  d! ;
 : fall ( -f) down 0 go 0= if  0 else
   kinit unpin  curr piece lock  tally
-  qnext enter touch  curr piece hit?
+  qnext enter  curr piece hit?
   then  lines @ th-g c@ %grav ! ;
 : trykeep ( -) pinned? if else:
-  keep enter  &kept &curr or d! ;
+  keep enter  &keep d! ;
 
 .( main )
 
-: help  cr ." - game paused -"
-cr ." enter [new] or [r]esume to play."
-cr ." [sdf] move [jk] rotate [l] hold."
-cr ." any other key to pause. " ;
+: help  ." - game paused -" cr
+." enter [new] or [r]esume to play." cr
+." [sdf] move [jk] rotate [l] hold." cr
+." any other key to pause. " cr ;
 
 : tick ( a-f) -1 over +! c@ 0= ;
 : idle ( -) %stop tick if
-  sweep  &well &etc d! then ;
+  sweep &all d! then ;
 : step ( -- gameover? )
   %stop c@ if idle 0 else:
   %grav tick if fall else:
@@ -238,14 +240,12 @@ cr ." any other key to pause. " ;
   'l' of trykeep 0 else:
   page help ;  11 profile
 
-: scn ( -) 11 0 theme page bg -1 d! ;
-: new ( -) 0 prof entropy init qflush ;
-: r ( -) curr piece hit? if new then
-  scn kinit begin draw step until ;
-: new new r ;  ' help start !  cr help
+: nn ( -) 0 prof entropy init ;
+: r ( -) curr piece hit? if nn then
+  kinit 11 0 theme page bg &all d!
+  begin draw step until ;
+: new nn r ;  ' help start !  cr help
 
-\ : nt parse-name find-name ;
-\ nt redo nt fall latest - tuck -
-\ latest swap rot over to latest move
-: ss vars $a000 swap move ; ss
-: ll $a000 vars move r ; : dd scn draw ;
+: ss vars $a000 swap move ;
+: ll $a000 vars move ;
+: dd bg &all d! draw ;
