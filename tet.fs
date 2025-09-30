@@ -3,53 +3,68 @@ marker --tet-- decimal
 : redo ( -) --tet-- s" tet" included ;
 
 4 value 4  10 value #10
-: 40- #40 - ; : >10+> swap #10 + swap ;
-: 4*  2* 2* ; : 10*  dup 2* 2* + 2* ;
-: 0* drop 0 ; : 40*  10* 2* 2* ;
-
-: h. ( u-) hex u. decimal ;  .( tools )
-create bx  $d020 eor, $d020 sta, rts,
-: prof ( enable-time-profiling? -- )
-  if $4d else $60 then bx c! ;
-: profile ( color -- ) latest >xt
-  here latest name>string + !  over
-  lda,# bx jsr, jsr, lda,# bx jmp, ;
-\ : prof drop ; : profile drop ;
-
-13 22 ( col row ) 40* + dup     .( io )
-$0400 + constant tilemem
-$d800 + constant colormem
-: theme ( fg $bgbd ) $d020 ! $286 c! ;
-: sync ( -) [ 213 lda,# $d012 cmp,
-  -5 bne, ] ;  6 profile
-: kinit ( -) $b80 $28a ! 0 $c6 c! ;
-: kpoll ( -c; w/ fast repeat hack.)
-  key? if 1 $28b c! key else 0 then ;
-: entropy ( -u) $a1 @ dup 0= + ;
-
-\ w! save table addr for: p@ scan+add
-\ to center (p)osition. see piece.
-: w! ( a) [ lsb ldy,x w sty, .( optim )
-  msb ldy,x w 1+ sty, inx, 0 ldy,# ] ;
-: p@ ( p-pp)  dup [ clc, w lda,(y) iny,
-  lsb 1+ dup adc,x sta,x w lda,(y) iny,
-  msb 1+ dup adc,x sta,x ] ;
+: 40-  40 - ; : >10+> swap #10 + swap ;
+: 4*  2* 2* ; : 10*  dup 4* + 2* ;
+: 0* drop 0 ; : 40*  10* 4* ;
+: erase ( au-) 0 fill ;
+: field ( au'-a) over value + ;
+: else:  postpone exit postpone then ;
+  immediate
+: rdrop  pla, pla, ; immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
-: else:  postpone exit      .( syntax )
-  postpone then ; immediate
-: rdrop  pla, pla, ; immediate
-: if\ ( f-) if postpone \ then ;
-: field ( au-a) over constant + ;
-: erase ( au-) 0 fill ;
-: n:  parse-name evaluate ;
-: c: ( u-) 0 do n: c, loop ;
+.( prim ) \ devtools, hw, optim.
+
+: h. ( u-) hex u. decimal ;
+create bx  $d020 eor, $d020 sta, rts,
+: prof ( enable-time-profiling? -- )
+  if $4d else $60 then bx c! ;
+: profile ( color -- ) here >r  dup
+  lda,# bx jsr, latest >xt jsr, lda,#
+  bx jmp,  r> latest name>string + ! ;
+\  : prof drop ; : profile drop ;
+
+: entropy ( -u) $a1 @ dup 0= + ;
+: kinit ( -) $b80 $28a ! 0 $c6 c! ;
+: kpoll ( -c; w/ fast repeat hack.)
+  key? if 1 $28b c! key else 0 then ;
+: sync ( -) [ 213 lda,# $d012 cmp,
+  -5 bne, ] ;  6 profile
+
+13 22 ( row col ) 40* + dup
+$d800 + constant colormem
+$0400 + constant tilemem
+: th-c ( p-a) split 40* - colormem + ;
+: p! ( pc-c) dup rot th-c c! ;
+: plot ( ppppc-) p! p! p! p! drop ;
+: rub ( p-) th-c 2 - dup 4 erase
+  40- 4 erase ;
+: paint ( aa-) colormem begin
+  2dup #10 move >10+> 40-
+  over 3 pick = until  drop 2drop ;
+: bg ( -; $a0 rvs spaces 21x19 grid.)
+  11 $286 c! 0 $d020 ! page tilemem
+  38 + 21 0 do  dup 19 $a0 fill
+  40- loop  2+ #10 $a0 fill ; 2 profile
+
+\ w! save table addr for p@ scan+add
+\ center (p)osition. see piece.
+: w! ( a) [ lsb ldy,x w sty, msb ldy,x
+  w 1+ sty, inx, 0 ldy,# ] ;
+: p@ ( p-pp)  dup [ clc, w lda,(y) iny,
+  lsb 1+ dup adc,x sta,x w lda,(y) iny,
+  msb 1+ dup adc,x sta,x ] ;
+
+.( data ) \ parse, compile.
+
+: n: ( '-*) parse-name evaluate ;
+: c: ( u'-) 0 do n: c, loop ;
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p:  hex 8 0 do n: >p , loop decimal ;
 
-.( piece ) cr
-
+create gravs 6 c: 33 25 21 17 15 13
+10 c: 12 10 8 7 6 5 4 3 3 2 \ frames.
 create colors 7 c: 3 8 6 4 5 2 7
 create blocks \ center (x/.) at yx=02:
 p: 00 01 02 03  02 12 22 32  \ iixi
@@ -67,49 +82,43 @@ p:  03 02 11 12  02 12 13 23 \    xz
 p: 01 02 11 12  01 02 11 12  \ oo
 p: 01 02 11 12  01 02 11 12  \ ox
 
-\ given piece (p)osition $yyxx, (t)urn
+\ from center (p)osition $yyxx, (t)urn
 \ count 0-3, (s)hape 0-6, get 4 blocks
-\ and a (c)olor. blocks $yx above were
-\ precompiled into $0y0x minus center
-\ $02. see p: compile p@ scan.
+\ and a (c)olor 2-8. blocks $yx above
+\ were precompiled into $0y0x minus
+\ center $02. see p: compile p@ scan.
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
   blocks + w! p@ p@ p@ p@ drop r>
   colors + c@ ;  14 profile
 
-.( core )
+.( core ) \ index, fetch, store.
 
-here 249  2dup 2 fill  2dup allot
-: vars ( -au) literal literal ;
+$ca00 \ global game variables:
 210 field well \ 10 cols 22 rows of:
 10 field spill \  0 empty, 1 marked,
 0 field top    \  2-8 block colors.
-2 field p1    \ $yyxx from bottom left.
+2 field p1    \ $yyxx from btm left.
 1 field t1    \ 0-3 clockwise turns.
 1 field s1    \ 0-6 shape ijltszo.
 1 field kept  \ 0-6 hold, w/ pin bit.
 8 field queue \ 0-6*8 random shapes.
-2 field qtop  \ mod8 queue index.
+2 field qh    \ queue head index mod8.
 2 field seed  \ for random generator.
 2 field lines \ for gravity curve.
-2 field %stop \ n->0 line sweep timer.
 2 field %grav \ n->0 fall timer.
-2 field dirty \ bitset to draw.
+2 field %stop \ n->0 line sweep timer.
+2 field dirty \ bitflags to draw.
 2 field p0    \ drawn piece to erase.
 2 field t0
-' vars -  ?dup 0= if\ rvs . cr abort
+well - constant size
 
-create gravs 7 c: 33 25 21 17 15 13 12
-9 c: 10 8 7 6 5 4 3 3 2 \ frames.
-
-: th-c ( p-a) split 40* - colormem + ;
-: th-w ( p-a) split 10* + well + ;
-: th-y ( y-a) 10* well + ;
-: th-q ( i-a) qtop c@ + 7 and queue + ;
 : th-g ( u-a) 4 rshift 15 min gravs + ;
+: th-q ( i-a) qh c@ + 7 and queue + ;
+: th-w ( p-a) split 10* + well + ;
+: curr-y ( -a) p1 1+ c@ 10* well + ;
 
 : drawn ( -pts) p0 @ t0 @ split ;
 : curr  ( -pts) p1 @ t1 @ split ;
-: curr-y ( -y) p1 1+ c@ ;
 : t1@+ ( t-t) t1 c@ + 3 and ;
 : curr+ ( pt-pts) swap p1 @ +
   swap t1@+  s1 c@ ;
@@ -122,57 +131,43 @@ create gravs 7 c: 33 25 21 17 15 13 12
 : unpin ( -) kept@ kept! ;
 : keep ( -) kept@  s1 c@  8 or kept!
   s1 c! ;
-: enqueue ( s-) 4 th-q c!  1 qtop +!
+: enqueue ( s-) 1 qh +!  3 th-q c!
   0 th-q c@  s1 c! ;
 
 : roll ( u-u; 0 <= u2 < u1.) seed @
   $7abd * $1b0f + dup seed !  um* nip ;
-: init ( u-) vars erase seed ! 5 kept!
+: init ( u-) well size erase  seed !
   4 enqueue 5 enqueue 4 enqueue
-  4 roll enqueue  enter ;
+  4 roll enqueue  4 kept!  enter ;
+
+.( draw ) \ with dirty bitset.
+
+$01 constant #prev  $03 constant #go
+$02 constant #curr  $06 constant #next
+$04 constant #queue $0b constant #keep
+$08 constant #kept  $1e constant #all
+$10 constant #well
 
 : d? ( d-f) dirty @ and ;
 : d! ( d-) dirty @ or dirty ! ;
-
-.( draw )
-
-\ 21*19 backgrd of reverse spaces $a0.
-\ +38 = +40 next line -2 left wall.
-\ 19w = 2wall 10well 1wall 4next 2wall.
-: bg ( -) tilemem 38 + 21 0 do  dup 19
-  $a0 fill 40- loop  2+ #10 $a0 fill ;
-
-$01 constant &prev  \ dirty bits.
-$02 constant &curr  $03 constant &go
-$04 constant &queue $06 constant &next
-$08 constant &kept  $0b constant &keep
-$10 constant &well  $1e constant &all
-
-\ store color codes into fg color mem.
-: p! ( pc-c) dup rot th-c c! ;
-: plot ( ppppc-) p! p! p! p! drop ;
-: slot ( sp-) dup th-c 2 - dup 40-
-  4 erase 4 erase 0 rot piece plot ;
-: w+ ( aa-aa) 2dup #10 move >10+> 40- ;
-  5 profile
-: draw ( -) &prev d?  sync  if
+: slot ( sp) dup rub 0 rot piece plot ;
+: draw ( -) sync  #prev d? if
     drawn piece 0* plot
-  then  &well d? if
-    well colormem begin
-    w+ over spill = until  2drop
-  then  &curr d? if
+  then  #well d? if
+    spill well paint
+  then  #curr d? if
     curr piece plot  p1 p0 4 move
-  then  &queue d? if
+  then  #queue d? if
     1 th-q c@ $100d slot
     2 th-q c@ $0d0d slot
     3 th-q c@ $0a0d slot
-  then  &kept d? if
+  then  #kept d? if
     kept@ $050d slot
   then  0 dirty ! ;  6 profile
 
-( rules )
+.( rules ) \ queue, well, player.
 
-( tgmlike, reroll dupes. )     .( rng )
+\ tgmlike, reroll dupes.
 : reroll ( s-s) drop 7 roll ; 5 profile
 : qdup? ( si-s) th-q c@ over =
   if rdrop then ;
@@ -182,43 +177,43 @@ $10 constant &well  $1e constant &all
   enqueue ;  12 profile
 : init ( u-) init qnext qnext qnext ;
 
-( count/whiten/del rows. )    .( well )
+\ count, whiten, delete rows.
 : full? ( a-f) dup >10+> begin  dup c@
   while  1+ 2dup = until then  = ;
 : m+ ( au-au) over full? if  1+ over
   #10 1 fill then  >10+> ;  7 profile
-: mark ( y-u) th-y 0 m+ m+ m+ m+ nip ;
+: mark ( a-u) 0 m+ m+ m+ m+ nip ;
 : s+ ( aa-aa) over c@ 1- if  2dup #10
   move #10 + then  >10+> ;  7 profile
 : sweep ( -) well well begin  s+ over
   top = until  nip top over - erase ;
 
 \ check, store into well.
-: h? ( pf-f) swap dup  split #22 u<
+: h? ( pf-f) swap dup  split 22 u<
   swap #10 u< and  if th-w c@ then or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 
 \ shift turn fall. kickbias ccw>l cw>r.
-$-100 constant down         .( player )
+$-100 constant down
 : go ( pt-f) 2dup curr+ piece hit?
-  if 2drop 1 else: curr+! &go d! 0 ;
-: tk ( pt) go 0= if rdrop rdrop then ;
+  if 2drop 1 else:  curr+! #go d! 0 ;
+: tk ( pt-) go 0= if rdrop rdrop then ;
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +
   r@ tk  down r@ - r@ tk  rdrop ;
 : tally ( -) curr-y mark ?dup if
-  lines +!  12 %stop !  &well else
-  &next then  d! ;
+  lines +!  12 %stop !  #well else
+  #next then  d! ;
 : fall ( -f) down 0 go 0= if  0 else
   kinit unpin  curr piece lock  tally
   qnext enter  curr piece hit?
   then  lines @ th-g c@ %grav ! ;
 : trykeep ( -) pinned? if else:
-  keep enter  &keep d! ;
+  keep enter  #keep d! ;
 
-.( main )
+.( main ) cr \ timers, input.
 
 : help  ." - game paused -" cr
 ." enter [new] or [r]esume to play." cr
@@ -227,7 +222,7 @@ $-100 constant down         .( player )
 
 : tick ( a-f) -1 over +! c@ 0= ;
 : idle ( -) %stop tick if
-  sweep &all d! then ;
+  sweep #all d! then ;
 : step ( -- gameover? )
   %stop c@ if idle 0 else:
   %grav tick if fall else:
@@ -240,12 +235,31 @@ $-100 constant down         .( player )
   'l' of trykeep 0 else:
   page help ;  11 profile
 
-: nn ( -) 0 prof entropy init ;
-: r ( -) curr piece hit? if nn then
-  kinit 11 0 theme page bg &all d!
-  begin draw step until ;
-: new nn r ;  ' help start !  cr help
+: r  kinit bg #all d! curr piece hit?
+  if draw else: begin draw step until ;
+: new  0 prof entropy init r ;
+' help start ! help
 
-: ss vars $a000 swap move ;
-: ll $a000 vars move ;
-: dd bg &all d! draw ;
+: dd  bg #all d! draw ;
+: ss  well $c800 size move ;
+: ll  $c800 well size move ;
+
+\ a piece is described by a triple:
+\   (p)osition $yyxx from bottom left.
+\   (t)urns clockwise 0-3.
+\   (s)hape 0-6 ijltszo.
+\ stored into gamestate:
+\   enqueue (s-) ->tail, head->player.
+\   enter (-) top of well, unturned.
+\   curr+! (pt-)
+\   keep (-) swap s and held s.
+\ taken from gamestate:
+\   drawn (-pts)
+\   curr (-pts)
+\   curr+ (pt-pts)
+\ computed into four blocks:
+\   piece (pts-ppppc)
+\ then hit detected or stored:
+\   hit? (ppppc-f) in playfield
+\   lock (ppppc-) into playfield
+\   plot (ppppc-) onto screen
