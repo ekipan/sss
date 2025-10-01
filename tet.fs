@@ -14,7 +14,7 @@ marker --tet-- decimal
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
-.( prim ) \ devtools, hw, optim.
+.( prim ) \ devtools, hw, draw, optim.
 
 : h. ( u-) hex u. decimal ;
 create bx  $d020 eor, $d020 sta, rts,
@@ -28,7 +28,7 @@ create bx  $d020 eor, $d020 sta, rts,
 : entropy ( -u) $a1 @ dup 0= + ;
 : kinit ( -) $b80 $28a ! 0 $c6 c! ;
 : kpoll ( -c; w/ fast repeat hack.)
-  key? if 1 $28b c! key else 0 then ;
+  key? if 1 $28b c! key else: 0 ;
 : sync ( -) [ 213 lda,# $d012 cmp,
   -5 bne, ] ;  6 profile
 
@@ -66,21 +66,21 @@ $0400 + constant tilemem
 create gravs 6 c: 33 25 21 17 15 13
 10 c: 12 10 8 7 6 5 4 3 3 2 \ frames.
 create colors 7 c: 3 8 6 4 5 2 7
-create blocks \ center (x/.) at yx=02:
-p: 00 01 02 03  02 12 22 32  \ iixi
+create blocks \ center (c/.) at yx=02:
+p: 00 01 02 03  02 12 22 32  \ iici
 p: 00 01 02 03  02 12 22 32
-p:  03 11 12 13  01 02 12 22 \   jjj
-p:  01 02 03 11  02 12 22 23 \    .j
+p:  03 11 12 13  01 02 12 22 \    jjj
+p:  01 02 03 11  02 12 22 23 \     .j
 p: 01 11 12 13  02 12 22 21  \ lll
 p: 01 02 03 13  03 02 12 22  \ l.
-p:  02 11 12 13  02 11 12 22 \   ttt
-p:  01 02 03 12  02 12 13 22 \    x
+p:  02 11 12 13  02 11 12 22 \    ttt
+p:  01 02 03 12  02 12 13 22 \     c
 p: 01 02 12 13  02 11 12 21  \  ss
-p: 01 02 12 13  02 11 12 21  \ sx
-p:  03 02 11 12  02 12 13 23 \   zz
-p:  03 02 11 12  02 12 13 23 \    xz
+p: 01 02 12 13  02 11 12 21  \ sc
+p:  03 02 11 12  02 12 13 23 \    zz
+p:  03 02 11 12  02 12 13 23 \     cz
 p: 01 02 11 12  01 02 11 12  \ oo
-p: 01 02 11 12  01 02 11 12  \ ox
+p: 01 02 11 12  01 02 11 12  \ oc
 
 \ from center (p)osition $yyxx, (t)urn
 \ count 0-3, (s)hape 0-6, get 4 blocks
@@ -100,7 +100,7 @@ $ca00 \ global game variables:
 2 field p1    \ $yyxx from btm left.
 1 field t1    \ 0-3 clockwise turns.
 1 field s1    \ 0-6 shape ijltszo.
-1 field kept  \ 0-6 hold, w/ pin bit.
+1 field held  \ 0-6 with pin bit 8.
 8 field queue \ 0-6*8 random shapes.
 2 field qh    \ queue head index mod8.
 2 field seed  \ for random generator.
@@ -125,27 +125,27 @@ well - constant size
 : curr+! ( pt-) t1@+ t1 c!  p1 +! ;
 : enter ( -) $1305 p1 ! 0 t1 c! ;
 
-: pinned? ( -f) kept c@ 8 and ;
-: kept@ ( -s) kept c@ 7 and ;
-: kept! ( s-) kept c! ;
-: unpin ( -) kept@ kept! ;
-: keep ( -) kept@  s1 c@  8 or kept!
+: pinned? ( -f) held c@ 8 and ;
+: held@ ( -s) held c@ 7 and ;
+: held! ( s-) held c! ;
+: unpin ( -) held@ held! ;
+: hold ( -) held@  s1 c@ 8 or held!
   s1 c! ;
 : enqueue ( s-) 1 qh +!  3 th-q c!
-  0 th-q c@  s1 c! ;
+  0 th-q c@ s1 c! ;
 
 : roll ( u-u; 0 <= u2 < u1.) seed @
   $7abd * $1b0f + dup seed !  um* nip ;
 : init ( u-) well size erase  seed !
   4 enqueue 5 enqueue 4 enqueue
-  4 roll enqueue  4 kept!  enter ;
+  4 roll enqueue  4 held!  enter ;
 
 .( draw ) \ with dirty bitset.
 
 $01 constant #prev  $03 constant #go
 $02 constant #curr  $06 constant #next
-$04 constant #queue $0b constant #keep
-$08 constant #kept  $1e constant #all
+$04 constant #queue $0b constant #hold
+$08 constant #held  $1e constant #all
 $10 constant #well
 
 : d? ( d-f) dirty @ and ;
@@ -161,8 +161,8 @@ $10 constant #well
     1 th-q c@ $100d slot
     2 th-q c@ $0d0d slot
     3 th-q c@ $0a0d slot
-  then  #kept d? if
-    kept@ $050d slot
+  then  #held d? if
+    held@ $050d slot
   then  0 dirty ! ;  6 profile
 
 .( rules ) \ queue, well, player.
@@ -203,15 +203,14 @@ $-100 constant down
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +
   r@ tk  down r@ - r@ tk  rdrop ;
-: tally ( -) row mark ?dup if
-  lines +!  12 %stop !  #well else
-  #next then  d! ;
+: tally ( -) row mark ?dup if  lines +!
+  12 %stop ! #well d! else:  #next d! ;
 : fall ( -f) down 0 go 0= if  0 else
   kinit unpin  curr piece lock  tally
   qnext enter  curr piece hit?
   then  lines @ th-g c@ %grav ! ;
-: trykeep ( -) pinned? if else:
-  keep enter  #keep d! ;
+: tryhold ( -) pinned? if else:
+  hold enter  #hold d! ;
 
 .( main ) cr \ timers, input.
 
@@ -232,7 +231,7 @@ $-100 constant down
   'f' of 1 0 go 0* else:
   'j' of -1 turnkick 0 else:
   'k' of 1 turnkick 0 else:
-  'l' of trykeep 0 else:
+  'l' of tryhold 0 else:
   page help ;  11 profile
 
 : r  kinit bg #all d! curr piece hit?
@@ -252,7 +251,7 @@ $-100 constant down
 \   enqueue (s-) ->tail, head->player.
 \   enter (-) top of well, unturned.
 \   curr+! (pt-)
-\   keep (-) swap s and held s.
+\   hold (-) swap s and held s.
 \ taken from gamestate:
 \   drawn (-pts)
 \   curr (-pts)
