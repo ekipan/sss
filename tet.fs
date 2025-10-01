@@ -242,23 +242,3 @@ $-100 constant down
 : dd  bg #all d! draw ;
 : ss  well $c800 size move ;
 : ll  $c800 well size move ;
-
-\ a piece is described by a triple:
-\   (p)osition $yyxx from bottom left.
-\   (t)urns clockwise 0-3.
-\   (s)hape 0-6 ijltszo.
-\ stored into gamestate:
-\   enqueue (s-) ->tail, head->player.
-\   enter (-) top of well, unturned.
-\   curr+! (pt-)
-\   hold (-) swap s and held s.
-\ taken from gamestate:
-\   drawn (-pts)
-\   curr (-pts)
-\   curr+ (pt-pts)
-\ computed into four blocks:
-\   piece (pts-ppppc)
-\ then hit detected or stored:
-\   hit? (ppppc-f) in playfield
-\   lock (ppppc-) into playfield
-\   plot (ppppc-) onto screen
