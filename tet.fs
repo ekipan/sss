@@ -46,7 +46,7 @@ $0400 + constant tilemem
 : bg ( -; $a0 rvs spaces 21x19 grid.)
   11 $286 c! 0 $d020 ! page tilemem
   38 + 21 0 do  dup 19 $a0 fill
-  40- loop  2+ #10 $a0 fill ; 2 profile
+  40- loop  2+ #10 $a0 fill ;
 
 \ w! save table addr for p@ scan+add
 \ center (p)osition. see piece.
@@ -115,7 +115,7 @@ well - constant size
 : th-g ( u-a) 4 rshift 15 min gravs + ;
 : th-q ( i-a) qh c@ + 7 and queue + ;
 : th-w ( p-a) split 10* + well + ;
-: curr-y ( -a) p1 1+ c@ 10* well + ;
+: row ( -a) p1 1+ c@ 10* well + ;
 
 : drawn ( -pts) p0 @ t0 @ split ;
 : curr  ( -pts) p1 @ t1 @ split ;
@@ -195,7 +195,7 @@ $10 constant #well
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 
-\ shift turn fall. kickbias ccw>l cw>r.
+\ move. kick bias ccw>l cw>r. f hit?
 $-100 constant down
 : go ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 else:  curr+! #go d! 0 ;
@@ -203,7 +203,7 @@ $-100 constant down
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +
   r@ tk  down r@ - r@ tk  rdrop ;
-: tally ( -) curr-y mark ?dup if
+: tally ( -) row mark ?dup if
   lines +!  12 %stop !  #well else
   #next then  d! ;
 : fall ( -f) down 0 go 0= if  0 else
