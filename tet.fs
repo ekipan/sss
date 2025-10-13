@@ -45,8 +45,8 @@ $0400 + constant tilemem
 : th-c ( p-a) split 40* - colormem + ;
 : p! ( pc-c) dup rot th-c c! ;
 : plot ( ppppc-) p! p! p! p! drop ;
-: rub ( p-) th-c 2 - dup 4 erase
-  40- 4 erase ;
+: rub ( p-pt) dup th-c 2 - dup 4 erase
+  40- 4 erase 0 ;
 : paint ( aa-) colormem begin
   2dup #10 move >10+> 40-
   over 3 pick = until  drop 2drop ;
@@ -153,25 +153,24 @@ well - constant size
 
 3 . \ draw, with dirty bitset.
 
-variable old 0 , \ drawn, to erase.
+variable dirty      $01 constant #old
+$02 constant #curr  $04 constant #queue
+$08 constant #held  $10 constant #well
+: d? ( d-f) dirty @ and ;
+
+variable old 0 , \ drawn, to be erased.
 : old@ ( -pts) old @ old 2+ @ split ;
 : >old ( -) pos old 4 move ;
 
-variable dirty \ bitflags to draw.
-$01 constant #old   $02 constant #curr
-$04 constant #queue $08 constant #held
-$10 constant #well
-: d? ( d-f) dirty @ and ;
-
-\ 6: rub (p-) plot (ppppc-) paint (aa-)
-: slot ( sp) dup rub 0 rot piece plot ;
+\ rub (p-pt) plot (ppppc-) paint (aa-)
+: slot ( sp-) rub rot piece plot ;
+: q ( ip-) over th-q c@ over slot
+  swap 1+ swap $300 - ;
 : draw ( -) sync
   #well d? if spill well paint then
   #old d? if old@ piece 0* plot then
   #curr d? if curr piece plot >old then
-  #queue d? if 1 th-q c@ $110d slot
-    2 th-q c@ $0e0d slot
-    3 th-q c@ $0b0d slot then
+  #queue d? if 1 $110d q q q 2drop then
   #held d? if held@ $050d slot then
   0 dirty ! ;  6 profile
 
@@ -215,10 +214,10 @@ $-100 constant down
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +
   r@ tk  down r@ - r@ tk  rdrop ;
-: tally ( -) row mark ?dup if  lines +!
-  12 %stop ! #well d! ;then  #next d! ;
 : fall ( -f) down 0 go 0= if  0 else
-  kbinit unpin  curr piece lock  tally
+  kbinit unpin  curr piece lock
+  row mark ?dup if  lines +!
+  12 %stop ! #well else #next then  d!
   qnext enter  curr piece hit? then
   lines @ 3 rshift grav %grav ! ;
 : tryhold ( -) pinned? if ;then
@@ -233,8 +232,8 @@ cr ." any other key to pause. " cr ;
 
 : tick ( a-f) -1 over +! c@ 0= ;
 : step ( -- gameover? )
-  %stop c@ if %stop tick if
-    sweep #all d! then 0 ;then
+  %stop c@ if %stop tick
+    if sweep #all d! then 0 ;then
   %grav tick if fall ;then
   kbpoll 0 of 0 ;then
   'd' of fall ;then
