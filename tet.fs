@@ -12,7 +12,7 @@ marker --tet--  decimal
 
 6 . \ nonportable.
 
-: redo ( -) --tet-- s" tet" included ;
+: redo  --tet-- s" tet.fs" included ;
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
   lda,# bx jsr, latest >xt jsr, lda,#
@@ -62,7 +62,7 @@ $0400 + constant tilemem
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p:  hex 8 0 do n: >p , loop decimal ;
 
-create gravs 5 c: 33 25 21 17 15
+create frames 5 c: 33 25 21 17 15
 11 c: 13 12 10 8 7 6 5 4 3 3 2
 create colors 7 c: 3 8 6 4 5 2 7
 create blocks \ center (c/.) at yx=02:
@@ -81,7 +81,7 @@ p:  03 02 11 12  02 12 13 23 \     cz
 p: 01 02 11 12  01 02 11 12  \ oo
 p: 01 02 11 12  01 02 11 12  \ oc
 
-: grav ( u-u) 15 min gravs + c@ ;
+: grav ( u-u) 15 min frames + c@ ;
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
   blocks + w! p@ p@ p@ p@ drop r>
   colors + c@ ;  14 profile
@@ -125,10 +125,8 @@ $ca00 \ global game variables:
 1 var+ sig   \ 99 if initialized.
 well - constant size
 
-: th-q ( i-a) qidx c@ + 7 and queue + ;
 : th-w ( p-a) split 10* + well + ;
 : row ( -a) pos 1+ c@ 10* well + ;
-
 : curr ( -pts) pos @ turns @ split ;
 : t@+ ( t-t) turns c@ + 3 and ;
 : curr+ ( pt-pts) swap pos @ +
@@ -142,23 +140,23 @@ well - constant size
 : unpin ( -) held@ held! ;
 : hold ( -) held@  shape c@ 8 or held!
   shape c! ;
+
+: th-q ( i-a) qidx c@ + 3 and queue + ;
 : enqueue ( s-) 1 qidx +!  3 th-q c!
   0 th-q c@ shape c! ;
-
 : roll ( u-u; 0 <= u2 < u1.) seed @
-  $7abd * $1b0f + dup seed !  um* nip ;
+  31421 * 6927 + dup seed !  um* nip ;
 : init ( u-) well size erase  seed !
   4 enqueue 5 enqueue 4 enqueue 4 roll
   enqueue  5 held!  enter  99 sig c! ;
 
 3 . \ draw, with dirty bitset.
 
-variable dirty      $01 constant #old
-$02 constant #curr  $04 constant #queue
-$08 constant #held  $10 constant #well
-: d? ( d-f) dirty @ and ;
-
-variable old 0 , \ drawn, to be erased.
+variable dirty      variable old  0 ,
+$01 constant #old   $02 constant #curr
+$04 constant #queue $08 constant #held
+$10 constant #well
+: d? ( u-f) dirty @ and ;
 : old@ ( -pts) old @ old 2+ @ split ;
 : >old ( -) pos old 4 move ;
 
@@ -180,7 +178,7 @@ variable old 0 , \ drawn, to be erased.
 : q? ( si-s/si-) th-q c@ over =
   if drop rdrop then ;
 : qn ( -) 7 roll 0 q? 1 q? 2 q? 3 q?
-  enqueue rdrop ;
+  enqueue r> rdrop >r ;  12 profile
 : qnext ( -) qn qn qn 7 roll enqueue ;
 : init ( u-) init qnext qnext qnext ;
 
@@ -204,7 +202,7 @@ variable old 0 , \ drawn, to be erased.
 
 $03 constant #go    $06 constant #next
 $0b constant #hold  $1e constant #all
-: d! ( d-) dirty @ or dirty ! ;
+: d! ( u-) dirty @ or dirty ! ;
 
 \ move. kick bias ccw>l cw>r. f hit?
 $-100 constant down
@@ -216,8 +214,8 @@ $-100 constant down
   r@ tk  down r@ - r@ tk  rdrop ;
 : fall ( -f) down 0 go 0= if  0 else
   kbinit unpin  curr piece lock
-  row mark ?dup if  lines +!
-  12 %stop ! #well else #next then  d!
+  row mark ?dup if  lines +! 12 %stop !
+  #well else  #next then  d!
   qnext enter  curr piece hit? then
   lines @ 3 rshift grav %grav ! ;
 : tryhold ( -) pinned? if ;then
@@ -248,6 +246,7 @@ cr ." any other key to pause. " cr ;
   bg #all d! begin draw step until ;
 : new ( -) entropy init r ;
 0 prof ' help start !
+.( words: help new r  )
 
 : dd ( -) bg #all d! draw ;
 : ss ( -) well $c800 size move ;
