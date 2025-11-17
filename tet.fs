@@ -116,7 +116,7 @@ p: 01 02 11 12  01 02 11 12  \ oc
 : var+ ( au'-a) over value + ;
 $ca00 \ global game variables:
 210 var+ well \ 10x21 visible playarea.
-10 var+ spill \ 1 row above screen.
+20 var+ spill \ 2 rows above screen.
 0 var+ roof   \ address after. values:
 \ 0 empty, 1 marked, 2-8 block colors.
 1 var+ held  \ 0-6 with pin bit $08.
@@ -207,7 +207,7 @@ variable dirty      variable old 0 ,
 
 \ check, store into well.
 \ reuse oob p as nonzero f:
-: h? ( pf-f) swap dup  split 22 u<
+: h? ( pf-f) swap dup  split 23 u<
   swap #10 u< and  if th-w c@ then or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
 : l! ( pc-c) dup rot th-w c! ;
