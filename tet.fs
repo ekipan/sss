@@ -87,7 +87,7 @@ p:  03 02 11 12  02 12 13 23 \    zz
 p:  03 02 11 12  02 12 13 23 \     cz
 p: 01 02 11 12  01 02 11 12  \ oo
 p: 01 02 11 12  01 02 11 12  \ oc
-\ 2 bytes 4 blocks 4 turns 7 shapes.
+\ 7 shapes 4 turns 4 blocks 2 bytes.
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
   blocks + w! p@ p@ p@ p@ drop r>
   colors + c@ ;  14 profile
@@ -113,20 +113,18 @@ p: 01 02 11 12  01 02 11 12  \ oc
 
 4 . \ core: vars, index, fetch, store.
 
-\ play area well->roof. draw area
-\ well->spill. so one row off-screen.
-
 : var+ ( au'-a) over value + ;
 $ca00 \ global game variables:
-210 var+ well \ \ 10x22 playfield of:
-10 var+ spill \  )  0 empty, 1 marked,
-0 var+ roof   \ /   2-8 block colors.
+210 var+ well \ 10x21 visible playarea.
+10 var+ spill \ 1 row above screen.
+0 var+ roof   \ address after. values:
+\ 0 empty, 1 marked, 2-8 block colors.
 1 var+ held  \ 0-6 with pin bit $08.
-2 var+ pos   \ $yyxx \
-1 var+ turns \ 0-3    ) player piece.
-1 var+ shape \ 0-6   /
+2 var+ pos   \ $yyxx from bottom left.
+1 var+ turns \ 0-3 clockwise turns.
+1 var+ shape \ 0-6 shape ijltszo.
 4 var+ queue \ 0-6 next random shapes.
-2 var+ qidx  \ mod4 queue head index.
+2 var+ qidx  \ queue head, used mod 4.
 2 var+ seed  \ for random generator.
 2 var+ lines \ for gravity curve.
 2 var+ %grav \ n->0 fall timer.
@@ -162,17 +160,17 @@ well - constant size
 
 3 . \ draw, with dirty bitset.
 
-variable old 0 ,    variable dirty
-: old@ ( -pts) old @ old 2+ @ split ;
-: >old ( -) pos old 4 move ;
-: d? ( u-f) dirty @ and ;
-
 \ draw bits d?      \ event bitsets d!
 $01 constant #del   $03 constant #go
 $02 constant #curr  $06 constant #next
 $04 constant #queue $0b constant #hold
 $08 constant #held  $1e constant #all
 $10 constant #well  \ see 2: d! (u-)
+
+variable dirty      variable old 0 ,
+: d? ( u-f) dirty @ and ;
+: old@ ( -pts) old @ old 2+ @ split ;
+: >old ( -) pos old 4 move ;
 
 \ 6: rub (p-) plot (ppppc-) paint (aa-)
 : slot ( sp) dup rub 0 rot piece plot ;
@@ -235,7 +233,7 @@ $-100 constant down
 
 1 . \ main: timers, input.
 
-: help  cr ." - game paused -"
+: help ( -) cr ." - game paused -"
 cr ." enter [new] or [r]esume to play."
 cr ." [sdf] move [jk] rotate [l] hold."
 cr ." any other key to pause. " cr ;
