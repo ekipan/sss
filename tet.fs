@@ -110,6 +110,8 @@ p: 01 02 11 12  01 02 11 12  \ oc
 \   hit? (ppppc-f) check playfield.
 \   lock (ppppc-) store to playfield.
 \   plot (ppppc-) store to screen.
+\ via indexing eg. $0405 th-w/c is the
+\ 4th row 5th column in well/colormem.
 
 4 . \ core: vars, index, fetch, store.
 
@@ -119,10 +121,10 @@ $ca00 \ global game variables:
 20 var+ spill \ 2 rows above screen.
 0 var+ roof   \ address after. values:
 \ 0 empty, 1 marked, 2-8 block colors.
-1 var+ held  \ 0-6 with pin bit $08.
 2 var+ pos   \ $yyxx from bottom left.
-1 var+ turns \ 0-3 clockwise turns.
-1 var+ shape \ 0-6 shape ijltszo.
+1 var+ turns \ 0-3 clockwise.
+1 var+ shape \ 0-6 ijltszo.
+1 var+ held  \ 0-6 with pin bit $08.
 4 var+ queue \ 0-6 next random shapes.
 2 var+ qidx  \ queue head, used mod 4.
 2 var+ seed  \ for random generator.
@@ -174,7 +176,7 @@ variable dirty      variable old 0 ,
 
 \ 6: rub (p-) plot (ppppc-) paint (aa-)
 : slot ( sp) dup rub 0 rot piece plot ;
-: q ( ip-) over th-q c@ over slot
+: q ( ip-ip) over th-q c@ over slot
   swap 1+ swap $300 - ;
 : draw ( -) sync
   #well d? if spill well paint then
