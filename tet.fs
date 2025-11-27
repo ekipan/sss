@@ -1,22 +1,18 @@
 \ \ tetris for durexforth 4.
 \ numbered 6->1 for compile countdown.
-\ if you're determined to read this,
-\ start w/ the big section 5 comment.
 
 marker --tet--  decimal
-: h. ( u-) hex u. decimal ;
-: erase ( au-) 0 fill ;
-: ;then  postpone exit postpone then ;
-immediate  10 value #10  4 value 4
+
+10 value #10  4 value 4         \ arith
 : 40- 40 - ;  : >10+> swap #10 + swap ;
 : 4* 2* 2* ;  : 10* dup 4* + 2* ;
 : 0* drop 0 ; : 40* 10* 4* ;
 
-6 . \ nonportable.
+6 . \ tools and nonportable.
 
-\ included must tco! safe w/ df.
-: redo  --tet-- s" tet.fs" included ;
-
+: h. ( u-) hex u. decimal ;  \ devtools
+: redo ( -) --tet-- s" tet.fs"
+  included ( must tco! safe w/ df. ) ;
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
   lda,# bx jsr, latest >xt jsr, lda,#
@@ -25,16 +21,12 @@ create bx  $d020 eor, $d020 sta, rts,
   if $4d else $60 then bx c! ;
 \ : prof drop ; : profile drop ;
 
-\ w! p@ save table addr then    \ optim
-\ scan+add center (p)os. see 5: piece
-: w! ( a-) [ lsb ldy,x w sty, msb ldy,x
-  w 1+ sty, inx, 0 ldy,# ] ;
-: p@ ( p-pp) dup [ clc, w lda,(y) iny,
-  lsb 1+ dup adc,x sta,x w lda,(y) iny,
-  msb 1+ dup adc,x sta,x ] ;
+: erase ( au-) 0 fill ;          \ lang
+: ;then  postpone exit postpone then ;
+immediate
+: rdrop ( r-) pla, pla, ; immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
-: rdrop ( r-) pla, pla, ; immediate
 
 : sync ( -) [ 213 lda,#            \ hw
   $d012 cmp, -5 bne, ] ;  6 profile
@@ -62,7 +54,7 @@ $0400 + constant tilemem
 5 . \ data, piece definition.
 
 \ (') means parse, (*) means varying.
-: n: ( '-*) parse-name evaluate ;
+: n: ( *'-*) parse-name evaluate ;
 : c: ( u'-) 0 do n: c, loop ;
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p:  hex 8 0 do n: >p , loop decimal ;
@@ -88,6 +80,15 @@ p:  03 02 11 12  02 12 13 23 \     cz
 p: 01 02 11 12  01 02 11 12  \ oo
 p: 01 02 11 12  01 02 11 12  \ oc
 \ 7 shapes 4 turns 4 blocks 2 bytes.
+
+\ nonportable for speed sake.
+\ w = zp temp, lsb,x msb,x = zp stack.
+\ p@ scan table, add center (p)osition.
+: w! ( a-) [ lsb ldy,x w sty, msb ldy,x
+  w 1+ sty, inx, 0 ldy,# ] ;
+: p@ ( p-pp) dup [ clc, w lda,(y) iny,
+  lsb 1+ dup adc,x sta,x w lda,(y) iny,
+  msb 1+ dup adc,x sta,x ] ;
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
   blocks + w! p@ p@ p@ p@ drop r>
   colors + c@ ;  14 profile
@@ -112,6 +113,8 @@ p: 01 02 11 12  01 02 11 12  \ oc
 \   plot (ppppc-) store to screen.
 \ via indexing eg. $0405 th-w/c is the
 \ 4th row 5th column in well/colormem.
+
+\ good spot to split for compile time.
 
 4 . \ core: vars, index, fetch, store.
 
@@ -167,10 +170,12 @@ $01 constant #del   $03 constant #go
 $02 constant #curr  $06 constant #next
 $04 constant #queue $0b constant #hold
 $08 constant #held  $1e constant #all
-$10 constant #well  \ see 2: d! (u-)
-
-variable dirty      variable old 0 ,
+$10 constant #well
+variable dirty
 : d? ( u-f) dirty @ and ;
+: d! ( u-) dirty @ or dirty ! ;
+
+variable old 0 ,
 : old@ ( -pts) old @ old 2+ @ split ;
 : >old ( -) pos old 4 move ;
 
@@ -217,7 +222,6 @@ variable dirty      variable old 0 ,
 
 \ move. kick bias ccw>l cw>r. f hit?
 $-100 constant down
-: d! ( u-) dirty @ or dirty ! ;
 : go ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 ;then  curr+! #go d! 0 ;
 : tk ( pt-) go 0= if rdrop rdrop then ;
