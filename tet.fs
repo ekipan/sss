@@ -1,7 +1,9 @@
 \ \ tetris for durexforth 4.
 \ numbered 6->1 for compile countdown.
+\ if you're determined to read this,
+\ start w/ the big section 5 comment.
 
-marker --tet--  decimal
+decimal marker --tet--
 
 10 value #10  4 value 4         \ arith
 : 40- 40 - ;  : >10+> swap #10 + swap ;
@@ -28,7 +30,7 @@ immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
-: sync ( -) [ 213 lda,#            \ hw
+: sync ( c-) [ lsb lda,x inx,      \ hw
   $d012 cmp, -5 bne, ] ;  6 profile
 : kbinit ( -) $b80 $28a ! 0 $c6 c! ;
 : kbpoll ( -c; w/ fast repeat hack.)
@@ -82,7 +84,7 @@ p: 01 02 11 12  01 02 11 12  \ oc
 \ 7 shapes 4 turns 4 blocks 2 bytes.
 
 \ nonportable for speed sake.
-\ w = zp temp, lsb,x msb,x = zp stack.
+\ w = zp temp, lsb/msb,x = zp stack.
 \ p@ scan table, add center (p)osition.
 : w! ( a-) [ lsb ldy,x w sty, msb ldy,x
   w 1+ sty, inx, 0 ldy,# ] ;
@@ -113,8 +115,6 @@ p: 01 02 11 12  01 02 11 12  \ oc
 \   plot (ppppc-) store to screen.
 \ via indexing eg. $0405 th-w/c is the
 \ 4th row 5th column in well/colormem.
-
-\ good spot to split for compile time.
 
 4 . \ core: vars, index, fetch, store.
 
@@ -183,7 +183,7 @@ variable old 0 ,
 : slot ( sp) dup rub 0 rot piece plot ;
 : q ( ip-ip) over th-q c@ over slot
   swap 1+ swap $300 - ;
-: draw ( -) sync
+: draw ( -) 213 sync
   #well d? if spill well paint then
   #del d? if old@ piece 0* plot then
   #curr d? if curr piece plot >old then
