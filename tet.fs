@@ -30,8 +30,8 @@ immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
-: sync ( c-) [ lsb lda,x inx,      \ hw
-  $d012 cmp, -5 bne, ] ;  6 profile
+: sync ( -) [ 213 lda,# $d012 cmp, \ hw
+  -5 bne, ] ;  6 profile
 : kbinit ( -) $b80 $28a ! 0 $c6 c! ;
 : kbpoll ( -c; w/ fast repeat hack.)
   key? if 1 $28b c! key ;then 0 ;
@@ -183,7 +183,7 @@ variable old 0 ,
 : slot ( sp) dup rub 0 rot piece plot ;
 : q ( ip-ip) over th-q c@ over slot
   swap 1+ swap $300 - ;
-: draw ( -) 213 sync
+: draw ( -) sync
   #well d? if spill well paint then
   #del d? if old@ piece 0* plot then
   #curr d? if curr piece plot >old then
