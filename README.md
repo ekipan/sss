@@ -1,4 +1,4 @@
-[tet.fs] is extremely dense, as its intended audience is just
+[tet.fs][fs] is extremely dense, as its intended audience is just
 myself. This is less a README and more a guided tour hopefully
 more accessible to less longbearded folk. Code excerpts might
 drift out-of-date. Fair warning.
@@ -6,11 +6,11 @@ drift out-of-date. Fair warning.
 ---
 
 [df]: https://github.com/jkotlinski/durexforth
-[tet]: ./tet.fs
+[fs]: ./tet.fs
 
 The [durexForth][df] system is available as either a C64
 cartridge or disk image. After loading durexForth you can either
-paste [the program][tet] directly, or get it on a disk file
+paste [the program][fs] directly, or get it on a disk file
 somehow and `include tet.fs`. durexForth comes with a vi clone
 if you want to make a file that way: `v tet.fs`. After compiling
 try `1 prof 123 init r` and framestep to see gamestate update
