@@ -40,7 +40,7 @@ immediate
 13 22 ( col row ) 40* + dup    \ screen
 $d800 + constant colormem
 $0400 + constant tilemem
-: bg ( -; $a0 rvs spaces 21x19 grid.)
+: bg ( -; $a0 rvs spaces 21x19 + 1x10.)
   11 $286 c! 0 $d020 ! page tilemem
   38 + 21 0 do  dup 19 $a0 fill
   40- loop  2+ #10 $a0 fill ;
@@ -53,6 +53,14 @@ $0400 + constant tilemem
 : rub ( p-) th-c 2 - dup 4 erase 40-
   4 erase ;
 
+\ w = zp temp, lsb/msb,x = zp stack.
+\ p@ scan table, add center (p)osition.
+: w! ( a-) [ lsb ldy,x w sty, msb ldy,x
+  w 1+ sty, inx, 0 ldy,# ] ;
+: p@ ( p-pp) dup [ clc, w lda,(y) iny,
+  lsb 1+ dup adc,x sta,x w lda,(y) iny,
+  msb 1+ dup adc,x sta,x ] ;
+
 5 . \ data, piece definition.
 
 \ (') means parse, (*) means varying.
@@ -60,10 +68,6 @@ $0400 + constant tilemem
 : c: ( u'-) 0 do n: c, loop ;
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p:  hex 8 0 do n: >p , loop decimal ;
-
-create frames 5 c: 33 25 21 17 15
-11 c: 13 12 10 8 7 6 5 4 3 3 2
-: grav ( u-u) 15 min frames + c@ ;
 
 create colors 7 c: 3 8 6 4 5 2 7
 create blocks \ center (c/.) at yx=02:
@@ -82,15 +86,6 @@ p:  03 02 11 12  02 12 13 23 \     cz
 p: 01 02 11 12  01 02 11 12  \ oo
 p: 01 02 11 12  01 02 11 12  \ oc
 \ 7 shapes 4 turns 4 blocks 2 bytes.
-
-\ nonportable for speed sake.
-\ w = zp temp, lsb/msb,x = zp stack.
-\ p@ scan table, add center (p)osition.
-: w! ( a-) [ lsb ldy,x w sty, msb ldy,x
-  w 1+ sty, inx, 0 ldy,# ] ;
-: p@ ( p-pp) dup [ clc, w lda,(y) iny,
-  lsb 1+ dup adc,x sta,x w lda,(y) iny,
-  msb 1+ dup adc,x sta,x ] ;
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
   blocks + w! p@ p@ p@ p@ drop r>
   colors + c@ ;  14 profile
@@ -116,11 +111,15 @@ p: 01 02 11 12  01 02 11 12  \ oc
 \ via indexing eg. $0405 th-w/c is the
 \ 4th row 5th column in well/colormem.
 
+create frames 5 c: 33 25 21 17 15
+11 c: 13 12 10 8 7 6 5 4 3 3 2
+: grav ( u-u) 15 min frames + c@ ;
+
 4 . \ core: vars, index, fetch, store.
 
 : var+ ( au'-a) over value + ;
 $ca00 \ global game variables:
-210 var+ well \ 10x21 visible playarea.
+210 var+ well \ 21x10 visible playarea.
 20 var+ spill \ 2 rows above screen.
 0 var+ roof   \ address after. values:
 \ 0 empty, 1 marked, 2-8 block colors.
