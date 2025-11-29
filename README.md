@@ -6,7 +6,7 @@ drift out-of-date. Fair warning.
 ---
 
 [df]: https://github.com/jkotlinski/durexforth
-[fs]: ./tet.fs
+[fs]: #end-of-readme
 
 The [durexForth][df] system is available as either a C64
 cartridge or disk image. After loading durexForth you can either
@@ -264,4 +264,4 @@ I've seen NES Tetrises with the feature but again it'd probably
 need an entire assembly rewrite or some sophisticated
 caching/precalcing algorithm I've no idea about.
 
-<!-- End of README. -->
+###### End of README.
