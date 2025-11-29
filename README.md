@@ -114,8 +114,15 @@ takes like 3 or 4 but I'm okay with that).
 
 ---
 
-A few other interesting parts, frontloading with the deep magic
-of `redo`:
+A few other interesting parts:
+
+```forth
+: >10+> swap #10 + swap ;
+```
+
+The arrows are meant to evoke `>r 10 + r>`, but `swap` is faster.
+
+`redo` is a deeply magical development convenience:
 
 ```forth
 marker --tet--
