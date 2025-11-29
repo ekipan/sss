@@ -45,9 +45,9 @@ Orange color `8`s can be `lock`ed into wellspace if not
 above screen that newly-entered pieces can rotate into.
 
 The `8`s are also `plot`ted on screen. Also relative bottom
-left, physical row 22 column 13 so the whole canvas is
-relatively screen-centered, with hold and next pieces off to
-the right `12 <= x <= 15`.
+left, physical row 22 column 13 so the whole canvas is roughly
+screen-centered, with hold and next pieces off to the right 
+`12 <= x <= 15`.
 
 Blockspace is relative to piece center, see `>p` below.
 
