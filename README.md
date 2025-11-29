@@ -174,6 +174,14 @@ lines 0-54 and 256-311. (3) parameterize on 9-bit input: more
 argument and loop code.
 
 ```forth
+: bg ( ... ) $a0 ( rvspace ) ( ... ) ;
+```
+
+The reverse-video spaces make pleasant squares and also are
+ignored by the interpreter to make testing and experimenting
+easier.
+
+```forth
 : entropy ( -u) $a1 @ dup 0= + ;
 : init ( u-) well size erase  seed !
   4 enqueue 5 enqueue 4 enqueue 4 roll

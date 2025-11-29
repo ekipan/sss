@@ -40,10 +40,11 @@ immediate
 13 22 ( col row ) 40* + dup    \ screen
 $d800 + constant colormem
 $0400 + constant tilemem
-: bg ( -; $a0 rvs spaces 21x19 + 1x10.)
-  11 $286 c! 0 $d020 ! page tilemem
-  38 + 21 0 do  dup 19 $a0 fill
-  40- loop  2+ #10 $a0 fill ;
+: bg ( -) 0 $d020 ( black bg+border ) !
+  11 $286 ( gray fg ) c! page tilemem
+  38 ( nextrow-2 ) + 21 ( rows ) 0 do
+  dup 19 $a0 ( rvspace ) fill 40- loop
+  ( top ) 2+ #10 $a0 fill ;
 : paint ( aa-) colormem begin
   2dup #10 move >10+> 40-
   over 3 pick = until  drop 2drop ;
