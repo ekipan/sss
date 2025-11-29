@@ -36,9 +36,9 @@ hex 905 2 1 piece .s
 
 Coordinates hex `$yyxx` exist in three spaces:
 
-**Wellspace:** `0 <= y <= 22, 0 <= x <= 9`
-**Screenspace:** `0 <= y <= 20, 0 <= x <= 15.`
-**Blockspace:** `0 <= y <= 3, -2 <= x <= 1.`
+- **Wellspace:** `0 <= y <= 22, 0 <= x <= 9`
+- **Screenspace:** `0 <= y <= 20, 0 <= x <= 15.`
+- **Blockspace:** `0 <= y <= 3, -2 <= x <= 1.`
 
 Orange color `8`s can be `lock`ed into wellspace if not
 `hit?`-detected. Relative to bottom left, including 2 rows
