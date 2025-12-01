@@ -224,6 +224,9 @@ the queue is [S, Z, S, random I/J/L/T], then after flushing
 (`qnext` three times), the player starts with I/J/L/T, and the
 next 3 pieces are less likely to be S or Z (4 or 5).
 
+Most Tetris documentation lists the shapes alphabetically: 
+IJLOSTZ, I put IJLT first to simplify this init.
+
 [2]: https://tetris.wiki/TGM_randomizer
 
 ```forth
