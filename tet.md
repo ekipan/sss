@@ -274,10 +274,12 @@ piece position, and updates those variables if the piece can
 move there. `turnkick` calls it up to six times to implement
 wallkicking upon rotation.
 
-There are no floor kicks. TGM3 allows limited I and T
+There are no [floor kicks][fk]. TGM3 allows limited I and T
 floorkicking, but instead I have the horizontal rotations of
 the I piece rest on row 0 so the player has less need, though
 it's strictly easier than TGM in that sense.
+
+[fk]: https://tetris.wiki/Floor_kick
 
 ---
 
