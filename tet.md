@@ -40,9 +40,11 @@ Coordinates hex `$yyxx` exist in three spaces:
 - **Screenspace:** `0 <= y <= 20, 0 <= x <= 15.`
 - **Blockspace:** `0 <= y <= 3, -2 <= x <= 1.`
 
-Orange color `8`s can be [`lock`ed][dro] into wellspace if not
+Orange color `8`s can be [`lock`ed][loc] into wellspace if not
 `hit?`-detected. Relative to bottom left, including 2 rows
 above screen that newly-entered pieces can rotate into.
+
+[loc]: https://tetris.wiki/Glossary#L
 
 The `8`s are also `plot`ted on screen. Also relative bottom
 left, physical row 22 column 13 so the whole canvas is roughly
