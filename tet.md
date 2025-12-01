@@ -40,7 +40,7 @@ Coordinates hex `$yyxx` exist in three spaces:
 - **Screenspace:** `0 <= y <= 20, 0 <= x <= 15.`
 - **Blockspace:** `0 <= y <= 3, -2 <= x <= 1.`
 
-Orange color `8`s can be `lock`ed into wellspace if not
+Orange color `8`s can be [`lock`ed][dro] into wellspace if not
 `hit?`-detected. Relative to bottom left, including 2 rows
 above screen that newly-entered pieces can rotate into.
 
@@ -219,7 +219,7 @@ Starting a `new` game fetches a Kernal frame counter to seed
 the game state then enters the main loop, which is named `r`
 for easy typing by the player.
 
-The initial queue mimics [TGM randomizer][2] behavior. First
+The initial queue mimics [TGM randomizer][ran] behavior. First
 the queue is [S, Z, S, random I/J/L/T], then after flushing
 (`qnext` three times), the player starts with I/J/L/T, and the
 next 3 pieces are less likely to be S or Z (4 or 5).
@@ -227,7 +227,7 @@ next 3 pieces are less likely to be S or Z (4 or 5).
 Most Tetris documentation lists the shapes alphabetically:
 IJLOSTZ, I put IJLT first to simplify this init.
 
-[2]: https://tetris.wiki/TGM_randomizer
+[ran]: https://tetris.wiki/TGM_randomizer
 
 ```forth
 \ roll (u-u) 0 <= u2 < u1.
@@ -272,22 +272,26 @@ cognitive load just for its aesthetic, which I'm fond of.
 variables `pos` and `turns`, hit-checks the new hypothetical
 piece position, and updates those variables if the piece can
 move there. `turnkick` calls it up to six times to implement
-wallkicking upon rotation.
+[wallkicking][wal] upon rotation.
 
-There are no [floor kicks][fk]. TGM3 allows limited I and T
+There are no [floor kicks][flo]. TGM3 allows limited I and T
 floorkicking, but instead I have the horizontal rotations of
 the I piece rest on row 0 so the player has less need, though
 it's strictly easier than TGM in that sense.
 
-[fk]: https://tetris.wiki/Floor_kick
+[wal]: https://tetris.wiki/Wall_kick
+[flo]: https://tetris.wiki/Floor_kick
 
 ---
 
-One missing feature I lament is the ghost piece (and the
-instant drop that it enables). I doubt it's possible to fit in
-the frame budget without a large rearchitecting or rewrite in
-mostly assembly. Just not enough cycles to calculate so many
-`piece`s.
+One missing feature I lament is the [ghost piece][gho] (and the
+[instant drop][dro] that it enables). I doubt it's possible to
+fit in the frame budget without a large rearchitecting or
+rewrite in mostly assembly. Just not enough cycles to calculate
+so many `piece`s.
+
+[gho]: https://tetris.wiki/Ghost_piece
+[dro]: https://tetris.wiki/Drop
 
 One approach I've considered is precalculating all possible
 ghosts of the current piece at entry time. Some rough mental
