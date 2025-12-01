@@ -228,12 +228,12 @@ $-100 constant down
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +
   r@ tk  down r@ - r@ tk  rdrop ;
-: fall ( -f) down 0 go 0= if  0 else
-  kbinit unpin  curr piece lock
+: land ( -f) kbinit  curr piece lock
   row mark ?dup if  lines +! 12 %stop !
-  #well else  #next then  d!
-  qnext enter  curr piece hit? then
-  lines @ 3 rshift grav %grav ! ;
+  #well else #next then d!  qnext enter
+  unpin  curr piece hit? ;
+: fall ( -f) down 0 go if land else 0
+  then lines @ 3 rshift grav %grav ! ;
 : tryhold ( -) pinned? if ;then
   hold enter  #hold d! ;
 

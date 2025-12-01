@@ -1,28 +1,29 @@
 
-[tet.fs][fs] is extremely dense, as its intended audience is
+[tet.fs][src] is extremely dense, as its intended audience is
 just myself. This is less a README and more a guided tour
 hopefully more accessible to less longbearded folk. Code
 excerpts might drift out-of-date. Fair warning.
 
----
+## Trying It Out
 
-[df]: https://github.com/jkotlinski/durexforth
-[fs]: #end-of-readme
-
-The [durexForth][df] system is available as either a C64
+The [durexForth][dur] system is available as either a C64
 cartridge or disk image. After loading durexForth you can
-either paste [the program][fs] directly, or get it on a disk
+either paste [the program][src] directly, or get it on a disk
 file somehow and `include tet.fs`. durexForth comes with a vi
 clone if you want to make a file that way: `v tet.fs`. After
 compiling try `1 prof 123 init r` and framestep to see
 gamestate update time in gray and draw time in blue.
 
-I use VICE's host filesystem feature to develop. It's not
-officially supported by durexForth so it has a giant pile of
-caveats but it's convenient enough that I use it anyway.
+I use [VICE's][vic] host filesystem feature to develop. It's
+not officially supported by durexForth so it has a giant pile
+of caveats but it's convenient enough that I use it anyway.
 Caveats include needing ALL CAPS and CR line endings.
 
----
+[src]: #end-of-readme
+[dur]: https://github.com/jkotlinski/durexforth
+[vic]: https://vice-emu.sourceforge.io/
+
+## Diving In
 
 The heart of this program is the `piece` word that computes
 block positions from a piece description. Here I ask for a
@@ -34,6 +35,8 @@ hex 905 2 1 piece .s
 904 905 906 a04 8 ok
 ```
 
+### Coordinates
+
 Coordinates hex `$yyxx` exist in three spaces:
 
 - **Wellspace:** `0 <= y <= 22, 0 <= x <= 9`
@@ -44,8 +47,6 @@ Orange color `8`s can be [`lock`ed][loc] into wellspace if not
 `hit?`-detected. Relative to bottom left, including 2 rows
 above screen that newly-entered pieces can rotate into.
 
-[loc]: https://tetris.wiki/Glossary#L
-
 The `8`s are also `plot`ted on screen. Also relative bottom
 left, physical row 22 column 13 so the whole canvas is roughly
 screen-centered, with hold and next pieces off to the right
@@ -53,9 +54,11 @@ screen-centered, with hold and next pieces off to the right
 
 Blockspace is relative to piece center, see `>p` below.
 
----
+[loc]: https://tetris.wiki/Glossary#L
 
 We'll start by defining data compilation shorthands:
+
+### Data Words `c: p:`
 
 ```forth
 : n: ( *'-*) parse-name evaluate ;
@@ -90,6 +93,8 @@ of well and screenspace.
 
 `p: ('-)` loops 8 times, parsing hex literals `n:`, expanding
 them `>p`, then compiling them `,`.
+
+### The `blocks` Table
 
 ```forth
 create blocks \ center (c/.) at yx=02:
@@ -133,9 +138,9 @@ and is just fast enough for mostly full 50fps during normal
 play (Kernal interrupts eat every fifth-ish frame and landing a
 piece takes like 3 or 4 but I'm okay with that).
 
----
+## Touring the Rest
 
-A few other interesting parts:
+### `>10+>`
 
 ```forth
 : >10+> swap #10 + swap ;
@@ -144,7 +149,9 @@ A few other interesting parts:
 The arrows are meant to evoke `>r 10 + r>`, but `swap` is
 faster.
 
-`redo` is a deeply magical development convenience:
+### `redo`
+
+Is a deeply magical development convenience:
 
 ```forth
 marker --tet--
@@ -169,6 +176,8 @@ the game variables are in high memory outside the dictionary
 you can immediately resume a game in progress with the new
 code.
 
+### `profile`
+
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
@@ -188,6 +197,8 @@ addresses the code field stored after the name.
 `prof` patches the first instruction at `bx` into either an
 `eor` or `rts`, enabling or disabling it.
 
+### `sync`
+
 ```forth
 : sync ( -) [ 213 lda,# $d012 cmp, \ hw
   -5 bne, ] ;  6 profile
@@ -198,6 +209,8 @@ construction. (2) parameterize on 8-bit input: incorrect for
 lines 0-54 and 256-311. (3) parameterize on 9-bit input: more
 argument and loop code.
 
+### `bg`
+
 ```forth
 : bg ( ... ) $a0 ( rvspace ) ( ... ) ;
 ```
@@ -205,6 +218,8 @@ argument and loop code.
 The reverse-video spaces make pleasant squares and also are
 ignored by the interpreter to make testing and experimenting
 easier.
+
+### `init`
 
 ```forth
 : entropy ( -u) $a1 @ dup 0= + ;
@@ -217,9 +232,10 @@ easier.
 : new ( -) entropy init r ;
 ```
 
-Starting a `new` game fetches a Kernal frame counter to seed
-the game state then enters the main loop, which is named `r`
-for easy typing by the player.
+Starting a `new` game fetches 16 bits (though endian-backwards)
+of the [jiffy counter][jif] to seed the game state then enters
+the main loop, which is named `r` for easy typing by the
+player.
 
 The initial queue mimics [TGM randomizer][ran] behavior. First
 the queue is [S, Z, S, random I/J/L/T], then after flushing
@@ -229,7 +245,10 @@ next 3 pieces are less likely to be S or Z (4 or 5).
 Most Tetris documentation lists the shapes alphabetically:
 IJLOSTZ, I put IJLT first to simplify this init.
 
+[jif]: https://www.c64-wiki.com/wiki/160-162
 [ran]: https://tetris.wiki/TGM_randomizer
+
+### `qnext`
 
 ```forth
 \ roll (u-u) 0 <= u2 < u1.
@@ -261,6 +280,8 @@ aren't important but I choose to spend the extra `rdrop`
 cognitive load just for its aesthetic, which I'm fond of.
 `qnext` in both versions enqueues only once per call.
 
+### `go` and `turnkick`
+
 ```forth
 : t@+ ( t-t) turns c@ + 3 and ;
 : curr+ ( pt-pts) swap pos @ +
@@ -268,6 +289,11 @@ cognitive load just for its aesthetic, which I'm fond of.
 : curr+! ( pt-) t@+ turns c!  pos +! ;
 : go ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 ;then  curr+! #go d! 0 ;
+$-100 constant down
+: tk ( pt-) go 0= if rdrop rdrop then ;
+: turnkick ( t-) >r  0 r@ tk  r@ r@ tk
+  0 r@ - r@ tk  down r@ tk  down r@ +
+  r@ tk  down r@ - r@ tk  rdrop ;
 ```
 
 `go` adds `p`osition and `t`urn offsets to the current player
@@ -284,7 +310,7 @@ it's strictly easier than TGM in that sense.
 [wal]: https://tetris.wiki/Wall_kick
 [flo]: https://tetris.wiki/Floor_kick
 
----
+## Ghost Piece
 
 One missing feature I lament is the [ghost piece][gho] (and the
 [instant drop][dro] that it enables). I doubt it's possible to
