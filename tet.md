@@ -80,11 +80,11 @@ this as: `create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
 ```
 
 `>p (c-p)` does precomputation: expanding an 8-bit `c`haracter
-hex `$yx` into 16-bit blockspace `p`osition `$0y0x`, then
-subtracting center position source `02` into compiled `$0000`,
-and which may or may not contain a block. Negative x carries
-into the y coord but `hit?` bounds checks before you can
-corrupt memory outside of well and screenspace.
+hex `$yx` into 16-bit `$0y0x`, then subtracting center source
+`02` into compiled blockspace `p`osition `$0000`, which may or
+may not contain a block. Negative x underflows into the y coord
+but `hit?` bounds checks before you can corrupt memory outside
+of well and screenspace.
 
 `p: ('-)` loops 8 times, parsing hex literals `n:`, expanding
 them `>p`, then compiling them `,`.
