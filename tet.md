@@ -46,7 +46,7 @@ above screen that newly-entered pieces can rotate into.
 
 The `8`s are also `plot`ted on screen. Also relative bottom
 left, physical row 22 column 13 so the whole canvas is roughly
-screen-centered, with hold and next pieces off to the right 
+screen-centered, with hold and next pieces off to the right
 `12 <= x <= 15`.
 
 Blockspace is relative to piece center, see `>p` below.
@@ -224,7 +224,7 @@ the queue is [S, Z, S, random I/J/L/T], then after flushing
 (`qnext` three times), the player starts with I/J/L/T, and the
 next 3 pieces are less likely to be S or Z (4 or 5).
 
-Most Tetris documentation lists the shapes alphabetically: 
+Most Tetris documentation lists the shapes alphabetically:
 IJLOSTZ, I put IJLT first to simplify this init.
 
 [2]: https://tetris.wiki/TGM_randomizer
@@ -273,6 +273,11 @@ variables `pos` and `turns`, hit-checks the new hypothetical
 piece position, and updates those variables if the piece can
 move there. `turnkick` calls it up to six times to implement
 wallkicking upon rotation.
+
+There are no floor kicks. TGM3 allows limited I and T
+floorkicking, but instead I have the horizontal rotations of
+the I piece rest on row 0 so the player has less need, though
+it's strictly easier than TGM in that sense.
 
 ---
 
