@@ -25,8 +25,8 @@ Caveats include needing ALL CAPS and CR line endings.
 ### Forth? Commodore 64? Tetris?
 
 Forth is an old and grumpy programming language that I adore.
-[Wikipedia][wif] and the beloved [Starting Forth][sta] are
-great places to start.
+[Forth on Wikipedia][wif] and the beloved
+[Starting Forth][sta] are great places to start.
 
 [wif]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
@@ -51,11 +51,11 @@ the 1980s, which I was personally drawn to _only after_
 stumbling on [durexForth][dur], a modern [ANS Forth][ans]
 written for it.
 
-Tetris? Is there a person reading this that doesn't know about
-Tetris? I guess this person could start with [Wikipedia][wit].
-Actually no, start by finding a copy and **playing it.** It's
-the venerable video game, falling blocks, filling lines. How
-exciting! You have a lot to learn, hypothetical person!
+Tetris is the venerable video game: falling blocks, filling
+lines. This hypothetical person who doesn't know Tetris could
+start with [Tetris on Wikipedia][wit], but you should
+definitely just **play Tetris** instead. You've a lot of
+exciting things to learn!
 
 [ans]: https://forth-standard.org/
 [wit]: https://en.wikipedia.org/wiki/Tetris
@@ -63,7 +63,7 @@ exciting! You have a lot to learn, hypothetical person!
 **Personal context:** I've played _far_ more The Tetris
 Company (TTC) Tetris than Tetris The Grandmaster (TGM), but I
 have a strong admiration for the latter, so tet.fs is a mix of
-both specifications and my own flair.
+both of these specifications plus my own flair.
 
 ## Diving In
 
@@ -79,7 +79,7 @@ hex 905 2 1 piece .s
 
 ### Coordinates
 
-Coordinates hex `$yyxx` exist in three spaces:
+Packed coordinates hex `$yyxx` exist in three spaces:
 
 - **Wellspace:** `0 <= y <= 22, 0 <= x <= 9`
 - **Screenspace:** `0 <= y <= 20, 0 <= x <= 15.`
@@ -124,12 +124,12 @@ Tetris pieces, in my preferred TTC color scheme (I = 3 cyan
 etc). Without the shorthand I could have just written this as:
 `create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
 
+<a name="precomputation"></a>
+
 ```forth
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p: ( '-) hex 8 0 do n: >p , loop decimal ;
 ```
-
-<a name="precomputation"></a>
 
 `>p (c-p)` does precomputation: expanding an 8-bit `c`haracter
 hex `$yx` into 16-bit `$0y0x`, then subtracting center source
@@ -383,4 +383,4 @@ I've seen NES Tetrises with the feature but again it'd probably
 need an entire assembly rewrite or some sophisticated
 caching/precalcing algorithm I've no idea about.
 
-###### End of README.
+<a name="end-of-readme"></a>
