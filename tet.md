@@ -1,6 +1,5 @@
-
 [tet.fs][src] is extremely dense, as its intended audience is
-just myself. This is less a README and more a guided tour
+just myself. This README aims to serve as a guided tour
 hopefully more accessible to less longbearded folk. Code
 excerpts might drift out-of-date. Fair warning.
 
@@ -23,6 +22,49 @@ Caveats include needing ALL CAPS and CR line endings.
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
 
+### Forth? Commodore 64? Tetris?
+
+Forth is an old and grumpy programming language that I adore.
+[Wikipedia][wif] and the beloved [Starting Forth][sta] are
+great places to start.
+
+[wif]: https://en.wikipedia.org/wiki/Forth_(programming_language)
+[sta]: https://www.forth.com/starting-forth/
+
+I mostly use a compact stack comment style like
+[Retroforth's][ret], and Chuck Moore's [colorForth][col], to
+save columns on the cramped C64 screen. Examples:
+
+- `erase ( au-)` address, unsigned count -> (no result).
+- `piece ( pts-ppppc)` piece position, turn count, shape index
+  -> 4 block positions, color code.
+- `hit? ( ppppc-f)` 4 positions, (ignored) color code
+  -> boolean flag.
+- `split ( $yyxx -- $xx $yy )` closer to conventional ANS
+  style when I think the clarity is needed.
+
+[ret]: https://retroforth.org/
+[col]: https://colorforth.github.io/
+
+The Commodore 64 is the legendary and beloved computer from
+the 1980s, which I was personally drawn to _only after_
+stumbling on [durexForth][dur], a modern [ANS Forth][ans]
+written for it.
+
+Tetris? Is there a person reading this that doesn't know about
+Tetris? I guess this person could start with [Wikipedia][wit].
+Actually no, start by finding a copy and **playing it.** It's
+the venerable video game, falling blocks, filling lines. How
+exciting! You have a lot to learn, hypothetical person!
+
+[ans]: https://forth-standard.org/
+[wit]: https://en.wikipedia.org/wiki/Tetris
+
+**Personal context:** I've played _far_ more The Tetris
+Company (TTC) Tetris than Tetris The Grandmaster (TGM), but I
+have a strong admiration for the latter, so tet.fs is a mix of
+both specifications and my own flair.
+
 ## Diving In
 
 The heart of this program is the `piece` word that computes
@@ -43,17 +85,19 @@ Coordinates hex `$yyxx` exist in three spaces:
 - **Screenspace:** `0 <= y <= 20, 0 <= x <= 15.`
 - **Blockspace:** `0 <= y <= 3, -2 <= x <= 1.`
 
+$0000 = bottom left of wellspace and screenspace, and
+[center of piece][pre] in blockspace.
+
 Orange color `8`s can be [`lock`ed][loc] into wellspace if not
-`hit?`-detected. Relative to bottom left, including 2 rows
-above screen that newly-entered pieces can rotate into.
+`hit?`-detected. Includes 2 rows above screen that
+newly-entered pieces can rotate into.
 
 The `8`s are also `plot`ted on screen. Also relative bottom
 left, physical row 22 column 13 so the whole canvas is roughly
 screen-centered, with hold and next pieces off to the right
 `12 <= x <= 15`.
 
-Blockspace is relative to piece center, see `>p` below.
-
+[pre]: #precomputation
 [loc]: https://tetris.wiki/Glossary#L
 
 We'll start by defining data compilation shorthands:
@@ -76,13 +120,16 @@ compiling data.
 
 `colors (-a)`, a `create`d word, pushes the `a`ddress after
 itself, where I've compiled 7 bytes. C64 color codes for 7
-Tetris pieces. Without the shorthand I could have just written
-this as: `create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
+Tetris pieces, in my preferred TTC color scheme (I = 3 cyan
+etc). Without the shorthand I could have just written this as:
+`create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
 
 ```forth
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : p: ( '-) hex 8 0 do n: >p , loop decimal ;
 ```
+
+<a name="precomputation"></a>
 
 `>p (c-p)` does precomputation: expanding an 8-bit `c`haracter
 hex `$yx` into 16-bit `$0y0x`, then subtracting center source
@@ -115,6 +162,12 @@ p: 01 02 03 13  03 02 12 22  \ l.
 have written this without shorthand `create blocks -2 , -1 , 0
 , 1 , 0 , $100 , $200 , $300 , ( etc etc )` but the goal was
 for the data in the source to be compact and easier to read.
+
+The initial orientation of each shape is depicted in the
+ASCII-art comments, TGM-style pointy-end-down, though the I
+piece [rests on row 0][gat] instead of TGM's 2.
+
+[gat]: #go-and-turnkick
 
 For speed sake the table scanning word pair `w! (a-) p@ (p-pp)`
 are written in assembly but for pedagogy sake I present here an
