@@ -1,7 +1,6 @@
 [tet.fs][src] is extremely dense, as its intended audience is
-just myself. This README aims to serve as a guided tour
-hopefully more accessible to less longbearded folk. Code
-excerpts might drift out-of-date. Fair warning.
+just myself. This README is a guided tour for less longbearded
+folk. Code excerpts might drift out-of-date, fair warning.
 
 ## Trying It Out
 
@@ -16,19 +15,39 @@ gamestate update time in gray and draw time in blue.
 I use [VICE's][vic] host filesystem feature to develop. It's
 not officially supported by durexForth so it has a giant pile
 of caveats but it's convenient enough that I use it anyway.
-Caveats include needing ALL CAPS and CR line endings.
+Caveats include needing ALL CAPS, needing CR line endings, and
+not working in durexForth v5 for reasons I don't understand
+yet, so I use v4.
 
 [src]: #end-of-readme
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
 
-### Forth? Commodore 64? Tetris?
+### Tetris? Commodore 64? Forth?
+
+Everyone knows the falling blocks game Tetris. If you somehow
+don't, you could read [Tetris on Wikipedia][tow], but you
+should definitely just **play Tetris** instead. Many exciting
+things to learn!
+
+[ans]: https://forth-standard.org/
+[tow]: https://en.wikipedia.org/wiki/Tetris
+
+**Design context:** I've played _far_ more The Tetris Company
+(TTC) Tetris than Tetris The Grandmaster (TGM), but I have a
+strong admiration for the latter, so tet.fs is a mix of both
+of these specifications plus my own flair.
+
+The Commodore 64 is the legendary and beloved computer from
+the 1980s, which I was personally drawn to _only after_
+stumbling on [durexForth][dur], a modern [ANS Forth][ans]
+written for it.
 
 Forth is an old and grumpy programming language that I adore.
-[Forth on Wikipedia][wif] and the beloved
+[Forth on Wikipedia][fow] and the beloved
 [Starting Forth][sta] are great places to start.
 
-[wif]: https://en.wikipedia.org/wiki/Forth_(programming_language)
+[fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
 
 I mostly use a compact stack comment style like
@@ -45,25 +64,6 @@ save columns on the cramped C64 screen. Examples:
 
 [ret]: https://retroforth.org/
 [col]: https://colorforth.github.io/
-
-The Commodore 64 is the legendary and beloved computer from
-the 1980s, which I was personally drawn to _only after_
-stumbling on [durexForth][dur], a modern [ANS Forth][ans]
-written for it.
-
-Tetris is the venerable video game: falling blocks, filling
-lines. This hypothetical person who doesn't know Tetris could
-start with [Tetris on Wikipedia][wit], but you should
-definitely just **play Tetris** instead. You've a lot of
-exciting things to learn!
-
-[ans]: https://forth-standard.org/
-[wit]: https://en.wikipedia.org/wiki/Tetris
-
-**Personal context:** I've played _far_ more The Tetris
-Company (TTC) Tetris than Tetris The Grandmaster (TGM), but I
-have a strong admiration for the latter, so tet.fs is a mix of
-both of these specifications plus my own flair.
 
 ## Diving In
 
@@ -92,8 +92,8 @@ Orange color `8`s can be [`lock`ed][loc] into wellspace if not
 `hit?`-detected. Includes 2 rows above screen that
 newly-entered pieces can rotate into.
 
-The `8`s are also `plot`ted on screen. Also relative bottom
-left, physical row 22 column 13 so the whole canvas is roughly
+The `8`s are also `plot`ted on screen. Bottom left origin is
+at physical row 22 column 13 so the whole canvas is roughly
 screen-centered, with hold and next pieces off to the right
 `12 <= x <= 15`.
 
@@ -163,11 +163,13 @@ have written this without shorthand `create blocks -2 , -1 , 0
 , 1 , 0 , $100 , $200 , $300 , ( etc etc )` but the goal was
 for the data in the source to be compact and easier to read.
 
-The initial orientation of each shape is depicted in the
-ASCII-art comments, TGM-style pointy-end-down, though the I
-piece [rests on row 0][gat] instead of TGM's 2.
+The ASCII-art comments depict the first orientation of each
+shape, [TGM-style pointy-end-down][ars] (please click, there
+are illustrations!), though they all rest on row 0 and all are
+centered on column 2 to simplify code instead of TGM's column
+1 or 2.
 
-[gat]: #go-and-turnkick
+[ars]: https://tetris.wiki/Arika_Rotation_System
 
 For speed sake the table scanning word pair `w! (a-) p@ (p-pp)`
 are written in assembly but for pedagogy sake I present here an
