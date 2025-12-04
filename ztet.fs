@@ -26,7 +26,7 @@ create bx  $d020 eor, $d020 sta, rts,
 : erase ( au-) 0 fill ;          \ lang
 : ;then  postpone exit postpone then ;
 immediate
-: rdrop ( r-) pla, pla, ; immediate
+: rdrop ( r:a-) pla, pla, ; immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
@@ -109,8 +109,6 @@ p: 01 02 11 12  01 02 11 12  \ oc
 \   hit? (ppppc-f) check playfield.
 \   lock (ppppc-) store to playfield.
 \   plot (ppppc-) store to screen.
-\ via indexing eg. $0405 th-w/c is the
-\ 4th row 5th column in well/colormem.
 
 create frames 5 c: 33 25 21 17 15
 11 c: 13 12 10 8 7 6 5 4 3 3 2
@@ -217,6 +215,7 @@ variable old 0 ,
 : h? ( pf-f) swap dup  split 23 u<
   swap #10 u< and  if th-w c@ then or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
+1 profile
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 
