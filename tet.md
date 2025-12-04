@@ -1,15 +1,17 @@
 [tet.fs][src] is extremely dense, as its intended audience is
-just myself. This README is a guided tour for less longbearded
-folk. Code excerpts might drift out-of-date, fair warning.
+just myself. This README tries to be a guided tour for less
+longbearded folk. Code excerpts might drift out-of-date, fair
+warning.
 
 ## Trying It Out
 
 The [durexForth][dur] system is available as either a C64
-cartridge or disk image. After loading durexForth you can
-either paste [the program][src] directly, or get it on a disk
-file somehow and `include tet.fs`. durexForth comes with a vi
-clone if you want to make a file that way: `v tet.fs`. After
-compiling try `1 prof 123 init r` and framestep to see
+cartridge or disk image. Load durexForth then either paste
+[the program][src] directly, or get it on a disk file somehow
+and `include tet.fs`. durexForth comes with a vi clone if you
+want to make a file that way: `v tet.fs`.
+
+After compiling try `1 prof 123 init r` and framestep to see
 gamestate update time in gray and draw time in blue.
 
 I use [VICE's][vic] host filesystem feature to develop. It's
@@ -23,15 +25,15 @@ yet, so I use v4.
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
 
-### Tetris? Commodore 64? Forth?
+## Tetris? Commodore 64? Forth?
 
 Everyone knows the falling blocks game Tetris. If you somehow
 don't, you could read [Tetris on Wikipedia][tow], but you
-should definitely just **play Tetris** instead. Many exciting
-things to learn!
+should definitely just **play Tetris** instead. [tetr.io][tio]
+is a great way to play _right now._
 
-[ans]: https://forth-standard.org/
 [tow]: https://en.wikipedia.org/wiki/Tetris
+[tio]: https://tetr.io/
 
 **Design context:** I've played _far_ more The Tetris Company
 (TTC) Tetris than Tetris The Grandmaster (TGM), but I have a
@@ -45,14 +47,14 @@ written for it.
 
 Forth is an old and grumpy programming language that I adore.
 [Forth on Wikipedia][fow] and the beloved
-[Starting Forth][sta] are great places to start.
+[Starting Forth][sta] are great places to start. Herein I say
+"word" to mean a subroutine written in Forth.
 
+[ans]: https://forth-standard.org/
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
 
-I mostly use a compact stack comment style like
-[Retroforth's][ret], and Chuck Moore's [colorForth][col], to
-save columns on the cramped C64 screen. Examples:
+I use compact stack comments to fit the cramped C64 screen:
 
 - `erase ( au-)` address, unsigned count -> (no result).
 - `piece ( pts-ppppc)` piece position, turn count, shape index
@@ -62,47 +64,58 @@ save columns on the cramped C64 screen. Examples:
 - `split ( $yyxx -- $xx $yy )` closer to conventional ANS
   style when I think the clarity is needed.
 
-[ret]: https://retroforth.org/
-[col]: https://colorforth.github.io/
-
 ## Diving In
 
 The heart of this program is the `piece` word that computes
 block positions from a piece description. Here I ask for a
-piece centered on row 9 column 5, rotated twice, shaped like a
-J (shape index 1):
+piece centered on entry position hex $1305 (row 19 column 5),
+rotated twice, shaped like a J (shape index 1):
 
 ```forth
-hex 905 2 1 piece .s
-904 905 906 a04 8 ok
+hex 1305 2 1 piece .s
+1304 1305 1306 1404 8 ok
 ```
 
 ### Coordinates
 
-Packed coordinates hex `$yyxx` exist in three spaces:
+Packed hex `$yyxx` coordinates exist in three spaces:
 
-- **Wellspace:** `0 <= y <= 22, 0 <= x <= 9`
-- **Screenspace:** `0 <= y <= 20, 0 <= x <= 15.`
 - **Blockspace:** `0 <= y <= 3, -2 <= x <= 1.`
+  `$0000` = piece center for blocks and line fill check.
+- **Wellspace `th-w`:** `0 <= y <= 22, 0 <= x <= 9`
+  `$0000` = bottom left of playfield.
+- **Screenspace `th-c`:** `0 <= y <= 20, 0 <= x <= 15.`
+  `$0000` = screen row 22 col 13, near bottom left of canvas.
 
-$0000 = bottom left of wellspace and screenspace, and
-[center of piece][pre] in blockspace.
+The well extends two rows above screen (21 and 22) for new
+pieces to rotate into.
 
-Orange color `8`s can be [`lock`ed][loc] into wellspace if not
-`hit?`-detected. Includes 2 rows above screen that
-newly-entered pieces can rotate into.
+Screen origin is chosen to roughly center the canvas: the well
+in columns 0-9, hold and next queue in columns 12-15, plus
+extra borders below and to the sides.
 
-The `8`s are also `plot`ted on screen. Bottom left origin is
-at physical row 22 column 13 so the whole canvas is roughly
-screen-centered, with hold and next pieces off to the right
-`12 <= x <= 15`.
+The orange value `8` from earlier can be [`lock`ed][loc] into
+the 4 well positions if not `hit?`-detected, or `plot`ted on
+screen. These use memory indexing `th` words: `0 th-w` gives
+the address of the **(0,0)th space in the well.**
 
-[pre]: #precomputation
+```forth
+0 th-w h. well h.
+ca00 ca00 ok
+$0405 th-w h. #45 + well + h.
+ca2d ca2d ok
+$0405 th-c h. -4 40* 5 + colormem + h.
+dae2 dae2 ok
+0 th-q h. 3 th-q h. ( queue head/tail )
+caee caed ok
+```
+
+[pre]: #compile-blocks-p
 [loc]: https://tetris.wiki/Glossary#L
 
 We'll start by defining data compilation shorthands:
 
-### Data Words `c: p:`
+### Data words `c: p:`
 
 ```forth
 : n: ( *'-*) parse-name evaluate ;
@@ -123,8 +136,6 @@ itself, where I've compiled 7 bytes. C64 color codes for 7
 Tetris pieces, in my preferred TTC color scheme (I = 3 cyan
 etc). Without the shorthand I could have just written this as:
 `create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
-
-<a name="precomputation"></a>
 
 ```forth
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
@@ -159,9 +170,14 @@ p: 01 02 03 13  03 02 12 22  \ l.
 ```
 
 `blocks (-a)` gives the `a`ddress of the table. Again I could
-have written this without shorthand `create blocks -2 , -1 , 0
-, 1 , 0 , $100 , $200 , $300 , ( etc etc )` but the goal was
+have written this without shorthand as below but the goal was
 for the data in the source to be compact and easier to read.
+
+```forth
+create blocks \ compiled result values:
+-2 , -1 , 0 , 1 , 0 , $100 , $200 , $300 ,
+( etc etc )
+```
 
 The ASCII-art comments depict the first orientation of each
 shape, [TGM-style pointy-end-down][ars] (please click, there
@@ -189,11 +205,14 @@ index into the blocks table, calls `p@` to scan out 4
 `p`ositions, and then a `c`olor.
 
 Besides the assembly `w! p@`, the rest of the program is Forth
-and is just fast enough for mostly full 50fps during normal
-play (Kernal interrupts eat every fifth-ish frame and landing a
-piece takes like 3 or 4 but I'm okay with that).
+and is just fast enough for [mostly full 50fps][per] during
+normal play.
+
+[per]: #performance
 
 ## Touring the Rest
+
+In code order, so difficulty varies wildly.
 
 ### `>10+>`
 
@@ -222,14 +241,12 @@ continues executing the code, now in free memory, pushing the
 which recompiles the source.
 
 In most Forths, execution would then try to return from
-`included` back to `redo` code that doesn't exist any more and
-the system would crash in a fireball. `redo` as written here
-relies on the fact that durexForth is subroutine-threaded and
-tail-call optimized, so the call to `included` is instead a
-jump, and when it's done it returns to the interpreter. Since
-the game variables are in high memory outside the dictionary
-you can immediately resume a game in progress with the new
-code.
+`included` back to `redo` code that might have moved, crashing
+the system in a fireball. DurexForth, however, optimizes the
+tail-call into a jump, so `included` returns directly to the
+interpreter safely. The game variables outside the dictionary
+then let you immediately resume a game in progress with the
+new code.
 
 ### `profile`
 
@@ -242,12 +259,13 @@ create bx  $d020 eor, $d020 sta, rts,
   if $4d else $60 then bx c! ;
 ```
 
-The code at `bx` touches the C64 border color hardware register
-`$d020`. `profile` adjusts the latest word to point to new
+The code at `bx` exclusive-ors the C64 border color register
+at `$d020`. `profile` adjusts the latest word to point to new
 code: `lda #color  jsr bx  jsr oldcode  lda #color  jmp bx`,
-instrumenting the word with border-flipping behavior for visual
-time inspection while framestepping. The phrase `name>string +`
-addresses the code field stored after the name.
+instrumenting the word with border-flipping behavior for
+visual time inspection while framestepping. The phrase
+`name>string +` addresses the code field stored after the
+name.
 
 `prof` patches the first instruction at `bx` into either an
 `eor` or `rts`, enabling or disabling it.
@@ -287,10 +305,9 @@ easier.
 : new ( -) entropy init r ;
 ```
 
-Starting a `new` game fetches 16 bits (though endian-backwards)
-of the [jiffy counter][jif] to seed the game state then enters
-the main loop, which is named `r` for easy typing by the
-player.
+Starting a `new` game fetches part of the [jiffy counter][jif]
+to seed the game state then enters the main loop, which is
+named `r` for easy typing by the player.
 
 The initial queue mimics [TGM randomizer][ran] behavior. First
 the queue is [S, Z, S, random I/J/L/T], then after flushing
@@ -365,24 +382,47 @@ it's strictly easier than TGM in that sense.
 [wal]: https://tetris.wiki/Wall_kick
 [flo]: https://tetris.wiki/Floor_kick
 
-## Ghost Piece
+## Performance
 
-One missing feature I lament is the [ghost piece][gho] (and the
-[instant drop][dro] that it enables). I doubt it's possible to
-fit in the frame budget without a large rearchitecting or
-rewrite in mostly assembly. Just not enough cycles to calculate
-so many `piece`s.
+The PAL C64 has a ~19,700 cycle budget per 50Hz frame.
+Estimated cycle costs, eyeballing `1 prof` color bands vs
+8-line screen rows, ~500 cycles per:
+
+- 750 = `piece`.
+- 2500-3000 = `hit?`.
+- 3250-3750 = `piece hit?` total.
+- 70-1400 = KERNAL interrupt. Rolls through the frame,
+  stepping on `sync` and dropping 1 frame per 4 or 5.
+- 2500 = idle `draw step` (heaps of margin).
+- 19000 = hold `j` to rotate every frame (very tight).
+- maybe 3-4 entire frames = `land`. it's a lot of work, but I
+  don't want to spend lots of complexity spreading it across
+  frames. The stutter is acceptable between pieces IMO.
+
+## What's Missing?
+
+### Score
+
+`lines` count progresses through the gravity frames table but
+no scoring beyond that. The performance cost of computing
+digits, the complexity cost of BCD, the digits on-screen
+interfering with interpreter experimentation, just thinking
+about it doesn't spark joy in me.
+
+### Ghost Piece
+
+I lament the missing [ghost piece][gho] and the [instant
+drop][dro] that it enables. It's not possible to fit in the
+frame budget as currently written. Not enough cycles to check
+up to twenty `piece hit?`s.
 
 [gho]: https://tetris.wiki/Ghost_piece
 [dro]: https://tetris.wiki/Drop
 
-One approach I've considered is precalculating all possible
-ghosts of the current piece at entry time. Some rough mental
-math and I think it might cost 10+ish frames plus huge code
-complexity.
-
-I've seen NES Tetrises with the feature but again it'd probably
-need an entire assembly rewrite or some sophisticated
-caching/precalcing algorithm I've no idea about.
+Some approaches: caching, precalcing, incremental, probably
+more. Some rough mental math and I think it might cost 10+ish
+frames to compute all ghosts at entry time. I've seen NES
+Tetrises with the feature but the complexity cost easily
+outspends my joy budget.
 
 <a name="end-of-readme"></a>
