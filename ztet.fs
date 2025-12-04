@@ -117,7 +117,7 @@ create frames 5 c: 33 25 21 17 15
 4 . \ core: vars, index, fetch, store.
 
 : var+ ( au'-a) over value + ;
-$ca00 \ global game variables:
+$cc00 \ global game variables:
 210 var+ well \ 21x10 visible playarea.
 20 var+ spill \ 2 rows above screen.
 0 var+ roof   \ address after. values:
@@ -265,5 +265,5 @@ cr ." any other key to pause. " cr ;
 .( words: help new r  )
 
 : dd ( -) bg #all d! draw ;
-: ss ( -) well $c800 size move ;
-: ll ( -) $c800 well size move ;
+: ss ( -) well $ce00 size move ;
+: ll ( -) $ce00 well size move ;

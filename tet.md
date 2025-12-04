@@ -1,6 +1,4 @@
-[tet.fs][src] is extremely dense, as its intended audience is
-just myself. This README, though, tries to be a guided tour
-for less longbearded folk.
+[tet.fs][src] is extremely dense, as its intended audience is just myself. This README, though, aims for less longbearded folk: quick start, overview, deep dive, code tours, dev reflections. Perhaps overloaded - feel free to jump around.
 
 ## Trying It Out
 
@@ -16,6 +14,7 @@ After compiling, type `help` to see keys, `new` to play,
 
 [src]: #end-of-readme
 [dur]: https://github.com/jkotlinski/durexforth
+[vic]: https://vice-emu.sourceforge.io/
 [per]: #performance-and-tradeoffs
 
 ## A C64 Tetris in Forth
@@ -47,7 +46,7 @@ I use compact stack comments to fit the cramped C64 screen:
 
 ## Diving In
 
-The heart of this program is the `piece` word that computes
+The `piece` word is the heart of this program. It computes
 block positions from a piece description. Here I ask for a
 piece centered on entry position near the top of the well,
 rotated twice, shaped like a J (shape index 1):
@@ -62,9 +61,9 @@ Packed hex `$yyxx` coordinates exist in three spaces:
 - **Blockspace:** `0 <= y <= 3, -2 <= x <= 1` <br>
   `$0000` = piece center to compute blocks and check lines.
 - **Wellspace `th-w`:** `0 <= y <= 22, 0 <= x <= 9` <br>
-  `$0000` = bottom left of playfield.
+  `$0000` = bottom left of playfield of `land`ed blocks.
 - **Screenspace `th-c`:** `0 <= y <= 20, 0 <= x <= 14` <br>
-  `$0000` = screen row 22 col 13 near bottom left of 21x19
+  `$0000` = screen row 22 column 13 near bottom left of 21x19
   canvas, corresponding to well origin with hold and next
   queue on right `11 <= x <= 14`.
 
@@ -79,7 +78,7 @@ gives the address of the **(0,0)th space in the well.**
 ```forth
 0 th-w h. well h.
 ca00 ca00 ok
-$0405 th-w h. #45 + well + h.
+$0405 th-w h. #45 well + h.
 ca2d ca2d ok
 $0405 th-c h. -4 40* 5 + colormem + h.
 dae2 dae2 ok
@@ -91,6 +90,8 @@ caee caed ok
 
 ### Data Shorthands `c: p:`
 
+**Note:** You might want to refer to [the source][src] in a separate tab then Ctrl-F `5 .` to jump to:
+
 ```forth
 : n: ( *'-*) parse-name evaluate ;
 : c: ( u'-) 0 do n: c, loop ;
@@ -98,16 +99,16 @@ create colors 7 c: 3 8 6 4 5 2 7
 ```
 
 `n: (*'-*)` asks the interpreter to parse `'` and interpret a
-word. Since it could do literally anything I notate its effect
-with `*`s but it's intended to parse number literals for
-compiling data.
+word. Since it could do literally anything I notate its stack
+effect with `*`s but it's intended to parse number literals
+for compiling data.
 
 `c: (u'-)` loops `u` times, calling `n:` to parse a value and
 `c,` to compile a character (i.e. byte) to memory.
 
-`colors (-a)`, a `create`d word, pushes the `a`ddress after
-itself, where I've compiled 7 bytes. C64 color codes for 7
-Tetris pieces, in my preferred TTC color scheme. Without the shorthand I could have just written this as:
+`colors (-a)`, a `create`d word, pushes the `a`ddress of a
+table of 7 color code bytes in the TTC color scheme. Without
+the shorthand I could have just written this as:
 `create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
 
 ```forth
@@ -122,8 +123,8 @@ may not contain a block. Negative x borrows from the y coord
 but `hit?` bounds checks before you can corrupt memory outside
 well and screenspace.
 
-`p: ('-)` loops 8 times, parsing hex literals `n:`, expanding
-`>p` and compiling `,` them.
+`p: ('-)` loops 8 times, parsing, expanding, and compiling hex
+literals with `n: >p ,`.
 
 ### The `blocks` Table
 
@@ -157,26 +158,35 @@ code.
 [ars]: https://tetris.wiki/Arika_Rotation_System
 
 ```forth
+\ \ w = zp temp, lsb/msb,x = zp stack.
+\ \ p@ scan table, add center (p)osition.
+\ : w! ( a-) [ lsb ldy,x w sty, msb ldy,x
+\   w 1+ sty, inx, 0 ldy,# ] ;
+\ : p@ ( p-pp) dup [ clc, w lda,(y) iny,
+\   lsb 1+ dup adc,x sta,x w lda,(y) iny,
+\   msb 1+ dup adc,x sta,x ] ;
 : p@ ( pa-ppa) dup >r @ over + swap r> 2+ ;
+
+\ 7 shapes 4 turns 4 blocks 2 bytes.
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
   blocks + p@ p@ p@ p@ 2drop r>
   colors + c@ ;
 ```
 
-For speed sake the table scanning word pair `w! (a-) p@ (p-pp)`
-are written in assembly but for pedagogy sake I present here an
+For speed sake the table scan words `w! (a-) p@ (p-pp)` are
+written in assembly but for pedagogy sake I present above an
 older combined Forth definition of `p@ (pa-ppa)`.
 
 `p@ (pa-ppa)` takes a piece center position `p1` `$yyxx`, an
 address in the blocks table `a1`, and fetches `@` and adds `+`
 one cell of the table giving computed block position `p2`,
 keeping the piece center `p3=p1`, and moving to the next table
-address `a2=a1+2` ready to fetch the next block. 
+address `a2=a1+2` ready to fetch the next block.
 
-The common idiom `>r phrase r>` saves a value to the return
+The Forth idiom `>r phrase r>` saves a value to the return
 stack, allowing you to apply a `phrase` to the values
-underneath it. The name `>10+>` is meant to evoke it, though
-it uses `swap`s for speed.
+underneath it. Another word, `>10+>`, is named to evoke this
+idiom, though it uses `swap`s for speed.
 
 `piece (pts-ppppc)` takes a center `p`osition `$yyxx`, `t`urn
 count `0-3`, and `s`hape index `0-6`, combines `t` and `s` to
@@ -293,9 +303,12 @@ In most Forths, execution would then try to return from
 `included` back to `redo` code that might have moved, crashing
 the system in a fireball. DurexForth, however, optimizes the
 tail-call into a jump, so `included` returns directly to the
-interpreter safely. The game variables outside the dictionary
-then let you immediately resume a game in progress with the
-new code.
+interpreter safely.
+
+You can then **resume a game in progress with the new code**
+since the variables are outside the dictionary at `$cc00`,
+chosen to overlap unused hi-res graphics, just after `v`'s
+buffer.
 
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
@@ -306,12 +319,15 @@ create bx  $d020 eor, $d020 sta, rts,
   if $4d else $60 then bx c! ;
 ```
 
-The code at `bx` eor-toggles the C64 border color register at
-`$d020`. `profile` adjusts the latest word to point to new
-code: `lda #color  jsr bx  jsr oldcode  lda #color  jmp bx`,
-instrumenting the word with border-flipping behavior for
-[perf measurement][per]. The phrase `name>string +` addresses
-the code field stored after the name.
+The code at `bx` ("border xor") toggles the
+[C64 border color register][bor] at `$d020`.
+`profile` adjusts the latest word to point to new code:
+`lda #color  jsr bx  jsr oldcode  lda #color  jmp bx`,
+instrumenting the word with border-flipping behavior for [perf
+measurement][per]. The phrase `name>string +` addresses the
+code field stored after the name.
+
+[bor]: https://www.c64-wiki.com/wiki/53280
 
 `prof` patches the first instruction at `bx` into either an
 `eor` or `rts`, enabling or disabling it.
