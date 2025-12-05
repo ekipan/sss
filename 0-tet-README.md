@@ -1,6 +1,7 @@
-(TODO screenshots)
+# A 50fps Tetris in Forth for the Commodore 64.
+_(No sound.)_
 
-A 50fps Tetris in Forth for the Commodore 64. _(No sound.)_
+(TODO screenshots)
 
 ## Trying It Out
 
@@ -31,4 +32,3 @@ open for cross-reference.
 [per]: ./DESIGN.md#performance-and-tradeoffs
 
 <!-- end of README.md -->
-

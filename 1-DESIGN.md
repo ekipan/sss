@@ -10,10 +10,7 @@ See the README to [jump in and play][rea].
 [src]: ./tet.fs
 [rea]: ./README.md
 
-## What Is It?
-
-A C64 Tetris in Forth that mostly succeeds at full 50fps
-performance.
+## A C64 Tetris in Forth
 
 **Spec:** I've played tons of The Tetris Company (TTC) games,
 I strongly admire Tetris The Grandmaster (TGM), plus platform
