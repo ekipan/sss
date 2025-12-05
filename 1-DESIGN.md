@@ -1,16 +1,21 @@
-**Important:** [tet.fs][src] is UPPERCASE with CRLF line
-endings to support my wacky workflow (VICE's host filesystem
-feature, despite no official durexForth support). I excerpted
-it as lowercase below and am dreading the work (and
-READABILITY LOSS) of making it consistent. Sorry for the extra
-burden.
+<!-- TODO **Will become** true after I migrate to a repo:
+> ![NOTE]
+> [tet.fs][src] has CRLF line endings to support my wacky
+> workflow (VICE's host filesystem feature, despite no
+> official durexForth support). It's a bit silly.
+-->
+
+# A C64 Tetris in Forth
+
+The main source [tet.fs][src] is extremely dense, as its
+intended audience is just myself. This tour, however, aims for
+less longbearded folk, with overview, implementation detail,
+tradeoff reflections, etc. 
 
 See the README to [jump in and play][rea].
 
-[src]: ./tet.fs
-[rea]: ./README.md
-
-## A C64 Tetris in Forth
+[src]: #file-2-tet.fs
+[rea]: #file-0-tet-README.md
 
 **Spec:** I've played tons of The Tetris Company (TTC) games,
 I strongly admire Tetris The Grandmaster (TGM), plus platform
@@ -25,6 +30,7 @@ Forth is an old and grumpy programming language that I adore.
 subroutines are called "words" and operate on a stack of
 values.
 
+[dur]: https://github.com/jkotlinski/durexforth
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
 
@@ -84,8 +90,9 @@ caee caed ok
 
 ### Data Shorthands `c: p:`
 
-**Note:** You might want to refer to [the source][src] in a
-separate tab then Ctrl-F `5 .` to jump to:
+> [!NOTE]
+> You might want to refer to [the source][src] in a
+> separate tab then Ctrl-F `5 .` to jump to:
 
 ```forth
 : n: ( *'-*) parse-name evaluate ;
@@ -305,9 +312,6 @@ since the variables are outside the dictionary at `$cc00`,
 chosen to overlap unused hi-res graphics, just after `v`'s
 buffer.
 
-<img alt="A profiling example across 20+ frames."
-  src="./profile.png" width="200" align="right"/>
-
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
@@ -316,6 +320,11 @@ create bx  $d020 eor, $d020 sta, rts,
 : prof ( enable-time-profiling? -- )
   if $4d else $60 then bx c! ;
 ```
+
+<!-- TODO
+<img alt="Screenshots: example profile across 20+ frames."
+  src="./profiler.png" align="right" style="max-width: 25%"/>
+-->
 
 The code at `bx` ("border xor") toggles the
 [C64 border color register][bor] at `$d020`.
@@ -356,28 +365,27 @@ easier.
 
 ## Performance and Tradeoffs
 
-The PAL C64 has a ~19,700 cycle budget per 50Hz frame.
-Ballpark cycle costs, eyeballing `1 prof` color bands vs
-8-line screen rows of ~500 cycles:
+The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
+costs, eyeballing `1 prof` color bands:
 
-- **Frame% (Cycles) While a Piece is in Play**
-- 0-7% (70-1400) KERNAL interrupt. Rolls through the frame,
-  stepping on `sync` and dropping 1 frame every 4 or 5.
-- 13% (2500) idle `draw step`, tons of margin.
-- 17-19% (3250-3750) `piece hit?` move/gameover check.
-- 95% (18800) hold `j` to rotate every frame, very tight.
+| Frame% | While a Piece is in Play |
+|--------|--------------------------|
+| 0-7%   | KERNAL interrupt. Rolls through the frame, stepping on `sync` and dropping 1 frame every 4 or 5. |
+| 13%    | idle `draw step`, tons of margin. |
+| 17-19% | `piece hit?` move/gameover check. |
+| 95%    | hold `j` to rotate every frame, very tight. |
 
-- **Frame% After Landing a Piece (+/- maybe 10%)**
-- 150-250% `land`, depending on how much of the well `mark`
-  scans and how many times `qnext` re-rolls. Then one of:
-- 105% `#next d! draw` if no lines, or:
-- 140% `#well d! draw` to display marked lines,
-  then 11 idle `%stop` frames, then:
-- 160% `sweep` to erase marked lines and:
-- 260% `#all d! draw` to redraw most of the screen.
+| Frame%   | After Landing a Piece |
+|----------|-----------------------|
+| 150-250% | `land`, depending on how much of the well `mark` scans and how many times `qnext` re-rolls. Then one of: |
+| 105%     | `#next d! draw` if no lines, or: |
+| 140%     | `#well d! draw` to show marked lines, then 11 idle `%stop` frames, then: |
+| 160%     | `sweep` to erase marked lines and: |
+| 260%     | `#all d! draw` to redraw most of the screen. |
 
-I might be able to spread this work across frames to reduce
-well and queue flicker but the complexity isn't worth it.
+Table 2 is less confident, +/- maybe 10%. I might be able to
+spread work across frames to reduce well and queue flicker but
+the complexity isn't worth it.
 
 ### Sound
 

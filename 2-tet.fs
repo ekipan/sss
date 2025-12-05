@@ -1,269 +1,269 @@
-\ \ TETRIS FOR DUREXFORTH 4.
-\ NUMBERED 6->1 FOR COMPILE COUNTDOWN.
-\ IF YOU'RE DETERMINED TO READ THIS,
-\ START W/ THE BIG SECTION 5 COMMENT.
+\ \ tetris for durexforth 4.
+\ numbered 6->1 for compile countdown.
+\ if you're determined to read this,
+\ start w/ the big section 5 comment.
 
-DECIMAL MARKER --TET--
+decimal marker --tet--
 
-10 VALUE #10  4 VALUE 4         \ ARITH
-: 40- 40 - ;  : >10+> SWAP #10 + SWAP ;
-: 4* 2* 2* ;  : 10* DUP 4* + 2* ;
-: 0* DROP 0 ; : 40* 10* 4* ;
+10 value #10  4 value 4         \ arith
+: 40- 40 - ;  : >10+> swap #10 + swap ;
+: 4* 2* 2* ;  : 10* dup 4* + 2* ;
+: 0* drop 0 ; : 40* 10* 4* ;
 
-6 . \ TOOLS AND NONPORTABLE.
+6 . \ tools and nonportable.
 
-: H. ( U-) HEX U. DECIMAL ;  \ DEVTOOLS
-: REDO ( -) --TET-- S" TET.FS"
-  INCLUDED ( MUST TCO! SAFE W/ DF. ) ;
-CREATE BX  $D020 EOR, $D020 STA, RTS,
-: PROFILE ( COLOR -- ) HERE >R  DUP
-  LDA,# BX JSR, LATEST >XT JSR, LDA,#
-  BX JMP,  R> LATEST NAME>STRING + ! ;
-: PROF ( ENABLE-TIME-PROFILING? -- )
-  IF $4D ELSE $60 THEN BX C! ;
-\ : PROF DROP ; : PROFILE DROP ;
+: h. ( u-) hex u. decimal ;  \ devtools
+: redo ( -) --tet-- s" tet.fs"
+  included ( must tco! safe w/ df. ) ;
+create bx  $d020 eor, $d020 sta, rts,
+: profile ( color -- ) here >r  dup
+  lda,# bx jsr, latest >xt jsr, lda,#
+  bx jmp,  r> latest name>string + ! ;
+: prof ( enable-time-profiling? -- )
+  if $4d else $60 then bx c! ;
+\ : prof drop ; : profile drop ;
 
-: ERASE ( AU-) 0 FILL ;          \ LANG
-: ;THEN  POSTPONE EXIT POSTPONE THEN ;
-IMMEDIATE
-: RDROP ( R:A-) PLA, PLA, ; IMMEDIATE
-: SPLIT ( $YYXX -- $XX $YY ) [ 0 LDY,#
-  MSB LDA,X MSB STY,X ] PUSHYA ;
+: erase ( au-) 0 fill ;          \ lang
+: ;then  postpone exit postpone then ;
+immediate
+: rdrop ( r:a-) pla, pla, ; immediate
+: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
+  msb lda,x msb sty,x ] pushya ;
 
-: SYNC ( -) [ 213 LDA,# $D012 CMP, \ HW
-  -5 BNE, ] ;  6 PROFILE
-: KBINIT ( -) $B80 $28A ! 0 $C6 C! ;
-: KBPOLL ( -C; W/ FAST REPEAT HACK.)
-  KEY? IF 1 $28B C! KEY ;THEN 0 ;
-: ENTROPY ( -U) $A1 @ DUP 0= + ;
+: sync ( -) [ 213 lda,# $d012 cmp, \ hw
+  -5 bne, ] ;  6 profile
+: kbinit ( -) $b80 $28a ! 0 $c6 c! ;
+: kbpoll ( -c; w/ fast repeat hack.)
+  key? if 1 $28b c! key ;then 0 ;
+: entropy ( -u) $a1 @ dup 0= + ;
 
-13 22 ( COL ROW ) 40* + DUP    \ SCREEN
-$D800 + CONSTANT COLORMEM
-$0400 + CONSTANT TILEMEM
-: BG ( -) 0 $D020 ( BLACK BG+BORDER ) !
-  11 $286 ( GRAY FG ) C! PAGE TILEMEM
-  38 ( NEXTROW-2 ) + 21 ( ROWS ) 0 DO
-  DUP 19 $A0 ( RVSPACE ) FILL 40- LOOP
-  ( TOP ) 2+ #10 $A0 FILL ;
-: PAINT ( AA-) COLORMEM BEGIN
-  2DUP #10 MOVE >10+> 40-
-  OVER 3 PICK = UNTIL  DROP 2DROP ;
-: TH-C ( P-A) SPLIT 40* - COLORMEM + ;
-: P! ( PC-C) DUP ROT TH-C C! ;
-: PLOT ( PPPPC-) P! P! P! P! DROP ;
-: RUB ( P-) TH-C 2 - DUP 4 ERASE 40-
-  4 ERASE ;
+13 22 ( col row ) 40* + dup    \ screen
+$d800 + constant colormem
+$0400 + constant tilemem
+: bg ( -) 0 $d020 ( black bg+border ) !
+  11 $286 ( gray fg ) c! page tilemem
+  38 ( nextrow-2 ) + 21 ( rows ) 0 do
+  dup 19 $a0 ( rvspace ) fill 40- loop
+  ( top ) 2+ #10 $a0 fill ;
+: paint ( aa-) colormem begin
+  2dup #10 move >10+> 40-
+  over 3 pick = until  drop 2drop ;
+: th-c ( p-a) split 40* - colormem + ;
+: p! ( pc-c) dup rot th-c c! ;
+: plot ( ppppc-) p! p! p! p! drop ;
+: rub ( p-) th-c 2 - dup 4 erase 40-
+  4 erase ;
 
-\ W = ZP TEMP, LSB/MSB,X = ZP STACK.
-\ P@ SCAN TABLE, ADD CENTER (P)OSITION.
-: W! ( A-) [ LSB LDY,X W STY, MSB LDY,X
-  W 1+ STY, INX, 0 LDY,# ] ;
-: P@ ( P-PP) DUP [ CLC, W LDA,(Y) INY,
-  LSB 1+ DUP ADC,X STA,X W LDA,(Y) INY,
-  MSB 1+ DUP ADC,X STA,X ] ;
+\ w = zp temp, lsb/msb,x = zp stack.
+\ p@ scan table, add center (p)osition.
+: w! ( a-) [ lsb ldy,x w sty, msb ldy,x
+  w 1+ sty, inx, 0 ldy,# ] ;
+: p@ ( p-pp) dup [ clc, w lda,(y) iny,
+  lsb 1+ dup adc,x sta,x w lda,(y) iny,
+  msb 1+ dup adc,x sta,x ] ;
 
-5 . \ DATA, PIECE DEFINITION.
+5 . \ data, piece definition.
 
-\ (') MEANS PARSE, (*) MEANS VARYING.
-: N: ( *'-*) PARSE-NAME EVALUATE ;
-: C: ( U'-) 0 DO N: C, LOOP ;
-: >P ( C-P) DUP 4* 4* OR $F0F AND 2 - ;
-: P:  HEX 8 0 DO N: >P , LOOP DECIMAL ;
+\ (') means parse, (*) means varying.
+: n: ( *'-*) parse-name evaluate ;
+: c: ( u'-) 0 do n: c, loop ;
+: >p ( c-p) dup 4* 4* or $f0f and 2 - ;
+: p:  hex 8 0 do n: >p , loop decimal ;
 
-CREATE COLORS 7 C: 3 8 6 4 5 2 7
-CREATE BLOCKS \ CENTER (C/.) AT YX=02:
-P: 00 01 02 03  02 12 22 32  \ IICI
-P: 00 01 02 03  02 12 22 32
-P:  03 11 12 13  01 02 12 22 \    JJJ
-P:  01 02 03 11  02 12 22 23 \     .J
-P: 01 11 12 13  02 12 22 21  \ LLL
-P: 01 02 03 13  03 02 12 22  \ L.
-P:  02 11 12 13  02 11 12 22 \    TTT
-P:  01 02 03 12  02 12 13 22 \     C
-P: 01 02 12 13  02 11 12 21  \  SS
-P: 01 02 12 13  02 11 12 21  \ SC
-P:  03 02 11 12  02 12 13 23 \    ZZ
-P:  03 02 11 12  02 12 13 23 \     CZ
-P: 01 02 11 12  01 02 11 12  \ OO
-P: 01 02 11 12  01 02 11 12  \ OC
-\ 7 SHAPES 4 TURNS 4 BLOCKS 2 BYTES.
-: PIECE ( PTS-PPPPC) DUP >R 4* + 4* 2*
-  BLOCKS + W! P@ P@ P@ P@ DROP R>
-  COLORS + C@ ;  14 PROFILE
+create colors 7 c: 3 8 6 4 5 2 7
+create blocks \ center (c/.) at yx=02:
+p: 00 01 02 03  02 12 22 32  \ iici
+p: 00 01 02 03  02 12 22 32
+p:  03 11 12 13  01 02 12 22 \    jjj
+p:  01 02 03 11  02 12 22 23 \     .j
+p: 01 11 12 13  02 12 22 21  \ lll
+p: 01 02 03 13  03 02 12 22  \ l.
+p:  02 11 12 13  02 11 12 22 \    ttt
+p:  01 02 03 12  02 12 13 22 \     c
+p: 01 02 12 13  02 11 12 21  \  ss
+p: 01 02 12 13  02 11 12 21  \ sc
+p:  03 02 11 12  02 12 13 23 \    zz
+p:  03 02 11 12  02 12 13 23 \     cz
+p: 01 02 11 12  01 02 11 12  \ oo
+p: 01 02 11 12  01 02 11 12  \ oc
+\ 7 shapes 4 turns 4 blocks 2 bytes.
+: piece ( pts-ppppc) dup >r 4* + 4* 2*
+  blocks + w! p@ p@ p@ p@ drop r>
+  colors + c@ ;  14 profile
 
-\ A PIECE IS: CENTER (P)OSITION HEX
-\ $YYXX FROM BOTTOM LEFT, CLOCKWISE
-\ (T)URNS COUNT 0-3, AND (S)HAPE INDEX
-\ 0-6 IJLTSZO. STORED TO GAMESTATE:
-\   ENQUEUE (S-) ->TAIL, HEAD->PLAYER.
-\   ENTER (-) ROW 19 COL 5 TURNS 0.
-\   CURR+! (PT-) MOVE/ROTATE PLAYER.
-\   HOLD (-) SWAP S AND RESERVE S.
-\   >OLD (-) REMEMBER DRAWN PIECE.
-\ FETCHED OUT OF GAMESTATE:
-\   OLD@ (-PTS) TO ERASE FROM SCREEN.
-\   CURR (-PTS) IN PLAY.
-\   CURR+ (PT-PTS) TO CHECK A MOVE.
-\ THEN BLOCK POSITIONS COMPUTED:
-\   PIECE (PTS-PPPPC) AND (C)OLOR.
-\   HIT? (PPPPC-F) CHECK PLAYFIELD.
-\   LOCK (PPPPC-) STORE TO PLAYFIELD.
-\   PLOT (PPPPC-) STORE TO SCREEN.
+\ a piece is: center (p)osition hex
+\ $yyxx from bottom left, clockwise
+\ (t)urns count 0-3, and (s)hape index
+\ 0-6 ijltszo. stored to gamestate:
+\   enqueue (s-) ->tail, head->player.
+\   enter (-) row 19 col 5 turns 0.
+\   curr+! (pt-) move/rotate player.
+\   hold (-) swap s and reserve s.
+\   >old (-) remember drawn piece.
+\ fetched out of gamestate:
+\   old@ (-pts) to erase from screen.
+\   curr (-pts) in play.
+\   curr+ (pt-pts) to check a move.
+\ then block positions computed:
+\   piece (pts-ppppc) and (c)olor.
+\   hit? (ppppc-f) check playfield.
+\   lock (ppppc-) store to playfield.
+\   plot (ppppc-) store to screen.
 
-CREATE FRAMES 5 C: 33 25 21 17 15
-11 C: 13 12 10 8 7 6 5 4 3 3 2
-: GRAV ( U-U) 15 MIN FRAMES + C@ ;
+create frames 5 c: 33 25 21 17 15
+11 c: 13 12 10 8 7 6 5 4 3 3 2
+: grav ( u-u) 15 min frames + c@ ;
 
-4 . \ CORE: VARS, INDEX, FETCH, STORE.
+4 . \ core: vars, index, fetch, store.
 
-: VAR+ ( AU'-A) OVER VALUE + ;
-$CC00 \ GLOBAL GAME VARIABLES:
-210 VAR+ WELL \ 21X10 VISIBLE PLAYAREA.
-20 VAR+ SPILL \ 2 ROWS ABOVE SCREEN.
-0 VAR+ ROOF   \ ADDRESS AFTER. VALUES:
-\ 0 EMPTY, 1 MARKED, 2-8 BLOCK COLORS.
-2 VAR+ POS   \ $YYXX FROM BOTTOM LEFT.
-1 VAR+ TURNS \ 0-3 CLOCKWISE.
-1 VAR+ SHAPE \ 0-6 IJLTSZO.
-1 VAR+ HELD  \ 0-6 WITH PIN BIT $08.
-4 VAR+ QUEUE \ 0-6 NEXT RANDOM SHAPES.
-2 VAR+ QIDX  \ QUEUE HEAD, USED MOD 4.
-2 VAR+ SEED  \ FOR RANDOM GENERATOR.
-2 VAR+ LINES \ FOR GRAVITY CURVE.
-2 VAR+ %GRAV \ N->0 FALL TIMER.
-2 VAR+ %STOP \ N->0 LINE SWEEP TIMER.
-1 VAR+ SIG   \ 99 IF INITIALIZED.
-WELL - CONSTANT SIZE
+: var+ ( au'-a) over value + ;
+$cc00 \ global game variables:
+210 var+ well \ 21x10 visible playarea.
+20 var+ spill \ 2 rows above screen.
+0 var+ roof   \ address after. values:
+\ 0 empty, 1 marked, 2-8 block colors.
+2 var+ pos   \ $yyxx from bottom left.
+1 var+ turns \ 0-3 clockwise.
+1 var+ shape \ 0-6 ijltszo.
+1 var+ held  \ 0-6 with pin bit $08.
+4 var+ queue \ 0-6 next random shapes.
+2 var+ qidx  \ queue head, used mod 4.
+2 var+ seed  \ for random generator.
+2 var+ lines \ for gravity curve.
+2 var+ %grav \ n->0 fall timer.
+2 var+ %stop \ n->0 line sweep timer.
+1 var+ sig   \ 99 if initialized.
+well - constant size
 
-: PINNED? ( -F) HELD C@ 8 AND ;
-: HELD@ ( -S) HELD C@ 7 AND ;
-: HELD! ( S-) HELD C! ;
-: UNPIN ( -) HELD@ HELD! ;
-: HOLD ( -) HELD@  SHAPE C@ 8 OR HELD!
-  SHAPE C! ;
+: pinned? ( -f) held c@ 8 and ;
+: held@ ( -s) held c@ 7 and ;
+: held! ( s-) held c! ;
+: unpin ( -) held@ held! ;
+: hold ( -) held@  shape c@ 8 or held!
+  shape c! ;
 
-: TH-W ( P-A) SPLIT 10* + WELL + ;
-: ROW ( -A) POS 1+ C@ 10* WELL + ;
-: CURR ( -PTS) POS @ TURNS @ SPLIT ;
-: T@+ ( T-T) TURNS C@ + 3 AND ;
-: CURR+ ( PT-PTS) SWAP POS @ +
-  SWAP T@+  SHAPE C@ ;
-: CURR+! ( PT-) T@+ TURNS C!  POS +! ;
-: ENTER ( -) $1305 POS ! 0 TURNS C! ;
+: th-w ( p-a) split 10* + well + ;
+: row ( -a) pos 1+ c@ 10* well + ;
+: curr ( -pts) pos @ turns @ split ;
+: t@+ ( t-t) turns c@ + 3 and ;
+: curr+ ( pt-pts) swap pos @ +
+  swap t@+  shape c@ ;
+: curr+! ( pt-) t@+ turns c!  pos +! ;
+: enter ( -) $1305 pos ! 0 turns c! ;
 
-: TH-Q ( I-A) QIDX C@ + 3 AND QUEUE + ;
-: ENQUEUE ( S-) 1 QIDX +!  3 TH-Q C!
-  0 TH-Q C@ SHAPE C! ;
+: th-q ( i-a) qidx c@ + 3 and queue + ;
+: enqueue ( s-) 1 qidx +!  3 th-q c!
+  0 th-q c@ shape c! ;
 
-: ROLL ( U-U; 0 <= U2 < U1.) SEED @
-  31421 * 6927 + DUP SEED !  UM* NIP ;
-: INIT ( U-) WELL SIZE ERASE  SEED !
-  4 ENQUEUE 5 ENQUEUE 4 ENQUEUE 4 ROLL
-  ENQUEUE  5 HELD!  ENTER  99 SIG C! ;
+: roll ( u-u; 0 <= u2 < u1.) seed @
+  31421 * 6927 + dup seed !  um* nip ;
+: init ( u-) well size erase  seed !
+  4 enqueue 5 enqueue 4 enqueue 4 roll
+  enqueue  5 held!  enter  99 sig c! ;
 
-3 . \ DRAW, WITH DIRTY BITSET.
+3 . \ draw, with dirty bitset.
 
-\ DRAW BITS D?      \ EVENT BITSETS D!
-$01 CONSTANT #DEL   $03 CONSTANT #GO
-$02 CONSTANT #CURR  $06 CONSTANT #NEXT
-$04 CONSTANT #QUEUE $0B CONSTANT #HOLD
-$08 CONSTANT #HELD  $1E CONSTANT #ALL
-$10 CONSTANT #WELL
-VARIABLE DIRTY
-: D? ( U-F) DIRTY @ AND ;
-: D! ( U-) DIRTY @ OR DIRTY ! ;
+\ draw bits d?      \ event bitsets d!
+$01 constant #del   $03 constant #go
+$02 constant #curr  $06 constant #next
+$04 constant #queue $0b constant #hold
+$08 constant #held  $1e constant #all
+$10 constant #well
+variable dirty
+: d? ( u-f) dirty @ and ;
+: d! ( u-) dirty @ or dirty ! ;
 
-VARIABLE OLD 0 ,
-: OLD@ ( -PTS) OLD @ OLD 2+ @ SPLIT ;
-: >OLD ( -) POS OLD 4 MOVE ;
+variable old 0 ,
+: old@ ( -pts) old @ old 2+ @ split ;
+: >old ( -) pos old 4 move ;
 
-\ 6: RUB (P-) PLOT (PPPPC-) PAINT (AA-)
-: SLOT ( SP) DUP RUB 0 ROT PIECE PLOT ;
-: Q ( IP-IP) OVER TH-Q C@ OVER SLOT
-  SWAP 1+ SWAP $300 - ;
-: DRAW ( -) SYNC
-  #WELL D? IF SPILL WELL PAINT THEN
-  #DEL D? IF OLD@ PIECE 0* PLOT THEN
-  #CURR D? IF CURR PIECE PLOT >OLD THEN
-  #QUEUE D? IF 1 $110D Q Q Q 2DROP THEN
-  #HELD D? IF HELD@ $050D SLOT THEN
-  0 DIRTY ! ;  6 PROFILE
+\ 6: rub (p-) plot (ppppc-) paint (aa-)
+: slot ( sp) dup rub 0 rot piece plot ;
+: q ( ip-ip) over th-q c@ over slot
+  swap 1+ swap $300 - ;
+: draw ( -) sync
+  #well d? if spill well paint then
+  #del d? if old@ piece 0* plot then
+  #curr d? if curr piece plot >old then
+  #queue d? if 1 $110d q q q 2drop then
+  #held d? if held@ $050d slot then
+  0 dirty ! ;  6 profile
 
-2 . \ RULES: QUEUE, WELL, PLAYER.
+2 . \ rules: queue, well, player.
 
-\ TGMLIKE REROLLER RNG. 4: ROLL (U-U).
-: Q? ( SI-S/SI-) TH-Q C@ OVER =
-  IF DROP RDROP THEN ;
-: QN ( -) 7 ROLL 0 Q? 1 Q? 2 Q? 3 Q?
-  ENQUEUE R> RDROP >R ;  12 PROFILE
-: QNEXT ( -) QN QN QN 7 ROLL ENQUEUE ;
-: INIT ( U-) INIT QNEXT QNEXT QNEXT ;
+\ tgmlike reroller rng. 4: roll (u-u).
+: q? ( si-s/si-) th-q c@ over =
+  if drop rdrop then ;
+: qn ( -) 7 roll 0 q? 1 q? 2 q? 3 q?
+  enqueue r> rdrop >r ;  12 profile
+: qnext ( -) qn qn qn 7 roll enqueue ;
+: init ( u-) init qnext qnext qnext ;
 
-\ COUNT, WHITEN, DELETE ROWS (A).
-: FULL? ( A-F) DUP >10+> BEGIN  DUP C@
-  WHILE  1+ 2DUP = UNTIL THEN  = ;
-: M+ ( AU-AU) OVER FULL? IF  1+ OVER
-  #10 1 FILL THEN  >10+> ;  7 PROFILE
-: MARK ( A-U) 0 M+ M+ M+ M+ NIP ;
-: S+ ( AA-AA) OVER C@ 1- IF  2DUP #10
-  MOVE #10 + THEN  >10+> ;  7 PROFILE
-: SWEEP ( -) WELL WELL BEGIN  S+ OVER
-  ROOF = UNTIL  NIP ROOF OVER - ERASE ;
+\ count, whiten, delete rows (a).
+: full? ( a-f) dup >10+> begin  dup c@
+  while  1+ 2dup = until then  = ;
+: m+ ( au-au) over full? if  1+ over
+  #10 1 fill then  >10+> ;  7 profile
+: mark ( a-u) 0 m+ m+ m+ m+ nip ;
+: s+ ( aa-aa) over c@ 1- if  2dup #10
+  move #10 + then  >10+> ;  7 profile
+: sweep ( -) well well begin  s+ over
+  roof = until  nip roof over - erase ;
 
-\ CHECK, STORE INTO WELL.
-\ REUSE OOB P AS NONZERO F:
-: H? ( PF-F) SWAP DUP  SPLIT 23 U<
-  SWAP #10 U< AND  IF TH-W C@ THEN OR ;
-: HIT? ( PPPPC-F) 0* H? H? H? H? ;
-1 PROFILE
-: L! ( PC-C) DUP ROT TH-W C! ;
-: LOCK ( PPPPC-) L! L! L! L! DROP ;
+\ check, store into well.
+\ reuse oob p as nonzero f:
+: h? ( pf-f) swap dup  split 23 u<
+  swap #10 u< and  if th-w c@ then or ;
+: hit? ( ppppc-f) 0* h? h? h? h? ;
+1 profile
+: l! ( pc-c) dup rot th-w c! ;
+: lock ( ppppc-) l! l! l! l! drop ;
 
-\ MOVE. KICK BIAS CCW>L CW>R. F HIT?
-$-100 CONSTANT DOWN
-: GO ( PT-F) 2DUP CURR+ PIECE HIT?
-  IF 2DROP 1 ;THEN  CURR+! #GO D! 0 ;
-: TK ( PT-) GO 0= IF RDROP RDROP THEN ;
-: TURNKICK ( T-) >R  0 R@ TK  R@ R@ TK
-  0 R@ - R@ TK  DOWN R@ TK  DOWN R@ +
-  R@ TK  DOWN R@ - R@ TK  RDROP ;
-: LAND ( -F) KBINIT  CURR PIECE LOCK
-  ROW MARK ?DUP IF  LINES +! 12 %STOP !
-  #WELL ELSE #NEXT THEN D!  QNEXT ENTER
-  UNPIN  CURR PIECE HIT? ;
-: FALL ( -F) DOWN 0 GO IF LAND ELSE 0
-  THEN LINES @ 3 RSHIFT GRAV %GRAV ! ;
-: TRYHOLD ( -) PINNED? IF ;THEN
-  HOLD ENTER  #HOLD D! ;
+\ move. kick bias ccw>l cw>r. f hit?
+$-100 constant down
+: go ( pt-f) 2dup curr+ piece hit?
+  if 2drop 1 ;then  curr+! #go d! 0 ;
+: tk ( pt-) go 0= if rdrop rdrop then ;
+: turnkick ( t-) >r  0 r@ tk  r@ r@ tk
+  0 r@ - r@ tk  down r@ tk  down r@ +
+  r@ tk  down r@ - r@ tk  rdrop ;
+: land ( -f) kbinit  curr piece lock
+  row mark ?dup if  lines +! 12 %stop !
+  #well else #next then d!  qnext enter
+  unpin  curr piece hit? ;
+: fall ( -f) down 0 go if land else 0
+  then lines @ 3 rshift grav %grav ! ;
+: tryhold ( -) pinned? if ;then
+  hold enter  #hold d! ;
 
-1 . \ MAIN: TIMERS, INPUT.
+1 . \ main: timers, input.
 
-: HELP ( -) CR ." - GAME PAUSED -"
-CR ." ENTER [NEW] OR [R]ESUME TO PLAY."
-CR ." [SDF] MOVE [JK] ROTATE [L] HOLD."
-CR ." ANY OTHER KEY TO PAUSE. " CR ;
+: help ( -) cr ." - game paused -"
+cr ." enter [new] or [r]esume to play."
+cr ." [sdf] move [jk] rotate [l] hold."
+cr ." any other key to pause. " cr ;
 
-: TICK ( A-F) -1 OVER +! C@ 0= ;
-: STEP ( -- GAMEOVER? )
-  %STOP C@ IF %STOP TICK
-    IF SWEEP #ALL D! THEN 0 ;THEN
-  %GRAV TICK IF FALL ;THEN
-  KBPOLL 0 OF 0 ;THEN
-  'D' OF FALL ;THEN
-  'S' OF -1 0 GO 0* ;THEN
-  'F' OF 1 0 GO 0* ;THEN
-  'J' OF -1 TURNKICK 0 ;THEN
-  'K' OF 1 TURNKICK 0 ;THEN
-  'L' OF TRYHOLD 0 ;THEN
-  PAGE HELP ;  11 PROFILE
+: tick ( a-f) -1 over +! c@ 0= ;
+: step ( -- gameover? )
+  %stop c@ if %stop tick
+    if sweep #all d! then 0 ;then
+  %grav tick if fall ;then
+  kbpoll 0 of 0 ;then
+  'd' of fall ;then
+  's' of -1 0 go 0* ;then
+  'f' of 1 0 go 0* ;then
+  'j' of -1 turnkick 0 ;then
+  'k' of 1 turnkick 0 ;then
+  'l' of tryhold 0 ;then
+  page help ;  11 profile
 
-: R ( -) 99 SIG C@ <> IF ;THEN KBINIT
-  BG #ALL D! BEGIN DRAW STEP UNTIL ;
-: NEW ( -) ENTROPY INIT R ;
-' HELP START !  0 PROF
+: r ( -) 99 sig c@ <> if ;then kbinit
+  bg #all d! begin draw step until ;
+: new ( -) entropy init r ;
+' help start !  0 prof
 
-.( WORDS: HELP NEW R  )
+.( words: help new r  )
 
-: DD ( -) #ALL D! DRAW ;
-: SS ( -) WELL $CE00 SIZE MOVE ;
-: LL ( -) $CE00 WELL SIZE MOVE ;
+: dd ( -) #all d! draw ;
+: ss ( -) well $ce00 size move ;
+: ll ( -) $ce00 well size move ;

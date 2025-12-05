@@ -1,8 +1,10 @@
-# A 50fps Tetris in Forth for the Commodore 64.
+# A C64 Tetris in Forth
 
-_(No sound though.)_
+**Mostly full 50fps, but no sound.**
 
-![Tetris screenshot in VICE.](./screenshot.png)
+<!-- TODO after migrating from Gist to proper repo:
+![Tetris screenshots in VICE.](./screenshot.png)
+-->
 
 ## Trying It Out
 
@@ -18,18 +20,14 @@ After compiling, type `help` to see keys, `new` to play,
 
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
-[per]: ./DESIGN.md#performance-and-tradeoffs
+[per]: #file-1-DESIGN.md#performance-and-tradeoffs
 
 ## Further Reading
 
 If you're interested in learning how it works, start with the
-[design tour][des]. The main source [tet.fs][src] is extremely
-dense, as its intended audience is just myself. The tour,
-however, aims for less longbearded folk, with overview,
-implementation detail, tradeoff reflections, etc. Keep both
-open for cross-reference.
+[design tour][des] and cross-reference [the source][src].
 
-[src]: ./tet.fs
-[des]: ./DESIGN.md
+[src]: #file-2-tet.fs
+[des]: #file-1-DESIGN.md
 
 <!-- end of README.md -->
