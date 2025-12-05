@@ -1,23 +1,19 @@
-[tet.fs][src] is extremely dense, as its intended audience is just myself. This README, though, aims for less longbearded folk: quick start, overview, deep dive, code tours, dev reflections. Perhaps overloaded - feel free to jump around.
+**Important:** [tet.fs][src] is UPPERCASE with CRLF line
+endings to support my wacky workflow (VICE's host filesystem
+feature, despite no official durexForth support). I excerpted
+it as lowercase below and am dreading the work (and
+READABILITY LOSS) of making it consistent. Sorry for the extra
+burden.
 
-## Trying It Out
+See the README to [jump in and play][rea].
 
-It's probably easiest to load the [durexForth][dur] cartridge
-or disk into a [Commodore 64 emulator][vic] then paste the
-program directly. You could also get it onto a disk file then
-type `include tet.fs`. durexForth has a vi clone if you want
-to make a file that way: `v tet.fs<return>i<alt-insert>~ZZ`
-to paste, save, and exit in the usual VICE config.
+[src]: ./tet.fs
+[rea]: ./README.md
 
-After compiling, type `help` to see keys, `new` to play,
-`1 prof 123 init r` then framestep to [measure time][per].
+## What Is It?
 
-[src]: #end-of-readme
-[dur]: https://github.com/jkotlinski/durexforth
-[vic]: https://vice-emu.sourceforge.io/
-[per]: #performance-and-tradeoffs
-
-## A C64 Tetris in Forth
+A C64 Tetris in Forth that mostly succeeds at full 50fps
+performance.
 
 **Spec:** I've played tons of The Tetris Company (TTC) games,
 I strongly admire Tetris The Grandmaster (TGM), plus platform
@@ -28,8 +24,8 @@ stumbling on [durexForth][dur]. They're both lots of fun!
 
 Forth is an old and grumpy programming language that I adore.
 [Forth on Wikipedia][fow] and the beloved
-[Starting Forth][sta] are great places to start.
-In Forth convention we call subroutines "words."
+[Starting Forth][sta] are great places to start. In Forth we
+call subroutines "words."
 
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
@@ -72,7 +68,7 @@ pieces (`$1305` = row 19 column 5) to rotate into.
 
 The orange value `8` above can be [`lock`ed][loc] into the 4
 well positions if not `hit?`-detected, or `plot`ted on screen.
-These use memory indexing `th` words: `0 th-w` for example
+These use memory indexing `n th` words: `0 th-w` for example
 gives the address of the **(0,0)th space in the well.**
 
 ```forth
@@ -90,7 +86,8 @@ caee caed ok
 
 ### Data Shorthands `c: p:`
 
-**Note:** You might want to refer to [the source][src] in a separate tab then Ctrl-F `5 .` to jump to:
+**Note:** You might want to refer to [the source][src] in a
+separate tab then Ctrl-F `5 .` to jump to:
 
 ```forth
 : n: ( *'-*) parse-name evaluate ;
@@ -169,7 +166,7 @@ code.
 
 \ 7 shapes 4 turns 4 blocks 2 bytes.
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
-  blocks + p@ p@ p@ p@ 2drop r>
+  blocks + ( w! ) p@ p@ p@ p@ 2drop r>
   colors + c@ ;
 ```
 
@@ -333,14 +330,20 @@ code field stored after the name.
 `eor` or `rts`, enabling or disabling it.
 
 ```forth
-: sync ( -) [ 213 lda,# $d012 cmp, \ hw
+: sync ( -) [ 213 lda,# $d012 cmp,
   -5 bne, ] ;  6 profile
 ```
 
-Tradeoffs: (1) as above, hard code raster line 213: correct by
-construction. (2) parameterize on 8-bit input: incorrect for
-lines 0-54 and 256-311. (3) parameterize on 9-bit input: more
-argument and loop code.
+The `6 profile` here temporarily **undoes** the `6 profile` of
+`draw`, returning to black border while waiting for sync.
+Raster line 213 is near the bottom of the well so all drawing
+updates happen right after the scanline passes. Tradeoffs:
+
+1. hard code as above: correct by construction.
+2. parameterize on 8-bit input:
+   incorrect for lines 0-54 and 256-311.
+3. parameterize on 9-bit input: more argument and loop code.
+4. actually learn raster interrupts: I don't wanna.
 
 ```forth
 : bg ( ... ) $a0 ( rvspace ) ( ... ) ;
@@ -354,18 +357,28 @@ easier.
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame.
 Estimated cycle costs, eyeballing `1 prof` color bands vs
-8-line screen rows, ~500 cycles per:
+8-line screen rows of ~500 cycles:
 
-- 750 = `piece`.
-- 2500-3000 = `hit?`.
-- 3250-3750 = `piece hit?` total.
-- 70-1400 = KERNAL interrupt. Rolls through the frame,
-  stepping on `sync` and dropping 1 frame every 4 or 5.
-- 2500 = idle `draw step` (tons of margin).
-- 18800 = hold `j` to rotate every frame (very tight).
-- maybe 3-4 entire frames = `land`. it's a lot of work, but I
-  don't want to spend lots of complexity spreading it across
-  frames. It's between pieces, it's fine IMO.
+- **Frame% (Cycles) Description**
+- 4% (750) `piece`
+- 13-15% (2500-3000) `hit?`
+- 17-19% (3250-3750) full `piece hit?` check.
+- 0-7% (70-1400) KERNAL interrupt. <br>
+  Rolls through the frame, stepping on `sync` and dropping 1
+  frame every 4 or 5.
+- 13% (2500) idle `draw step`, tons of margin.
+- 95% (18800) hold `j` to rotate every frame, very tight.
+- 300-400% (lots) `land` <br>
+  It's a lot of work, but I don't want to spend complexity
+  spreading it across frames. It's between pieces, the
+  stutter is fine IMO.
+
+### Sound
+
+I haven't learned any SID sound programming yet, and I fear
+the extra code might strain the already cramped margins. I
+also enjoy the aesthetic of very little 6502 code. Maybe I'm
+worrying too much.
 
 ### Score
 
@@ -391,5 +404,5 @@ frames to compute all ghosts at entry time. I've seen NES
 Tetrises with the feature but the complexity cost easily
 outspends my joy budget.
 
-<a name="end-of-readme"></a>
+<!-- end of DESIGN.md -->
 
