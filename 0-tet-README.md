@@ -20,14 +20,14 @@ After compiling, type `help` to see keys, `new` to play,
 
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
-[per]: #file-1-DESIGN.md#performance-and-tradeoffs
+[per]: #performance-and-tradeoffs
 
 ## Further Reading
 
 If you're interested in learning how it works, start with the
 [design tour][des] and cross-reference [the source][src].
 
-[src]: #file-2-tet.fs
-[des]: #file-1-DESIGN.md
+[src]: #file-2-tet-fs
+[des]: #file-1-design-md
 
 <!-- end of README.md -->

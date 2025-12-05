@@ -14,8 +14,8 @@ tradeoff reflections, etc.
 
 See the README to [jump in and play][rea].
 
-[src]: #file-2-tet.fs
-[rea]: #file-0-tet-README.md
+[src]: #file-2-tet-fs
+[rea]: #file-0-tet-readme-md
 
 **Spec:** I've played tons of The Tetris Company (TTC) games,
 I strongly admire Tetris The Grandmaster (TGM), plus platform
