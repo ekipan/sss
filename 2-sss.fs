@@ -3,7 +3,7 @@
 \ if you're determined to read this,
 \ start w/ the big section 5 comment.
 
-decimal marker --tet--
+decimal marker --sss--
 
 10 value #10  4 value 4         \ arith
 : 40- 40 - ;  : >10+> swap #10 + swap ;
@@ -13,7 +13,7 @@ decimal marker --tet--
 6 . \ tools and nonportable.
 
 : h. ( u-) hex u. decimal ;  \ devtools
-: redo ( -) --tet-- s" tet.fs"
+: redo ( -) --sss-- s" sss.fs"
   included ( must tco! safe w/ df. ) ;
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
