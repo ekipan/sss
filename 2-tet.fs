@@ -1,4 +1,4 @@
-\ \ tetris for durexforth 4.
+\ \ soviet stacker for durexforth 4.
 \ numbered 6->1 for compile countdown.
 \ if you're determined to read this,
 \ start w/ the big section 5 comment.
@@ -227,10 +227,10 @@ $-100 constant down
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +
   r@ tk  down r@ - r@ tk  rdrop ;
-: land ( -f) kbinit  curr piece lock
-  row mark ?dup if  lines +! 12 %stop !
-  #well else #next then d!  qnext enter
-  unpin  curr piece hit? ;
+: land ( -- gameover? ) kbinit  curr
+  piece lock row mark ?dup if  lines +!
+  12 %stop ! #well else #next then d!
+  qnext enter unpin  curr piece hit? ;
 : fall ( -f) down 0 go if land else 0
   then lines @ 3 rshift grav %grav ! ;
 : tryhold ( -) pinned? if ;then

@@ -1,9 +1,11 @@
-# A C64 Tetris in Forth
+# SSS: The Silent Soviet Stacker
 
-**Mostly full 50fps, but no sound.**
+A block-stacking game for the Commodore 64. Written in the
+number-stacking language Forth and achieving mostly full
+50fps, but no sound.
 
 <!-- TODO after migrating from Gist to proper repo:
-![Tetris screenshots in VICE.](./screenshot.png)
+![Game screenshots in VICE.](./screenshot.png)
 -->
 
 ## Trying It Out

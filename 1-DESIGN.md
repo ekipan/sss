@@ -1,25 +1,27 @@
 <!-- TODO **Will become** true after I migrate to a repo:
 > ![NOTE]
-> [tet.fs][src] has CRLF line endings to support my wacky
-> workflow (VICE's host filesystem feature, despite no
-> official durexForth support). It's a bit silly.
+> [tet.fs][src] has CRLF line endings for my wacky unsupported
+> dev workflow using VICE's host filesystem feature. It's a 
+> bit silly.
 -->
 
-# A C64 Tetris in Forth
+# SSS: The Silent Soviet Stacker
+
+See the README to [jump in and play][rea].
 
 The main source [tet.fs][src] is extremely dense, as its
 intended audience is just myself. This tour, however, aims for
 less longbearded folk, with overview, implementation detail,
-tradeoff reflections, etc. 
-
-See the README to [jump in and play][rea].
+tradeoff reflections, etc.
 
 [src]: #file-2-tet-fs
 [rea]: #file-0-tet-readme-md
 
-**Spec:** I've played tons of The Tetris Company (TTC) games,
-I strongly admire Tetris The Grandmaster (TGM), plus platform
-constraints and my own preferences make for an eclectic mix.
+## Spec and Background
+
+I've played tons of The Tetris Company (TTC) games, I strongly
+admire Tetris The Grandmaster (TGM), plus platform constraints
+and my own preferences make for an eclectic mix.
 
 I was personally drawn to the Commodore 64 _only after_
 stumbling on [durexForth][dur]. They're both lots of fun!
@@ -374,6 +376,9 @@ costs, eyeballing `1 prof` color bands:
 | 13%    | idle `draw step`, tons of margin. |
 | 17-19% | `piece hit?` move/gameover check. |
 | 95%    | hold `j` to rotate every frame, very tight. |
+
+Rotation wallkicks check up to 5 extra moves so might eat a
+second, and maybe third, frame.
 
 | Frame%   | After Landing a Piece |
 |----------|-----------------------|
