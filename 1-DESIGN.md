@@ -21,8 +21,9 @@ stumbling on [durexForth][dur]. They're both lots of fun!
 
 Forth is an old and grumpy programming language that I adore.
 [Forth on Wikipedia][fow] and the beloved
-[Starting Forth][sta] are great places to start. In Forth we
-call subroutines "words."
+[Starting Forth][sta] are great places to start. Forth
+subroutines are called "words" and operate on a stack of
+values.
 
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
@@ -304,6 +305,9 @@ since the variables are outside the dictionary at `$cc00`,
 chosen to overlap unused hi-res graphics, just after `v`'s
 buffer.
 
+<img alt="A profiling example across 20+ frames."
+  src="./profile.png" width="200" align="right"/>
+
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
@@ -333,14 +337,14 @@ code field stored after the name.
 
 The `6 profile` here temporarily **undoes** the `6 profile` of
 `draw`, returning to black border while waiting for sync.
-Raster line 213 is near the bottom of the well so all drawing
+Raster line 213 is near the bottom of the well so most `draw`
 updates happen right after the scanline passes. Tradeoffs:
 
-1. hard code as above: correct by construction.
-2. parameterize on 8-bit input:
+1. Hard code as above: correct by construction.
+2. Parameterize on 8-bit input:
    incorrect for lines 0-54 and 256-311.
-3. parameterize on 9-bit input: more argument and loop code.
-4. actually learn raster interrupts: I don't wanna.
+3. Parameterize on 9-bit input: more argument and loop code.
+4. Actually learn raster interrupts: I don't wanna.
 
 ```forth
 : bg ( ... ) $a0 ( rvspace ) ( ... ) ;
@@ -353,22 +357,27 @@ easier.
 ## Performance and Tradeoffs
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame.
-Estimated cycle costs, eyeballing `1 prof` color bands vs
+Ballpark cycle costs, eyeballing `1 prof` color bands vs
 8-line screen rows of ~500 cycles:
 
-- **Frame% (Cycles) Description**
-- 4% (750) `piece`
-- 13-15% (2500-3000) `hit?`
-- 17-19% (3250-3750) full `piece hit?` check.
-- 0-7% (70-1400) KERNAL interrupt. <br>
-  Rolls through the frame, stepping on `sync` and dropping 1
-  frame every 4 or 5.
+- **Frame% (Cycles) While a Piece is in Play**
+- 0-7% (70-1400) KERNAL interrupt. Rolls through the frame,
+  stepping on `sync` and dropping 1 frame every 4 or 5.
 - 13% (2500) idle `draw step`, tons of margin.
+- 17-19% (3250-3750) `piece hit?` move/gameover check.
 - 95% (18800) hold `j` to rotate every frame, very tight.
-- 300-400% (lots) `land` <br>
-  It's a lot of work, but I don't want to spend complexity
-  spreading it across frames. It's between pieces, the
-  stutter is fine IMO.
+
+- **Frame% After Landing a Piece (+/- maybe 10%)**
+- 150-250% `land`, depending on how much of the well `mark`
+  scans and how many times `qnext` re-rolls. Then one of:
+- 105% `#next d! draw` if no lines, or:
+- 140% `#well d! draw` to display marked lines,
+  then 11 idle `%stop` frames, then:
+- 160% `sweep` to erase marked lines and:
+- 260% `#all d! draw` to redraw most of the screen.
+
+I might be able to spread this work across frames to reduce
+well and queue flicker but the complexity isn't worth it.
 
 ### Sound
 
