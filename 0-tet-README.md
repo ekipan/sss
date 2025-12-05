@@ -5,7 +5,7 @@ number-stacking language Forth and achieving mostly full
 50fps, but no sound.
 
 <!-- TODO after migrating from Gist to proper repo:
-![Game screenshots in VICE.](./screenshot.png)
+![Game screenshots.](./screenshot.png)
 -->
 
 ## Trying It Out

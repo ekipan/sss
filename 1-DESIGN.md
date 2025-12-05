@@ -1,6 +1,6 @@
 <!-- TODO **Will become** true after I migrate to a repo:
 > ![NOTE]
-> [tet.fs][src] has CRLF line endings for my wacky unsupported
+> [sss.fs][src] has CRLF line endings for my wacky unsupported
 > dev workflow using VICE's host filesystem feature. It's a 
 > bit silly.
 -->
@@ -9,12 +9,12 @@
 
 See the README to [jump in and play][rea].
 
-The main source [tet.fs][src] is extremely dense, as its
-intended audience is just myself. This tour, however, aims for
-less longbearded folk, with overview, implementation detail,
+The [main source][src] is extremely dense, as its intended
+audience is just myself. This tour, however, aims for less
+longbearded folk, with overview, implementation detail,
 tradeoff reflections, etc.
 
-[src]: #file-2-tet-fs
+[src]: #file-2-sss-fs
 [rea]: #file-0-tet-readme-md
 
 ## Spec and Background
@@ -23,7 +23,7 @@ I've played tons of The Tetris Company (TTC) games, I strongly
 admire Tetris The Grandmaster (TGM), plus platform constraints
 and my own preferences make for an eclectic mix.
 
-I was personally drawn to the Commodore 64 _only after_
+I was personally drawn to the [Commodore 64][c64] _only after_
 stumbling on [durexForth][dur]. They're both lots of fun!
 
 Forth is an old and grumpy programming language that I adore.
@@ -32,6 +32,7 @@ Forth is an old and grumpy programming language that I adore.
 subroutines are called "words" and operate on a stack of
 values.
 
+[c64]: https://www.c64-wiki.com/
 [dur]: https://github.com/jkotlinski/durexforth
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
@@ -291,13 +292,13 @@ it's strictly easier than TGM in that sense.
 `redo` is a deeply magical development convenience:
 
 ```forth
-marker --tet--
-: redo ( -) --tet-- s" tet.fs"
+marker --sss--
+: redo ( -) --sss-- s" sss.fs"
   included ( must tco! safe w/ df. ) ;
 ```
 
 Consider what happens when you type `redo` at the interpreter.
-It executes the marker `--tet--`, deleting the program,
+It executes the marker `--sss--`, deleting the program,
 including `redo` itself. The processor doesn't care, it
 continues executing the code, now in free memory, pushing the
 `( addr len )` of the file name and then calling `included`,
