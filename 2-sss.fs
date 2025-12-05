@@ -19,6 +19,7 @@ create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
   lda,# bx jsr, latest >xt jsr, lda,#
   bx jmp,  r> latest name>string + ! ;
+: '' ( "name" -- xt ) ' 6 + @ ;
 : prof ( enable-time-profiling? -- )
   if $4d else $60 then bx c! ;
 \ : prof drop ; : profile drop ;
@@ -30,7 +31,7 @@ immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
-: sync ( -) [ 213 lda,# $d012 cmp, \ hw
+: sync ( -) [ 215 lda,# $d012 cmp, \ hw
   -5 bne, ] ;  6 profile
 : kbinit ( -) $b80 $28a ! 0 $c6 c! ;
 : kbpoll ( -c; w/ fast repeat hack.)

@@ -1,7 +1,7 @@
 <!-- TODO **Will become** true after I migrate to a repo:
 > ![NOTE]
 > [sss.fs][src] has CRLF line endings for my wacky unsupported
-> dev workflow using VICE's host filesystem feature. It's a 
+> dev workflow using VICE's host filesystem feature. It's a
 > bit silly.
 -->
 
@@ -9,10 +9,10 @@
 
 See the README to [jump in and play][rea].
 
-The [main source][src] is extremely dense, as its intended
-audience is just myself. This tour, however, aims for less
-longbearded folk, with overview, implementation detail,
-tradeoff reflections, etc.
+The [main source][src] is damn dense, as its intended audience
+is just myself. This tour, however, aims for less longbearded
+folk, with overview, implementation detail, tradeoff
+reflections, etc.
 
 [src]: #file-2-sss-fs
 [rea]: #file-0-tet-readme-md
@@ -93,9 +93,9 @@ caee caed ok
 
 ### Data Shorthands `c: p:`
 
-> [!NOTE]
+> [!TIP]
 > You might want to refer to [the source][src] in a
-> separate tab then Ctrl-F `5 .` to jump to:
+> separate tab then Ctrl-F `: n:` to jump to:
 
 ```forth
 : n: ( *'-*) parse-name evaluate ;
@@ -204,6 +204,23 @@ and just fast enough for [mostly full 50fps][per] during play.
 ## Touring the Rest, Part 1: Game Stuff
 
 ```forth
+: kbinit ( -) $b80 $28a ! 0 $c6 c! ;
+: land ( -- gameover? ) kbinit ( ... ) ;
+```
+
+`kbinit` stores 3 bytes:
+
+1. `$80` configures the KERNAL to repeat all keys,
+   not just the cursors.
+2. `$b` repeat delay of 11 frames.
+3. `0` flushes the key buffer.
+
+`land` calls it _first,_ before all its other work, to prevent
+a keypress from leaking into the next piece, unless the player
+continues to hold it for the 11 frames. 2+3 and 1 should
+probably be separate words but I like the density.
+
+```forth
 : entropy ( -u) $a1 @ dup 0= + ;
 : init ( u-) well size erase  seed !
   4 enqueue 5 enqueue 4 enqueue 4 roll
@@ -217,6 +234,10 @@ and just fast enough for [mostly full 50fps][per] during play.
 Starting a `new` game fetches part of the [jiffy counter][jif]
 to seed the game state then enters the main loop, which is
 named `r` for easy typing by the player.
+
+The `dup 0= +` phrase in `entropy` ensures nonzero seed, which
+was important for an old xorshift PRNG and harmless with the
+current LCG. It's cute and I've grown fond of it.
 
 The initial queue mimics [TGM randomizer][ran] behavior. First
 the queue is [S, Z, S, random I/J/L/T], then after flushing
@@ -315,19 +336,20 @@ since the variables are outside the dictionary at `$cc00`,
 chosen to overlap unused hi-res graphics, just after `v`'s
 buffer.
 
+<!-- TODO
+<img alt="Example profile across 20+ frames." align="right"
+  src="shots/prof-notes.png" style="max-width: 25%"/>
+-->
+
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
   lda,# bx jsr, latest >xt jsr, lda,#
   bx jmp,  r> latest name>string + ! ;
+: '' ( "name" -- xt ) ' 6 + @ ;
 : prof ( enable-time-profiling? -- )
   if $4d else $60 then bx c! ;
 ```
-
-<!-- TODO
-<img alt="Screenshots: example profile across 20+ frames."
-  src="./profiler.png" align="right" style="max-width: 25%"/>
--->
 
 The code at `bx` ("border xor") toggles the
 [C64 border color register][bor] at `$d020`.
@@ -339,17 +361,22 @@ code field stored after the name.
 
 [bor]: https://www.c64-wiki.com/wiki/53280
 
-`prof` patches the first instruction at `bx` into either an
-`eor` or `rts`, enabling or disabling it.
+`''` ticks through an instrumented word, recovering the
+`oldcode` xt from the `jsr` instruction. For `dump`ing or
+`execute`ing or whatever. Example: `'' sync 1+ c@ .` prints
+the `215` operand from `sync`'s `lda,#` instruction below.
+
+`0 prof` patches the first instruction at `bx` to an `rts`,
+disabling it. `1 prof` restores the `eor`.
 
 ```forth
-: sync ( -) [ 213 lda,# $d012 cmp,
+: sync ( -) [ 215 lda,# $d012 cmp,
   -5 bne, ] ;  6 profile
 ```
 
 The `6 profile` here temporarily **undoes** the `6 profile` of
 `draw`, returning to black border while waiting for sync.
-Raster line 213 is near the bottom of the well so most `draw`
+Raster line 215 is near the bottom of the well so most `draw`
 updates happen right after the scanline passes. Tradeoffs:
 
 1. Hard code as above: correct by construction.
