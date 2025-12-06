@@ -25,12 +25,22 @@ you want to make a file that way:
 `v sss.fs<return>i<alt-insert>~ZZ` to paste, save, and exit in
 the usual VICE config.
 
-After compiling, type `help` to see keys, `new` to play,
+After compiling, type `help` for info, `new` to play,
 `1 prof 123 init r` then framestep to [measure time][per].
+Keys:
+
+- **S D F** - Shift left, drop, shift right.
+- **J K** - Rotate left and right.
+- **L** - Exchange piece with hold slot on bottom right.
+- Anything else - interrupt game, return to Forth.
+
+My own strong preference. See [input rationale][inp] for a
+(not very easy) reconfiguration option.
 
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
 [per]: #performance-and-tradeoffs
+[inp]: #input
 
 ## How it Works
 

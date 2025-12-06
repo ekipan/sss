@@ -1,10 +1,3 @@
-<!-- TODO **Will become** true after I migrate to a repo:
-> ![NOTE]
-> [sss.fs][src] has CRLF line endings because of my wacky
-> dev workflow that uses VICE's host filesystem feature not
-> technically supported by durexForth.
--->
-
 # SSS: The Silent Soviet Stacker
 
 See the README to [jump in and play][rea].
@@ -101,6 +94,13 @@ caee caed ok
 [loc]: https://tetris.wiki/Glossary#L
 
 ### Data Shorthands `c: p:`
+
+<!-- TODO **Will become** true after I migrate to a repo:
+> ![NOTE]
+> [sss.fs][src] has CRLF line endings because of my wacky
+> dev workflow that uses VICE's host filesystem feature not
+> technically supported by durexForth.
+-->
 
 > [!TIP]
 > You might want to refer to [the source][src] in a
@@ -247,7 +247,7 @@ to seed the game state then enters the main loop, which is
 named `r` for easy typing by the player.
 
 The `dup 0= +` phrase in `entropy` ensures nonzero seed, which
-was important for [an old xorshift PRNG][xor] and harmless 
+was important for [an old xorshift PRNG][xor] and harmless
 with the current LCG. It's cute and I've grown fond of it.
 
 [xor]: https://github.com/impomatic/xorshift798
@@ -324,8 +324,9 @@ it's strictly easier than TGM in that sense.
 ## Touring the Rest, Part 2: Dev Stuff
 
 <a href="https://imgur.com/xF5L3kF.png">
-  <img alt="Example profile across 20+ frames." align="right"
-  src="https://imgur.com/xF5L3kF.png" width="17%"/>
+  <img alt="Example 20+ frames profile, showing color bands."
+    src="https://imgur.com/xF5L3kF.png"
+    align="right" width="17%">
 </a>
 
 `redo` is a deeply magical development convenience:
@@ -368,9 +369,9 @@ The code at `bx` ("border xor") toggles the
 [C64 border color register][bor] at `$d020`.
 `profile` adjusts the latest word to point to new code:
 `lda #color  jsr bx  jsr oldcode  lda #color  jmp bx`,
-instrumenting the word with border-flipping behavior for [perf
-measurement][per]. The phrase `name>string +` addresses the
-code field stored after the name.
+instrumenting the word with border-flipping behavior for
+[perf measurement][per]. The phrase `name>string +` addresses
+the code field stored after the name.
 
 [bor]: https://www.c64-wiki.com/wiki/53280
 
@@ -427,11 +428,25 @@ second, and maybe third, frame.
 | 105%     | `#next d! draw` if no lines, or: |
 | 140%     | `#well d! draw` to show marked lines, then 11 idle `%stop` frames, then: |
 | 160%     | `sweep` to erase marked lines and: |
-| 260%     | `#all d! draw` to redraw most of the screen. |
+| 260%     | `#all d! draw` |
 
 Table 2 is less confident, +/- maybe 10%. I might be able to
 spread work across frames to reduce well and queue flicker but
 the complexity isn't worth it.
+
+Tradeoffs ordered by player contentiousness:
+
+### Input
+
+The SDF JKL layout keeps my fingers on home row, ready to type
+Forth. I _need_ configurability in games I _play,_ but I
+choose not to add it to code whose purpose is to _bring me
+joy._
+
+An option, though, is to edit `step` yourself and recompile.
+Search [C64 control codes][con] for "cursor" etc.
+
+[con]: https://www.c64-wiki.com/wiki/control_character
 
 ### Sound
 
@@ -439,6 +454,20 @@ I haven't learned any SID sound programming yet, and I fear
 the extra code might strain the already cramped margins. I
 also enjoy the aesthetic of very little 6502 code. Maybe I'm
 worrying too much.
+
+### Ghost Piece
+
+I lament the missing [ghost piece][gho] and the
+[hard drop][dro] that it enables.
+
+[gho]: https://tetris.wiki/Ghost_piece
+[dro]: https://tetris.wiki/Drop
+
+Computing all ghosts at entry time would cost entire seconds.
+Checking for one ghost across frames would add significant
+complexity and feel janky (hard drop wouldn't always work).
+I've seen NES Tetrises with the feature but the complexity
+cost probably outspends my joy budget.
 
 ### Score
 
@@ -448,21 +477,12 @@ digits, the complexity cost of BCD, the digits on-screen
 interfering with interpreter experimentation, just thinking
 about it doesn't spark joy in me.
 
-### Ghost Piece
+### Density
 
-I lament the missing [ghost piece][gho] and the
-[instant drop][dro] that it enables. It's not possible to fit
-in the frame budget as currently written. Not enough cycles to
-check up to twenty `piece hit?`s.
-
-[gho]: https://tetris.wiki/Ghost_piece
-[dro]: https://tetris.wiki/Drop
-
-Some approaches: caching, precalcing, incremental, probably
-more. Some rough mental math and I think it might cost 30+
-frames to compute all ghosts at entry time. I've seen NES
-Tetrises with the feature but the complexity cost easily
-outspends my joy budget.
+The source text is constrained to 39 columns to fit on the C64
+screen, and for much of development was also within 256 lines.
+A constraint I loved and whose loss (around the time I
+expanded the big section 5 comment) I lament.
 
 <!-- end of DESIGN.md -->
 

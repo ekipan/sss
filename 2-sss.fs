@@ -250,8 +250,8 @@ cr ." any other key to pause. " cr ;
     if sweep #all d! then 0 ;then
   %grav tick if fall ;then
   kbpoll 0 of 0 ;then
-  'd' of fall ;then
   's' of -1 0 go 0* ;then
+  'd' of fall ;then
   'f' of 1 0 go 0* ;then
   'j' of -1 turnkick 0 ;then
   'k' of 1 turnkick 0 ;then
