@@ -54,6 +54,7 @@ block positions from a piece description. Read this
 interpreter session closely:
 
 ```forth
+\ these comments, wider than the screen, added afterward.
 hex bg
 ok \ sets up number base and screen canvas.
 1305 2 1 piece .s \ row 19($13) col 5 turns 2 shape J(1)
