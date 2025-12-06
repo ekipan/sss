@@ -2,11 +2,9 @@
 
 <table><tr>
   <td><img alt="A block falling into the well"
-    src="https://imgur.com/YcWYiBM.png"
-    style="max-width: 100%; height: auto;"></td>
-  <td><img alt="Log of game and memory commands"
-    src="https://imgur.com/Ykam6xL.png"
-    style="max-width: 100%; height: auto;"></td>
+    src="https://imgur.com/YcWYiBM.png"></td>
+  <td><img alt="Log: game and memory commands, savestating, recompiling, etc."
+    src="https://imgur.com/Ykam6xL.png"></td>
 </tr><tr>
   <td align="center"><em>Game in progress</em></td>
   <td align="center"><a href="#file-3-devel-txt"><em>Live coding session</em></a></td>

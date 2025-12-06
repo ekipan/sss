@@ -75,14 +75,14 @@ Packed hex `$yyxx` coordinates exist in three spaces:
 - **Wellspace `th-w`:** `0 <= y <= 22, 0 <= x <= 9` <br>
   `$0000` = bottom left of playfield of `land`ed blocks.
 - **Screenspace `th-c`:** `0 <= y <= 20, 0 <= x <= 14` <br>
-  `$0000` = screen row 22 column 13 near bottom left of 21x19
-  canvas, corresponding to well origin with hold and next
-  queue on right `11 <= x <= 14`.
+  `$0000` = screen row 22 column 13 near bottom left of main
+  21x19 canvas, corresponding to well origin. Hold and next
+  queue are on the right `11 <= x <= 14`.
 
 The well extends two rows above screen (21 and 22) for new
 pieces (`$1305` = row 19 column 5) to rotate into.
 
-The orange value `8` above can be [`lock`ed][loc] into the 4
+The orange value `8` above can be [`lock`][loc]ed into the 4
 well positions if not `hit?`-detected, or `plot`ted on screen.
 These use memory indexing `n th` words: `0 th-w` for example
 gives the address of the **(0,0)th space in the well.**
