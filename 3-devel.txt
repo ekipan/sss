@@ -1,0 +1,17 @@
+\ experiment with a game in progress!
+\ type "bg" to draw the canvas, then:
+\ move, rotate, repaint:
+2 1 go . dd
+\ out of bounds:
+8 0 go . dd
+\ put a white block:
+1 #88 well + c! dd
+\ savestate, resume:
+ss ( r )
+\ retry:
+ll ( r )
+\ edit, recompile:
+( v sss.fs )
+redo ( r )
+\ try things! del key breaks canvas.
+\ "bg" redraws tho you lose the log.
