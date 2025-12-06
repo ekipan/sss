@@ -340,7 +340,7 @@ buffer.
 
 <a href="https://imgur.com/xF5L3kF.png">
   <img alt="Example profile across 20+ frames." align="right"
-  src="https://imgur.com/xF5L3kF.png" width="100"/>
+  src="https://imgur.com/xF5L3kF.png" width="20%"/>
 </a>
 
 ```forth
