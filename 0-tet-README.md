@@ -6,9 +6,11 @@ own joy, which means a 50fps target, forgoing sound, and as
 little assembly code as necessary, because Forth is fun!
 
 <table><tr>
-  <td><img alt="A block falling into the well" src="https://imgur.com/YcWYiBM"
+  <td><img alt="A block falling into the well" 
+    src="https://imgur.com/YcWYiBM.png"
     style="max-width: 100%; height: auto;"></td>
-  <td><img alt="Log of game and memory commands" src="https://imgur.com/Ykam6xL"
+  <td><img alt="Log of game and memory commands" 
+    src="https://imgur.com/Ykam6xL.png"
     style="max-width: 100%; height: auto;"></td>
 </tr><tr>
   <td align="center"><em>Game in progress</em></td>

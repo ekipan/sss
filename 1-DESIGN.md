@@ -339,7 +339,7 @@ chosen to overlap unused hi-res graphics, just after `v`'s
 buffer.
 
 <img alt="Example profile across 20+ frames." align="right"
-  src="https://imgur.com/xF5L3kF" style="max-width: 25%"/>
+  src="https://imgur.com/xF5L3kF.png" style="max-width: 25%"/>
 
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
