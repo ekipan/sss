@@ -11,23 +11,37 @@
 </tr></table>
 
 A block-stacking game for the Commodore 64 written in the
-number-stacking language Forth. It's optimized strictly for my
-own joy, which means a 50fps target, forgoing sound, and as
-little assembly code as necessary, because Forth is fun!
+number-stacking language Forth. This thing is:
+
+- A personal project optimized strictly for my own joy, which
+  means a 50fps target, forgoing sound, and as little assembly
+  code as necessary, because Forth is fun!
+- A constrained creative exploration: durexForth is _fast,_
+  but not as fast as hand-rolled 6502. Arbitrary
+  [source text contraints][den], too. They're my muse.
+- **NOT** a Tetris product! No sound, no menus, weird keys.
+  General audiences will balk, but I play until Game Over to
+  pass the time.
 
 ## Trying It Out
 
-It's probably easiest to load the [durexForth][dur] cartridge
-or disk into a [Commodore 64 emulator][vic] then paste
-[the program][src] directly. You could also get it onto a disk
-file then type `include sss.fs`. durexForth has a vi clone if
-you want to make a file that way:
-`v sss.fs<return>i<alt-insert>~ZZ` to paste, save, and exit in
-the usual VICE config.
+1. Load the [durexForth][dur] cart or disk into [VICE][vic].
+2. Paste [`sss.fs`][src] contents.
+3. Type `help` then `new`.
 
-After compiling, type `help` for info, `new` to play,
-`1 prof 123 init r` then framestep to [measure time][per].
-Keys:
+Another option is to get `sss.fs` onto a disk file somehow
+then type `include sss.fs`, enabling `redo` for development.
+durexForth has a vi-like editor if you want to make a file
+that way. To paste and save in the usual VICE config:
+
+```
+v sss.fs<return>i<alt-insert>~ZZ
+```
+
+After `help` and `new`, try `1 prof 123 init r` then framestep
+to [measure time][per].
+
+### Keys
 
 - **S D F** - Shift left, drop, shift right.
 - **J K** - Rotate left and right.
@@ -41,6 +55,7 @@ admittedly not easy) reconfiguration option.
 [vic]: https://vice-emu.sourceforge.io/
 [per]: #performance-and-tradeoffs
 [inp]: #input
+[den]: #density
 
 ## How it Works
 
