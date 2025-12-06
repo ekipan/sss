@@ -314,7 +314,7 @@ it's strictly easier than TGM in that sense.
 
 <a href="https://imgur.com/xF5L3kF.png">
   <img alt="Example profile across 20+ frames." align="right"
-  src="https://imgur.com/xF5L3kF.png" width="20%"/>
+  src="https://imgur.com/xF5L3kF.png" width="17%"/>
 </a>
 
 `redo` is a deeply magical development convenience:
