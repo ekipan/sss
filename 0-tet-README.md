@@ -5,17 +5,15 @@ number-stacking language Forth. It's optimized strictly for my
 own joy, which means a 50fps target, forgoing sound, and as
 little assembly code as necessary, because Forth is fun!
 
-<!-- TODO after migrating from Gist to proper repo:
 <table><tr>
-  <td><img alt="A block falling into the well" src="shots/play.png"
+  <td><img alt="A block falling into the well" src="https://imgur.com/YcWYiBM"
     style="max-width: 100%; height: auto;"></td>
-  <td><img alt="Log of game and memory commands" src="shots/devel.png"
+  <td><img alt="Log of game and memory commands" src="https://imgur.com/Ykam6xL"
     style="max-width: 100%; height: auto;"></td>
 </tr><tr>
   <td align="center"><em>Game in progress</em></td>
   <td align="center"><a href="shots/devel.txt"><em>Live coding session</em></a></td>
 </tr></table>
--->
 
 ## Trying It Out
 
@@ -35,8 +33,9 @@ After compiling, type `help` to see keys, `new` to play,
 
 ## How it Works
 
-If you're interested in learning how it works, start with the
-[design tour][des] and cross-reference [the source][src].
+The [design tour][des] explains architecture, trade-offs,
+implementation details, all the good stuff. Cross-reference it
+with [the source][src].
 
 [src]: #file-2-sss-fs
 [des]: #file-1-design-md
