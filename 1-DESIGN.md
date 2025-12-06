@@ -28,16 +28,16 @@ stumbling on [durexForth][dur]. They're both lots of fun!
 
 Forth is an old and grumpy programming language that I adore.
 [Forth on Wikipedia][fow] and the beloved
-[Starting Forth][sta] are great places to start. Forth
-subroutines are called "words" and operate on a stack of
-values.
+[Starting Forth][sta] are great places to start.
 
 [c64]: https://www.c64-wiki.com/
 [dur]: https://github.com/jkotlinski/durexforth
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
 
-I use compact stack comments to fit the cramped C64 screen:
+Forth subroutines are called "words" and operate on a stack of
+values. I use compact stack comments to fit the cramped C64
+screen:
 
 - `erase ( au-)` address, unsigned count -> (no result).
 - `piece ( pts-ppppc)` piece position, turn count, shape index
@@ -50,13 +50,21 @@ I use compact stack comments to fit the cramped C64 screen:
 ## Diving In
 
 The `piece` word is the heart of this program. It computes
-block positions from a piece description. Here I ask for a
-piece centered on entry position near the top of the well,
-rotated twice, shaped like a J (shape index 1):
+block positions from a piece description. Read this
+interpreter session closely:
 
 ```forth
-hex 1305 2 1 piece .s
-1304 1305 1306 1404 8 ok
+hex bg
+ok \ sets up number base and screen canvas.
+1305 2 1 piece .s \ row 19($13) col 5 turns 2 shape J(1)
+1304 1305 1306 1404 8 ok \ 4 blocks + orange(8) color
+hit? .
+0 ok \ false = no collision
+1305 2 1 piece plot
+ok \ paints rotated J piece at top of well.
+\ though the 1404 above overwrites part of that canvas.
+0 0 0 piece .s hit? . \ bottom left(0) flat(0) I(0) piece.
+-2 -1 0 1 3 -1 ok \ coords out of bounds (last -1)
 ```
 
 Packed hex `$yyxx` coordinates exist in three spaces:
