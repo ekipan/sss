@@ -312,6 +312,11 @@ it's strictly easier than TGM in that sense.
 
 ## Touring the Rest, Part 2: Dev Stuff
 
+<a href="https://imgur.com/xF5L3kF.png">
+  <img alt="Example profile across 20+ frames." align="right"
+  src="https://imgur.com/xF5L3kF.png" width="20%"/>
+</a>
+
 `redo` is a deeply magical development convenience:
 
 ```forth
@@ -337,11 +342,6 @@ You can then **resume a game in progress with the new code**
 since the variables are outside the dictionary at `$cc00`,
 chosen to overlap unused hi-res graphics, just after `v`'s
 buffer.
-
-<a href="https://imgur.com/xF5L3kF.png">
-  <img alt="Example profile across 20+ frames." align="right"
-  src="https://imgur.com/xF5L3kF.png" width="20%"/>
-</a>
 
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
