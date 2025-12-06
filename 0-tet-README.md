@@ -1,10 +1,5 @@
 # SSS: The Silent Soviet Stacker
 
-A block-stacking game for the Commodore 64 written in the
-number-stacking language Forth. It's optimized strictly for my
-own joy, which means a 50fps target, forgoing sound, and as
-little assembly code as necessary, because Forth is fun!
-
 <table><tr>
   <td><img alt="A block falling into the well"
     src="https://imgur.com/YcWYiBM.png"
@@ -16,6 +11,11 @@ little assembly code as necessary, because Forth is fun!
   <td align="center"><em>Game in progress</em></td>
   <td align="center"><a href="#file-3-devel-txt"><em>Live coding session</em></a></td>
 </tr></table>
+
+A block-stacking game for the Commodore 64 written in the
+number-stacking language Forth. It's optimized strictly for my
+own joy, which means a 50fps target, forgoing sound, and as
+little assembly code as necessary, because Forth is fun!
 
 ## Trying It Out
 
