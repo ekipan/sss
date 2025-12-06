@@ -32,10 +32,10 @@ Keys:
 - **S D F** - Shift left, drop, shift right.
 - **J K** - Rotate left and right.
 - **L** - Exchange piece with hold slot on bottom right.
-- Anything else - interrupt game, return to Forth.
+- Anything else - Pause game and return to Forth.
 
-My own strong preference. See [input rationale][inp] for a
-(not very easy) reconfiguration option.
+My own strong preference. See [input rationale][inp] for a(n
+admittedly not easy) reconfiguration option.
 
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/

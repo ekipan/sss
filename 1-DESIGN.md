@@ -95,7 +95,7 @@ caee caed ok
 
 ### Data Shorthands `c: p:`
 
-<!-- TODO **Will become** true after I migrate to a repo:
+<!-- TODO **Will become** true after I migrate from gist:
 > ![NOTE]
 > [sss.fs][src] has CRLF line endings because of my wacky
 > dev workflow that uses VICE's host filesystem feature not
@@ -420,7 +420,7 @@ costs, eyeballing `1 prof` color bands:
 | 95%    | hold `j` to rotate every frame, very tight. |
 
 Rotation wallkicks check up to 5 extra moves so might eat a
-second, and maybe third, frame.
+second or third frame.
 
 | Frame%   | After Landing a Piece |
 |----------|-----------------------|
@@ -434,7 +434,7 @@ Table 2 is less confident, +/- maybe 10%. I might be able to
 spread work across frames to reduce well and queue flicker but
 the complexity isn't worth it.
 
-Tradeoffs ordered by player contentiousness:
+More tradeoffs, ordered by player impact:
 
 ### Input
 
@@ -454,6 +454,8 @@ I haven't learned any SID sound programming yet, and I fear
 the extra code might strain the already cramped margins. I
 also enjoy the aesthetic of very little 6502 code. Maybe I'm
 worrying too much.
+
+The silence, it strikes a certain Soviet charm, no?
 
 ### Ghost Piece
 
@@ -477,12 +479,22 @@ digits, the complexity cost of BCD, the digits on-screen
 interfering with interpreter experimentation, just thinking
 about it doesn't spark joy in me.
 
+If you're curious, try `lines @ .` at the prompt. Forth wants
+you to explore it! Makes for an awful Tetris product though!
+
 ### Density
 
 The source text is constrained to 39 columns to fit on the C64
 screen, and for much of development was also within 256 lines.
 A constraint I loved and whose loss (around the time I
 expanded the big section 5 comment) I lament.
+
+---
+
+That's about all really. Good God this document is twice the
+size of [the Forth source][src]! It's way past time for you to
+[give it a play][rea] if you somehow haven't already. Happy
+stacking, comrade!
 
 <!-- end of DESIGN.md -->
 
