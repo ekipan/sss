@@ -201,6 +201,8 @@ index into the blocks table, calls `p@` to scan out 4
 Besides the assembly `w! p@`, the rest of the program is Forth
 and just fast enough for [mostly full 50fps][per] during play.
 
+[per]: #performance-and-tradeoffs
+
 ## Touring the Rest, Part 1: Game Stuff
 
 ```forth
