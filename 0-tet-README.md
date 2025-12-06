@@ -2,13 +2,19 @@
 
 A block-stacking game for the Commodore 64 written in the
 number-stacking language Forth. It's optimized strictly for my
-own joy, which means targetting 50fps, forgoing sound, and as
-little 6502 as necessary, because Forth is fun!
+own joy, which means a 50fps target, forgoing sound, and as
+little assembly code as necessary, because Forth is fun!
 
 <!-- TODO after migrating from Gist to proper repo:
-![Gameplay and Experimentation](shots/play+devel.png)
-*The game in action (left) and the Forth interpreter for live
-experimentation (right).*
+<table><tr>
+  <td><img alt="A block falling into the well" src="shots/play.png"
+    style="max-width: 100%; height: auto;"></td>
+  <td><img alt="Log of game and memory commands" src="shots/devel.png"
+    style="max-width: 100%; height: auto;"></td>
+</tr><tr>
+  <td align="center"><em>Game in progress</em></td>
+  <td align="center"><a href="shots/devel.txt"><em>Live coding session</em></a></td>
+</tr></table>
 -->
 
 ## Trying It Out
@@ -27,7 +33,7 @@ After compiling, type `help` to see keys, `new` to play,
 [vic]: https://vice-emu.sourceforge.io/
 [per]: #performance-and-tradeoffs
 
-## Further Reading
+## How it Works
 
 If you're interested in learning how it works, start with the
 [design tour][des] and cross-reference [the source][src].

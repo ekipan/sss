@@ -1,8 +1,8 @@
 <!-- TODO **Will become** true after I migrate to a repo:
 > ![NOTE]
-> [sss.fs][src] has CRLF line endings for my wacky unsupported
-> dev workflow using VICE's host filesystem feature. It's a
-> bit silly.
+> [sss.fs][src] has CRLF line endings because of my wacky
+> dev workflow that uses VICE's host filesystem feature not
+> technically supported by durexForth.
 -->
 
 # SSS: The Silent Soviet Stacker
@@ -236,8 +236,10 @@ to seed the game state then enters the main loop, which is
 named `r` for easy typing by the player.
 
 The `dup 0= +` phrase in `entropy` ensures nonzero seed, which
-was important for an old xorshift PRNG and harmless with the
-current LCG. It's cute and I've grown fond of it.
+was important for [an old xorshift PRNG][xor] and harmless 
+with the current LCG. It's cute and I've grown fond of it.
+
+[xor]: https://github.com/impomatic/xorshift798
 
 The initial queue mimics [TGM randomizer][ran] behavior. First
 the queue is [S, Z, S, random I/J/L/T], then after flushing
@@ -338,7 +340,7 @@ buffer.
 
 <!-- TODO
 <img alt="Example profile across 20+ frames." align="right"
-  src="shots/prof-notes.png" style="max-width: 25%"/>
+  src="shots/prof.png" style="max-width: 25%"/>
 -->
 
 ```forth
@@ -446,7 +448,7 @@ check up to twenty `piece hit?`s.
 [dro]: https://tetris.wiki/Drop
 
 Some approaches: caching, precalcing, incremental, probably
-more. Some rough mental math and I think it might cost 10+ish
+more. Some rough mental math and I think it might cost 30+
 frames to compute all ghosts at entry time. I've seen NES
 Tetrises with the feature but the complexity cost easily
 outspends my joy budget.
