@@ -58,6 +58,7 @@ including:
   probably tries to serve too many audiences.
 
 <!-- these currently work in gist. TODO migrate eventually. -->
+<!-- [sss]: sss.fs -->
 [sss]: #file-2-sss-fs
 [des]: #file-1-design-md
 [dip]: #dipping-your-toes

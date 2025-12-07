@@ -8,7 +8,8 @@ See the README to [jump in and play][rea].
 The [main source][sss] is damn dense, as its intended audience
 is just myself. This tour, however, aims for less longbearded
 folk, with overview, implementation detail, tradeoff
-reflections, etc.
+reflections, etc. Code excerpts try to stay up-to-date but the
+Forth file is of course the source of truth.
 
 [rea]: #file-0-tet-readme-md
 [sss]: #file-2-sss-fs
@@ -68,10 +69,11 @@ asdf       \ error: resets the stack for a clean workspace
 \ try things! beginners, do check out starting forth!
 ```
 
-If you see a reverse-video error message like `redo?` then the
-program was probably unloaded. First try `include sss.fs` to
-recompile, then resort to loading a snapshot or resetting
-VICE.
+> [!TIP]
+> If you see a reverse-video error message like `redo?` then the
+> program was probably unloaded. First try `include sss.fs` to
+> recompile, then resort to loading a snapshot or resetting
+> VICE.
 
 C64 disk operations are painfully slow. I use JiffyDOS and
 VICE's host filesystem feature to cope but those
@@ -213,11 +215,12 @@ create blocks \ compiled blockspace coords:
 ( etc etc )
 ```
 
-The ASCII-art comments depict the first orientation of each
-shape, [TGM-style pointy-end-down][ars] (please click, there
-are illustrations!), though they all rest on row 0 and all are
-centered on column 2 (instead of TGM's 1 or 2) to simplify
-code.
+> [!IMPORTANT]
+> The ASCII-art comments depict the first orientation of each
+> shape, [TGM-style pointy-end-down][ars] (please click, there
+> are illustrations!), though they all rest on row 0 and all are
+> centered on column 2 (instead of TGM's 1 or 2) to simplify
+> code.
 
 [ars]: https://tetris.wiki/Arika_Rotation_System
 
@@ -247,10 +250,11 @@ one cell of the table giving computed block position `p2`,
 keeping the piece center `p3=p1`, and moving to the next table
 address `a2=a1+2` ready to fetch the next block.
 
-The Forth idiom `>r phrase r>` saves a value to the return
-stack, allowing you to apply a `phrase` to the values
-underneath it. Another word, `>10+>`, is named to evoke this
-idiom, though it uses `swap`s for speed.
+> [!NOTE]
+> The Forth idiom `>r phrase r>` saves a value to the return
+> stack, allowing you to apply a `phrase` to the values
+> underneath it. Another word, `>10+>`, is named to evoke this
+> idiom, though it uses `swap`s for speed.
 
 `piece (pts-ppppc)` takes a center `p`osition `$yyxx`, `t`urn
 count `0-3`, and `s`hape index `0-6`, combines `t` and `s` to
@@ -282,6 +286,8 @@ continues to hold it for the 11 frames. 2+3 and 1 should
 probably be separate words but I like the density.
 
 ```forth
+: ;then ( syntax macro ) postpone exit
+  postpone then ; immediate
 : entropy ( -u) $a1 @ dup 0= + ;
 : init ( u-) well size erase  seed !
   4 enqueue 5 enqueue 4 enqueue 4 roll
@@ -307,8 +313,11 @@ the queue is [S, Z, S, random I/J/L/T], then after flushing
 (`qnext` three times), the player starts with I/J/L/T, and the
 next 3 pieces are less likely to be S or Z (4 or 5).
 
-IJLT are first in the `blocks` table so that `4 roll enqueue`
-can be simple.
+IJLT are first in the `blocks` table to enable simple
+`4 roll enqueue`. SZ are adjacent because an earlier version
+did `2 roll 4 + ( s4-or-z5 ) held!` but I decided to simplify
+and also compensate for the init queue having only one Z. Not
+very important but that's my rationale anyway.
 
 [jif]: https://www.c64-wiki.com/wiki/160-162
 [ran]: https://tetris.wiki/TGM_randomizer
@@ -362,6 +371,12 @@ variables `pos` and `turns`, hit-checks the new hypothetical
 piece position, and updates those variables if the piece can
 move there. `turnkick` calls it up to six times to implement
 [wallkicking][wal] upon rotation.
+
+> [!NOTE]
+> a vertical I-piece against the left wall _cannot kick_ because
+> wallkicks only go one space left or right and I didn't want to
+> add an exception for the I-piece. Most players stack with the
+> gap on the right so this might not ever even be noticed.
 
 There are no [floor kicks][flo]. TGM3 allows limited I and T
 floorkicking, but instead I have the horizontal rotations of
@@ -513,6 +528,20 @@ Not for the faint-of-heart but it saves a recompile! I do this
 kind of thing sometimes while developing, it's how I
 determined the `215` rasterline above.
 
+### Hard Drop
+
+I lament the missing [ghost piece][gho] and the
+[hard drop][dro] that it enables.
+
+[gho]: https://tetris.wiki/Ghost_piece
+[dro]: https://tetris.wiki/Drop
+
+Computing all ghosts at entry time would cost entire seconds.
+Checking for one ghost across frames would add significant
+complexity and the game-feel is subtle. I've seen NES
+~~Tetrises~~--sorry, _block games_--with the feature but the
+complexity cost probably outspends my joy budget.
+
 ### Sound
 
 I've never done sound programming before. The SID looks neat,
@@ -529,20 +558,6 @@ huge amount of thought to implementing it. My intuition tells
 me it's not very simple.
 
 [del]: https://tetris.wiki/Lock_delay
-
-### Ghost Piece
-
-I lament the missing [ghost piece][gho] and the
-[hard drop][dro] that it enables.
-
-[gho]: https://tetris.wiki/Ghost_piece
-[dro]: https://tetris.wiki/Drop
-
-Computing all ghosts at entry time would cost entire seconds.
-Checking for one ghost across frames would add significant
-complexity and the game-feel is subtle. I've seen NES
-~~Tetrises~~--sorry, _block games_--with the feature but the
-complexity cost probably outspends my joy budget.
 
 ### Score
 
