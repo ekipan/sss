@@ -1,7 +1,7 @@
 # SSS: The Silent Soviet Stacker
 
 <img alt="Log: game and memory commands, savestating, recompiling, etc."
-  src="https://imgur.com/Ykam6xL.png"></td>
+  src="https://imgur.com/Ykam6xL.png">
 
 See the README to [jump in and play][rea].
 
@@ -20,22 +20,25 @@ admire Tetris The Grandmaster (TGM), plus platform constraints
 and my own preferences make for an eclectic mix.
 
 I was personally drawn to the [Commodore 64][c64] _only after_
-stumbling on [durexForth][dur]. They're both lots of fun!
-Load the durexForth cart or disk into [VICE][vic] to give it
-a try. [`sss.fs`][sss] is _tested_ with v4 though I suspect
-it will work with v5 also.
+stumbling on durexForth. They're both lots of fun!
 
 Forth is an old and grumpy programming language that I adore.
 [Forth on Wikipedia][fow] and the beloved
 [Starting Forth][sta] are great places to start.
 
 [c64]: https://www.c64-wiki.com/
-[dur]: https://github.com/jkotlinski/durexforth
-[vic]: https://vice-emu.sourceforge.io/
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
 
 ## Dipping Your Toes
+
+Load the [durexForth][dur] cart or disk into [VICE][vic] to
+give it a try. [`sss.fs`][sss] is _tested_ with v4 though I
+suspect it will work with v5 also.
+<!-- TODO maybe explain I use v4 because of HFS -->
+
+[dur]: https://github.com/jkotlinski/durexforth
+[vic]: https://vice-emu.sourceforge.io/
 
 You'll want the source in a disk file. You can reuse the
 durexForth disk or attach a new blank disk from the VICE File
@@ -50,8 +53,10 @@ include sss.fs    \ compile program. ~30 seconds, so:
 <alt-w>    \ VICE warp speed, and again to turn off
 help       \ learn the keys
 new        \ play a bit, press space to pause
-bg dd      \ draw the screen so you can:
+bg dd      \ clear screen, draw canvas so you can see:
 enter dd   \ cheat: move the piece back to top and:
+r          \ continue playing, or:
+3 shape c! \ cheat: change to a T piece
 r          \ continue playing
 1 prof r   \ show blue=draw gray=game while framestepping
 0 prof     \ turn profiling back off
@@ -60,7 +65,7 @@ v          \ edit the source, maybe save or VICE snapshot
 redo       \ ask the program to recompile itself
 words      \ see what's available in the dictionary
 asdf       \ error: resets the stack for a clean workspace
-\ try things! beginners, do check out starting forth
+\ try things! beginners, do check out starting forth!
 ```
 
 If you see a reverse-video error message like `redo?` then the
@@ -71,6 +76,7 @@ VICE.
 C64 disk operations are painfully slow. I use JiffyDOS and
 VICE's host filesystem feature to cope but those
 configurations are beyond this document's scope.
+<!-- TODO make durexForth github discussion on HFS caveats -->
 
 ## Diving In
 
@@ -91,6 +97,7 @@ block positions from a piece description. Read this
 interpreter session closely:
 
 ```forth
+\ these comments, wider than the screen, added after.
 hex bg
 ok \ sets up number base and screen canvas.
 1305 2 1 piece .s \ row 19($13) col 5 turns 2 shape J(1)
@@ -98,7 +105,7 @@ ok \ sets up number base and screen canvas.
 hit? .
 0 ok \ false = no collision
 1305 2 1 piece plot
-ok \ paints rotated J piece at top of well.
+ok \ paints rotated orange J piece at top of well.
 \ though the 1404 above overwrites part of that canvas.
 0 0 0 piece .s hit? . \ bottom left(0) flat(0) I(0) piece.
 -2 -1 0 1 3 -1 ok \ coords out of bounds (last -1)
@@ -112,12 +119,12 @@ Packed hex `$yyxx` coordinates exist in three spaces:
   `$0000` = piece center to compute blocks and check lines.
 - **Wellspace `th-w`:** `0 <= y <= 22, 0 <= x <= 9` <br>
   `$0000` = bottom left of playfield of `land`ed blocks.
-- **Screenspace `th-c`:** `0 <= y <= 20, 0 <= x <= 14` <br>
+- **Canvasspace `th-c`:** `0 <= y <= 20, 0 <= x <= 14` <br>
   `$0000` = screen row 22 column 13 near bottom left of main
   21x19 canvas, corresponding to well origin. Hold and next
   queue are on the right `11 <= x <= 14`.
 
-The well extends two rows above screen (21 and 22) for new
+The well extends two rows above canvas (21 and 22) for new
 pieces (`$1305` = row 19 column 5) to rotate into.
 
 The orange value `8` above can be `lock`ed into the 4 well
@@ -178,7 +185,7 @@ hex `$yx` into 16-bit `$0y0x`, then subtracting source center
 `02` into compiled blockspace `p`osition `$0000`, which may or
 may not contain a block. Negative x borrows from the y coord
 but `hit?` bounds checks before you can corrupt memory outside
-well and screenspace.
+well and canvasspace.
 
 `p: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
@@ -285,7 +292,7 @@ probably be separate words but I like the density.
 : new ( -) entropy init r ;
 ```
 
-Starting a `new` game fetches part of the [jiffy counter][jif]
+Starting a `new` game fetches part of the [jiffy clock][jif]
 to seed the game state then enters the main loop, which is
 named `r` for easy typing by the player.
 
@@ -490,6 +497,21 @@ An option, though, is to edit `step` yourself and recompile.
 Search [C64 control codes][con] for "cursor" etc.
 
 [con]: https://www.c64-wiki.com/wiki/control_character
+
+A wilder option is to live-patch the code in memory:
+
+```forth
+'' step dump n \ durexforth dumps 64 bytes, n continues.
+\ machine code listing, I search the characters on the
+\ right for 's'. currently at address $43f3, ymmv.
+'z' $43f3 c! \ now 'z' is the shift-left key!
+r \ it's pretty hard to play!
+'s' $43f3 c! \ so I put it back.
+```
+
+Not for the faint-of-heart but it saves a recompile! I do this
+kind of thing sometimes while developing, it's how I
+determined the `215` rasterline above.
 
 ### Sound
 
