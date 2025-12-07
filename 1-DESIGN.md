@@ -1,7 +1,6 @@
 # SSS: The Silent Soviet Stacker
 
-<img alt="Log: game and memory commands, savestating, recompiling, etc."
-  src="https://imgur.com/Ykam6xL.png">
+![Log: game and memory commands, savestating, recompiling, etc.](https://imgur.com/Ykam6xL.png)
 
 See the README to [jump in and play][rea].
 
@@ -129,6 +128,8 @@ Packed hex `$yyxx` coordinates exist in three spaces:
   `$0000` = screen row 22 column 13 near bottom left of main
   21x19 canvas, corresponding to well origin. Hold and next
   queue are on the right `11 <= x <= 14`.
+
+![Canvasspace and falling piece blockspace origins circled.](https://imgur.com/oWVwSWv.png)
 
 The well extends two rows above canvas (21 and 22) for new
 pieces (`$1305` = row 19 column 5) to rotate into.
