@@ -129,7 +129,7 @@ Packed hex `$yyxx` coordinates exist in three spaces:
   21x19 canvas, corresponding to well origin. Hold and next
   queue are on the right `11 <= x <= 14`.
 
-![Canvasspace and falling piece blockspace origins circled.](https://imgur.com/oWVwSWv.png)
+![Screenshot with encircled canvas/piece origins.](https://imgur.com/Oss6NTk.png)
 
 The well extends two rows above canvas (21 and 22) for new
 pieces (`$1305` = row 19 column 5) to rotate into.
