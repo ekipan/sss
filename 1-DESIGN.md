@@ -1,13 +1,23 @@
 # SSS: The Silent Soviet Stacker
 
+<table><tr>
+  <td><img alt="A block falling into the well"
+    src="https://imgur.com/YcWYiBM.png"></td>
+  <td><img alt="Log: game and memory commands, savestating, recompiling, etc."
+    src="https://imgur.com/Ykam6xL.png"></td>
+</tr><tr>
+  <td align="center"><em>Game in progress</em></td>
+  <td align="center"><a href="#file-3-devel-txt"><em>Live coding session</em></a></td>
+</tr></table>
+
 See the README to [jump in and play][rea].
 
-The [main source][src] is damn dense, as its intended audience
+The [main source][sss] is damn dense, as its intended audience
 is just myself. This tour, however, aims for less longbearded
 folk, with overview, implementation detail, tradeoff
 reflections, etc.
 
-[src]: #file-2-sss-fs
+[sss]: #file-2-sss-fs
 [rea]: #file-0-tet-readme-md
 
 ## Spec and Background
@@ -40,6 +50,42 @@ screen:
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
   conventional ANS style when I think the clarity is needed.
 
+### Dipping Your Toes
+
+You'll want the source in a disk file. Options include reusing
+the durexForth disk or attaching a new blank disk from the
+VICE File menu. Typical config has Alt-Insert to paste and `~`
+for the C64 `←` key:
+
+```forth
+8 device   \ or 9, to select disk drive. 8 is default
+v sss.fs   \ open durexForth vi-clone editor
+i<alt-insert>~ZZ  \ make file, return to Forth
+include sss.fs    \ compile program. ~30 seconds, so:
+<alt-w>    \ VICE warp speed, and again to turn off
+help       \ learn the keys
+new        \ play a bit, press space to pause
+bg dd      \ draw the screen so you can:
+enter dd   \ cheat: move the piece back to top and:
+r          \ continue playing
+1 prof r   \ show blue=draw gray=game while framestepping
+0 prof     \ turn profiling back off
+123 init r \ restart with a fixed seed
+v          \ edit the source, maybe save or VICE snapshot
+redo       \ ask the program to recompile itself
+words      \ see what's available in the dictionary
+\ lots of things to try! see `starting forth` above
+```
+
+If you see a reverse-video error message like `redo?` then the
+program was probably unloaded. First try `include sss.fs` to
+get it back and/or resort to resetting VICE or loading a
+snapshot.
+
+C64 disk operations are painfully slow. I use JiffyDOS and
+VICE's host filesystem to cope but those configurations are
+beyond this document's scope.
+
 ## Diving In
 
 The `piece` word is the heart of this program. It computes
@@ -47,7 +93,6 @@ block positions from a piece description. Read this
 interpreter session closely:
 
 ```forth
-\ these comments, wider than the screen, added afterward.
 hex bg
 ok \ sets up number base and screen canvas.
 1305 2 1 piece .s \ row 19($13) col 5 turns 2 shape J(1)
@@ -75,8 +120,8 @@ Packed hex `$yyxx` coordinates exist in three spaces:
 The well extends two rows above screen (21 and 22) for new
 pieces (`$1305` = row 19 column 5) to rotate into.
 
-The orange value `8` above can be [`lock`][loc]ed into the 4
-well positions if not `hit?`-detected, or `plot`ted on screen.
+The orange value `8` above can be `lock`ed into the 4 well
+positions if not `hit?`-detected, or `plot`ted on screen.
 These use memory indexing `n th` words: `0 th-w` for example
 gives the address of the **(0,0)th space in the well.**
 
@@ -91,20 +136,18 @@ dae2 dae2 ok
 caee caed ok
 ```
 
-[loc]: https://tetris.wiki/Glossary#L
-
 ### Data Shorthands `c: p:`
 
 <!-- TODO **Will become** true after I migrate from gist:
 > ![NOTE]
-> [sss.fs][src] has CRLF line endings because of my wacky
+> [sss.fs][sss] has CRLF line endings because of my wacky
 > dev workflow that uses VICE's host filesystem feature not
 > technically supported by durexForth.
 -->
 
 > [!TIP]
-> You might want to refer to [the source][src] in a
-> separate tab then Ctrl-F `: n:` to jump to:
+> You should probably refer to [the source][sss] in a separate
+> tab then Ctrl-F `: n:` to jump to:
 
 ```forth
 : n: ( *'-*) parse-name evaluate ;
@@ -457,6 +500,14 @@ worrying too much.
 
 The silence, it strikes a certain Soviet charm, no?
 
+### Lock Delay
+
+I'm very fond of [lock delay][del], though I haven't given a
+huge amount of thought to implementing it. My intuition tells
+me it's not very simple.
+
+[del]: https://tetris.wiki/Lock_delay
+
 ### Ghost Piece
 
 I lament the missing [ghost piece][gho] and the
@@ -492,7 +543,7 @@ expanded the big section 5 comment) I lament.
 ---
 
 That's about all really. Good God this document is twice the
-size of [the Forth source][src]! It's way past time for you to
+size of [the Forth source][sss]! It's way past time for you to
 [give it a play][rea] if you somehow haven't already. Happy
 stacking, comrade!
 

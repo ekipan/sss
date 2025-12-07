@@ -28,7 +28,7 @@ number-stacking language Forth. **This thing:**
 ## Trying It Out
 
 1. Load the [durexForth][dur] cart or disk into [VICE][vic].
-2. Paste [`sss.fs`][src] contents.
+2. Paste [`sss.fs`][sss] contents.
 3. Type `help` then `new`.
 
 [dur]: https://github.com/jkotlinski/durexforth
@@ -44,45 +44,18 @@ number-stacking language Forth. **This thing:**
 My own strong preference. See [input rationale][inp] for a(n
 admittedly not easy) reconfiguration option.
 
-### Tinkering
-
-You'll want the source in a disk file. Either reuse the
-durexForth disk or attach a blank disk from the VICE File
-menu. Typical config has Alt-Insert to paste and `~` for the
-C64 `←` key:
-
-```forth
-8 device   \ or 9, to select disk drive. 8 is default
-v sss.fs   \ open durexForth vi-clone editor
-i<alt-insert>~ZZ  \ make file, return to Forth
-include sss.fs    \ compile program
-help       \ learn the keys
-new        \ play a bit, press space to pause, then:
-1 prof r   \ then framestep to measure time
-0 prof     \ profiling off
-123 init r \ restart with a fixed seed
-v          \ edit the source, maybe save again
-redo       \ ask the program to recompile itself
-words      \ see what's available in the dictionary
-\ etc etc
-```
-
-Check the [Forth learning resources][spe]. If you see `redo?`
-in reverse text, the program was unloaded. Do `include sss.fs`
-again to get it back.
-
 ## How it Works
 
-The [design tour][des] explains much of the nitty-gritties.
-Cross-reference it with [the source][src]. The above "measure
-time" profiling tool is discussed in the [dev stuff][dev] and
-[performance report][per] sections.
+The [design tour][des] explains most of the nitty-gritties,
+including a guide to [start tinkering][dip]. Cross-reference
+it with [the source][sss], check out the
+[performance report][per], honestly that bigass document
+probably tries to serve too many audiences.
 
 <!-- these currently work in gist. TODO migrate eventually. -->
-[src]: #file-2-sss-fs
+[sss]: #file-2-sss-fs
 [des]: #file-1-design-md
-[spe]: #spec-and-background
-[dev]: #touring-the-rest-part-2-dev-stuff
+[dip]: #dipping-your-toes
 [per]: #performance-and-tradeoffs
 [inp]: #input
 [den]: #density
