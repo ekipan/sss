@@ -33,6 +33,10 @@ Forth is an old and grumpy programming language that I adore.
 
 ## Dipping Your Toes
 
+> [!WARNING]
+> No high scores, no menus, and unconventional controls.
+> This is a programmer's toybox first, a game second.
+
 Load the [durexForth][dur] cart or disk into [VICE][vic] to
 give it a try. [`sss.fs`][sss] is _tested_ with v4 though I
 suspect it will work with v5 also.
@@ -148,7 +152,7 @@ ccee cced ok
 ### Data Shorthands `c: p:`
 
 <!-- TODO **Will become** true after I migrate from gist:
-> ![NOTE]
+> [!NOTE]
 > [sss.fs][sss] has CRLF line endings because of my wacky
 > dev workflow that uses VICE's host filesystem feature not
 > technically supported by durexForth.
@@ -347,10 +351,11 @@ programmers will understand easier:
   if reroll then enqueue ;
 ```
 
-This isn't critical path so the codesize and cycle savings
-aren't important but I choose to spend the extra `rdrop`
-cognitive load just for its aesthetic, which I'm fond of.
-`qnext` in both versions enqueues only once per call.
+> [!NOTE]
+> This isn't critical path so the codesize and cycle savings
+> aren't important but I choose to spend the extra `rdrop`
+> cognitive load just for its aesthetic, which I'm fond of.
+> `qnext` in both versions enqueues only once per call.
 
 ```forth
 : t@+ ( t-t) turns c@ + 3 and ;
@@ -373,10 +378,9 @@ move there. `turnkick` calls it up to six times to implement
 [wallkicking][wal] upon rotation.
 
 > [!NOTE]
-> a vertical I-piece against the left wall _cannot kick_ because
-> wallkicks only go one space left or right and I didn't want to
-> add an exception for the I-piece. Most players stack with the
-> gap on the right so this might not ever even be noticed.
+> A vertical I-piece against the left wall _cannot kick._ I
+> chose to keep the code simple without an exception for it.
+> I suspect most players will never notice.
 
 There are no [floor kicks][flo]. TGM3 allows limited I and T
 floorkicking, but instead I have the horizontal rotations of
@@ -524,9 +528,11 @@ r \ it's pretty hard to play!
 's' $43f3 c! \ so I put it back.
 ```
 
-Not for the faint-of-heart but it saves a recompile! I do this
-kind of thing sometimes while developing, it's how I
-determined the `215` rasterline above.
+> [!WARNING]
+> Obviously not for the faint-of-heart, a bad patch will crash
+> the program, but it saves a recompile! I do this kind of thing
+> sometimes while developing, it's how I determined the `215`
+> rasterline above.
 
 ### Hard Drop
 
