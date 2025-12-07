@@ -48,13 +48,13 @@ admittedly not easy) reconfiguration option.
 ## How it Works
 
 The [design rundown][des] explains most of the nitty-gritties,
-including a:
+including:
 
-- Guide to [start tinkering][dip], then a
-- [Deep dive][div] into the core, a whirlwind
-- [Game tour][gam] and [devtools tour][dev] to cross-ref with 
-  [the source][sss], a
-- [Performance report][per], honestly that bigass document
+- A guide to [start tinkering][dip], then
+- A [deep dive][div] through the core,
+- A whirlwind [game tour][gam] and [devtools tour][dev] to
+  cross-ref with [the source][sss],
+- A [performance report][per], honestly that bigass document
   probably tries to serve too many audiences.
 
 <!-- these currently work in gist. TODO migrate eventually. -->
