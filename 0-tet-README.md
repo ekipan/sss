@@ -11,15 +11,17 @@
 </tr></table>
 
 A block-stacking game for the Commodore 64 written in the
-number-stacking language Forth. This thing is:
+number-stacking language Forth. **This thing:**
 
-- A **personal project** optimized strictly for **my own
+- **Is a personal project** optimized strictly for **my own
   joy,** which means a 50fps target, forgoing sound, and as
   little assembly code as necessary, because Forth is fun!
-- A **constrained creative exploration:** durexForth is
+- **Explores creative constraints.** durexForth is
   _fast,_ but not as fast as hand-rolled 6502. Arbitrary
   [source text constraints][den], too. They're my muse.
-- **NOT a Tetris product!** No sound, no menus, weird keys.
+- **Wants to be tinkered with,** so:
+- **Might motivate the Forth- or C64-curious,** but:
+- **Is NOT a Tetris product!** No sound, no menus, weird keys.
   General audiences will balk, but I play until Game Over to
   pass the time.
 
@@ -34,7 +36,7 @@ number-stacking language Forth. This thing is:
 
 ### Keys
 
-- **S D F** - Shift left, drop, shift right.
+- **S D F** - Shift left, soft drop, shift right.
 - **J K** - Rotate left and right.
 - **L** - Exchange piece with hold slot on bottom right.
 - Anything else - Pause game and return to Forth.
@@ -67,18 +69,20 @@ words      \ see what's available in the dictionary
 
 Check the [Forth learning resources][spe]. If you see `redo?`
 in reverse text, the program was unloaded. Do `include sss.fs`
-again to get it back. See elsewhere for info about the
-["measure time"][per] thing above.
+again to get it back.
 
 ## How it Works
 
 The [design tour][des] explains much of the nitty-gritties.
-Cross-reference it with [the source][src].
+Cross-reference it with [the source][src]. The above "measure
+time" profiling tool is discussed in the [dev stuff][dev] and
+[performance report][per] sections.
 
-<!-- TODO proper links after migrating from gist. -->
+<!-- these currently work in gist. TODO migrate eventually. -->
 [src]: #file-2-sss-fs
 [des]: #file-1-design-md
 [spe]: #spec-and-background
+[dev]: #touring-the-rest-part-2-dev-stuff
 [per]: #performance-and-tradeoffs
 [inp]: #input
 [den]: #density
