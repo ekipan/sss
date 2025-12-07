@@ -28,6 +28,9 @@ and my own preferences make for an eclectic mix.
 
 I was personally drawn to the [Commodore 64][c64] _only after_
 stumbling on [durexForth][dur]. They're both lots of fun!
+Load the durexForth cart or disk into [VICE][vic] to give it
+a try. [`sss.fs`][sss] is _tested_ with v4 though I suspect
+it will work with v5 also.
 
 Forth is an old and grumpy programming language that I adore.
 [Forth on Wikipedia][fow] and the beloved
@@ -35,27 +38,16 @@ Forth is an old and grumpy programming language that I adore.
 
 [c64]: https://www.c64-wiki.com/
 [dur]: https://github.com/jkotlinski/durexforth
+[vic]: https://vice-emu.sourceforge.io/
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
 
-Forth subroutines are called "words" and operate on a stack of
-values. I use compact stack comments to fit the cramped C64
-screen:
-
-- `erase ( au-)` address, unsigned count -> (no result).
-- `piece ( pts-ppppc)` piece position, turn count, shape index
-  -> 4 block positions, color code.
-- `hit? ( ppppc-f)` 4 positions, (ignored) color code
-  -> boolean flag.
-- `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
-  conventional ANS style when I think the clarity is needed.
-
 ### Dipping Your Toes
 
-You'll want the source in a disk file. Options include reusing
-the durexForth disk or attaching a new blank disk from the
-VICE File menu. Typical config has Alt-Insert to paste and `~`
-for the C64 `←` key:
+You'll want the source in a disk file. You can reuse the
+durexForth disk or attach a new blank disk from the VICE File
+menu. Typical VICE config has Alt-Insert to paste and `~` for
+the C64 `←` key:
 
 ```forth
 8 device   \ or 9, to select disk drive. 8 is default
@@ -74,19 +66,32 @@ r          \ continue playing
 v          \ edit the source, maybe save or VICE snapshot
 redo       \ ask the program to recompile itself
 words      \ see what's available in the dictionary
-\ lots of things to try! see `starting forth` above
+asdf       \ error: resets the stack for a clean workspace
+\ try things! beginners, do check out starting forth
 ```
 
 If you see a reverse-video error message like `redo?` then the
 program was probably unloaded. First try `include sss.fs` to
-get it back and/or resort to resetting VICE or loading a
-snapshot.
+recompile, then resort to loading a snapshot or resetting
+VICE.
 
 C64 disk operations are painfully slow. I use JiffyDOS and
-VICE's host filesystem to cope but those configurations are
-beyond this document's scope.
+VICE's host filesystem feature to cope but those
+configurations are beyond this document's scope.
 
 ## Diving In
+
+Forth subroutines are called "words" and operate on a stack of
+values. I use compact stack comments to fit the cramped C64
+screen:
+
+- `erase ( au-)` address, unsigned count -> (no result).
+- `piece ( pts-ppppc)` piece position, turn count, shape index
+  -> 4 block positions, color code.
+- `hit? ( ppppc-f)` 4 positions, (ignored) color code
+  -> boolean flag.
+- `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
+  conventional ANS style when I think the clarity is needed.
 
 The `piece` word is the heart of this program. It computes
 block positions from a piece description. Read this
@@ -127,13 +132,13 @@ gives the address of the **(0,0)th space in the well.**
 
 ```forth
 0 th-w h. well h.
-ca00 ca00 ok
+cc00 cc00 ok
 $0405 th-w h. #45 well + h.
-ca2d ca2d ok
+cc2d cc2d ok
 $0405 th-c h. -4 40* 5 + colormem + h.
 dae2 dae2 ok
 0 th-q h. 3 th-q h. ( queue head/tail )
-caee caed ok
+ccee cced ok
 ```
 
 ### Data Shorthands `c: p:`
@@ -493,10 +498,10 @@ Search [C64 control codes][con] for "cursor" etc.
 
 ### Sound
 
-I haven't learned any SID sound programming yet, and I fear
-the extra code might strain the already cramped margins. I
-also enjoy the aesthetic of very little 6502 code. Maybe I'm
-worrying too much.
+I've never done sound programming before. The SID looks neat,
+though I wonder if the extra code might strain the already
+cramped margins. I also enjoy the aesthetic of very little
+6502 code. Maybe I'm worrying too much.
 
 The silence, it strikes a certain Soviet charm, no?
 
@@ -518,9 +523,9 @@ I lament the missing [ghost piece][gho] and the
 
 Computing all ghosts at entry time would cost entire seconds.
 Checking for one ghost across frames would add significant
-complexity and feel janky (hard drop wouldn't always work).
-I've seen NES Tetrises with the feature but the complexity
-cost probably outspends my joy budget.
+complexity and the game-feel is subtle. I've seen NES
+~~Tetrises~~--sorry, _block games_--with the feature but the
+complexity cost probably outspends my joy budget.
 
 ### Score
 

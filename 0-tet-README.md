@@ -14,8 +14,9 @@ A block-stacking game for the Commodore 64 written in the
 number-stacking language Forth. **This thing:**
 
 - **Is a personal project** optimized strictly for **my own
-  joy,** which means a 50fps target, forgoing sound, and as
-  little assembly code as necessary, because Forth is fun!
+  joy,** which means a 50fps target, [forgoing sound][sou],
+  and as little assembly code as necessary, because Forth is
+  fun!
 - **Explores creative constraints.** durexForth is
   _fast,_ but not as fast as hand-rolled 6502. Arbitrary
   [source text constraints][den], too. They're my muse.
@@ -46,18 +47,26 @@ admittedly not easy) reconfiguration option.
 
 ## How it Works
 
-The [design tour][des] explains most of the nitty-gritties,
-including a guide to [start tinkering][dip]. Cross-reference
-it with [the source][sss], check out the
-[performance report][per], honestly that bigass document
-probably tries to serve too many audiences.
+The [design rundown][des] explains most of the nitty-gritties,
+including a:
+
+- Guide to [start tinkering][dip], then a
+- [Deep dive][div] into the core, a whirlwind
+- [Game tour][gam] and [devtools tour][dev] to cross-ref with 
+  [the source][sss], a
+- [Performance report][per], honestly that bigass document
+  probably tries to serve too many audiences.
 
 <!-- these currently work in gist. TODO migrate eventually. -->
 [sss]: #file-2-sss-fs
 [des]: #file-1-design-md
 [dip]: #dipping-your-toes
+[div]: #diving-in
+[gam]: #touring-the-rest-part-1-game-stuff
+[dev]: #touring-the-rest-part-2-dev-stuff
 [per]: #performance-and-tradeoffs
 [inp]: #input
+[sou]: #sound
 [den]: #density
 
 <!-- end of README.md -->
