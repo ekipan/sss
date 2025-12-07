@@ -1,14 +1,7 @@
 # SSS: The Silent Soviet Stacker
 
-<table><tr>
-  <td><img alt="A block falling into the well"
-    src="https://imgur.com/YcWYiBM.png"></td>
-  <td><img alt="Log: game and memory commands, savestating, recompiling, etc."
-    src="https://imgur.com/Ykam6xL.png"></td>
-</tr><tr>
-  <td align="center"><em>Game in progress</em></td>
-  <td align="center"><a href="#file-3-devel-txt"><em>Live coding session</em></a></td>
-</tr></table>
+<img alt="Log: game and memory commands, savestating, recompiling, etc."
+  src="https://imgur.com/Ykam6xL.png"></td>
 
 See the README to [jump in and play][rea].
 
@@ -17,8 +10,8 @@ is just myself. This tour, however, aims for less longbearded
 folk, with overview, implementation detail, tradeoff
 reflections, etc.
 
-[sss]: #file-2-sss-fs
 [rea]: #file-0-tet-readme-md
+[sss]: #file-2-sss-fs
 
 ## Spec and Background
 
@@ -42,7 +35,7 @@ Forth is an old and grumpy programming language that I adore.
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
 
-### Dipping Your Toes
+## Dipping Your Toes
 
 You'll want the source in a disk file. You can reuse the
 durexForth disk or attach a new blank disk from the VICE File
@@ -110,6 +103,8 @@ ok \ paints rotated J piece at top of well.
 0 0 0 piece .s hit? . \ bottom left(0) flat(0) I(0) piece.
 -2 -1 0 1 3 -1 ok \ coords out of bounds (last -1)
 ```
+
+### Coords
 
 Packed hex `$yyxx` coordinates exist in three spaces:
 

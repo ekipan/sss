@@ -20,7 +20,7 @@ number-stacking language Forth. **This thing:**
 - **Explores creative constraints.** durexForth is
   _fast,_ but not as fast as hand-rolled 6502. Arbitrary
   [source text constraints][den], too. They're my muse.
-- **Wants to be tinkered with,** so:
+- **Wants to be [tinkered with][dip],** so:
 - **Might motivate the Forth- or C64-curious,** but:
 - **Is NOT a Tetris product!** No sound, no menus, weird keys.
   General audiences will balk, but I play until Game Over to
