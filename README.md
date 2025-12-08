@@ -1,14 +1,14 @@
 # SSS: The Silent Soviet Stacker
 
-<table><tr>
-  <td><img alt="A block falling into the well"
-    src="shots/play.png"></td>
-  <td><img alt="Log: game and memory commands, savestating, recompiling, etc."
-    src="shots/devel.png"></td>
-</tr><tr>
-  <td align="center"><em>Game in progress</em></td>
-  <td align="center"><a href="shots/devel.txt"><em>Live coding session</em></a></td>
-</tr></table>
+<table><tr><td align="center">
+  <img alt="A block falling into the well"
+    src="shots/play.png"><br>
+  <a href="DESIGN.md">Explore the design</a>
+</td><td align="center">
+  <img alt="Log: game and memory commands, savestating, recompiling, etc."
+    src="shots/devel.png"><br>
+  <a href="TINKERING.md">Start tinkering</a>
+</td></tr></table>
 
 A block-stacking game for the Commodore 64 written in the
 number-stacking language Forth. **This thing:**
@@ -42,9 +42,6 @@ Come, play with me.
 2. Paste [`sss.fs`][sss] contents.
 3. Type `help` then `new`.
 
-[dur]: https://github.com/jkotlinski/durexforth
-[vic]: https://vice-emu.sourceforge.io/
-
 ### Keys
 
 - **S D F** - Shift left, soft drop, shift right.
@@ -55,28 +52,23 @@ Come, play with me.
 My own strong preference. See [input rationale][inp] for a(n
 admittedly not easy) reconfiguration option.
 
-## How it Works
+## Further Reading
 
-The [design rundown][des] explains most of the nitty-gritties,
-including:
+- The [how-to][tin] takes you from player to tinkerer.
+- The [design rundown][des] is my bucket document: a mix of
+  tutorial (how), background (why), and reference (what). I
+  hope you'll indulge my sloppiness and dig for what you need.
+- The [Forth source][sss] is damn dense, as its intended
+  audience is just myself. For the adventurous!
 
-- A guide to [start tinkering][dip], then
-- A [deep dive][div] through the core,
-- A whirlwind [game tour][gam] and [devtools tour][dev] to
-  cross-ref with [the source][sss],
-- A [performance report][per], honestly that bigass document
-  probably tries to serve too many audiences.
-
-[sss]: sss.fs
+[dur]: https://github.com/jkotlinski/durexforth
+[vic]: https://vice-emu.sourceforge.io/
+[tin]: TINKERING.md
 [des]: DESIGN.md
-[dip]: DESIGN.md#dipping-your-toes
-[div]: DESIGN.md#diving-in
-[gam]: DESIGN.md#touring-the-rest-part-1-game-stuff
-[dev]: DESIGN.md#touring-the-rest-part-2-dev-stuff
-[per]: DESIGN.md#performance-and-tradeoffs
 [inp]: DESIGN.md#input
 [sou]: DESIGN.md#sound
 [den]: DESIGN.md#density
+[sss]: sss.fs
 
 <!-- end of README.md -->
 

@@ -1,16 +1,17 @@
 # SSS: The Silent Soviet Stacker
 
-![Log: game and memory commands, savestating, recompiling, etc.](shots/devel.png)
+![A block falling into the well](shots/play.png)
 
-See the README to [jump in and play][rea].
-
-The [main source][sss] is damn dense, as its intended audience
-is just myself. This tour, however, aims for less longbearded
-folk, with overview, implementation detail, tradeoff
-reflections, etc. Code excerpts try to stay up-to-date but the
-Forth file is of course the source of truth.
+- See the README to [jump in and play][rea].
+- The [how-to][tin] takes you from player to tinkerer.
+- **This design rundown** is my bucket document: a mix of
+  tutorial (how), background (why), and reference (what). I
+  hope you'll indulge my sloppiness and dig for what you need.
+- The [Forth source][sss] is damn dense, as its intended
+  audience is just myself. For the adventurous!
 
 [rea]: README.md
+[tin]: TINKERING.md
 [sss]: sss.fs
 
 ## Spec and Background
@@ -29,59 +30,6 @@ Forth is an old and grumpy programming language that I adore.
 [c64]: https://www.c64-wiki.com/
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
-
-## Dipping Your Toes
-
-> [!WARNING]
-> No high scores, no menus, and unconventional controls.
-> This is a programmer's toybox first, a game second.
-
-Load the [durexForth][dur] cart or disk into [VICE][vic] to
-give it a try. [`sss.fs`][sss] is _tested_ with v4 though I
-suspect it will work with v5 also.
-<!-- TODO maybe explain I use v4 because of HFS -->
-
-[dur]: https://github.com/jkotlinski/durexforth
-[vic]: https://vice-emu.sourceforge.io/
-
-You'll want the source in a disk file. You can reuse the
-durexForth disk or attach a new blank disk from the VICE File
-menu. Typical VICE config has Alt-Insert to paste and `~` for
-the C64 `←` key:
-
-```forth
-8 device   \ or 9, to select disk drive. 8 is default
-v sss.fs   \ open durexForth vi-clone editor
-i<alt-insert>~ZZ  \ make file, return to Forth
-include sss.fs    \ compile program. ~30 seconds, so:
-<alt-w>    \ VICE warp speed, and again to turn off
-help       \ learn the keys
-new        \ play a bit, press space to pause
-bg dd      \ clear screen, draw canvas so you can see:
-enter dd   \ cheat: move the piece back to top and:
-r          \ continue playing, or:
-3 shape c! \ cheat: change to a T piece
-r          \ continue playing
-1 prof r   \ show blue=draw gray=game while framestepping
-0 prof     \ turn profiling back off
-123 init r \ restart with a fixed seed
-v          \ edit the source, maybe save or VICE snapshot
-redo       \ ask the program to recompile itself
-words      \ see what's available in the dictionary
-asdf       \ error: resets the stack for a clean workspace
-\ try things! beginners, do check out starting forth!
-```
-
-> [!TIP]
-> If you see a reverse-video error message like `redo?` then the
-> program was probably unloaded. First try `include sss.fs` to
-> recompile, then resort to loading a snapshot or resetting
-> VICE.
-
-C64 disk operations are painfully slow. I use JiffyDOS and
-VICE's host filesystem feature to cope but those
-configurations are beyond this document's scope.
-<!-- TODO make durexForth github discussion on HFS caveats -->
 
 ## Diving In
 
