@@ -283,7 +283,7 @@ and just fast enough for [mostly full 50fps][per] during play.
 `land` calls it _first,_ before all its other work, to:
 
 4. Prevent a keypress from leaking to the next piece,
-5. Allow the player to leak it anyway, holding it through a 
+5. Allow the player to leak it anyway, holding it through a
    12 frame line clear delay,
 6. Permit new buffered keypresses during that same delay.
 
