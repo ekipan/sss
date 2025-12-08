@@ -1,0 +1,111 @@
+(28px DejaVu Sans, photopea.com)
+
+space - leave game
+1 prof r - resume w/ profiling
+ff (wait) - move I piece into gap
+
+
+
+
+
+
+
+check fall
+
+store into well
+
+
+
+check and mark filled lines
+
+
+
+
+roll for next shape in the queue
+
+
+check gameover
+
+(sync)
+
+
+
+
+
+copy marked well to screen
+(there's a lot to copy)
+
+
+
+
+
+
+
+
+(every black gap is another sync)
+
+
+
+
+
+
+
+(timeskip! 11ish idle frames)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+copy unmarked rows down,
+skipping 0, 1, 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+copy well to screen again
+
+
+
+
+
+draw new player T
+
+
+draw queue S
+
+draw queue O
+
+draw queue J
+
+draw hold J
+(wasted work but it's fine)
+
+
+(last sync, then ready to play)
