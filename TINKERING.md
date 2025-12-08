@@ -1,7 +1,5 @@
 # SSS: The Silent Soviet Stacker
 
-![Log: game and memory commands, savestating, recompiling, etc.](shots/devel.png)
-
 - See the README to [jump in and play][rea].
 - **This how-to** takes you from player to tinkerer.
 - The [design rundown][des] is my bucket document: a mix of
@@ -13,6 +11,8 @@
 [rea]: README.md
 [des]: DESIGN.md
 [sss]: sss.fs
+
+![Log: game and memory commands, savestating, recompiling, etc.](shots/devel.png)
 
 ## Grabbing a Wrench
 
@@ -67,8 +67,6 @@ scope but if you're also feeling stifled maybe try:
 
 ## Getting More Leverage
 
-<!-- TODO make durexForth github discussion -->
-
 My own workflow developing durexForth programs is
 _terribly janky,_ documented here for completeness sake.
 It enables me to:
@@ -102,7 +100,7 @@ Under VICE Preferences > Settings > Peripheral Devices:
    VICE and durexForth?
 3. Something changed in durexForth v5 and now PARSE-NAME is
    interacting with all this in a way I don't understand.
-4. Probably more I can't think of right now.
+4. Probably more I'm forgetting, watch this space.
 
 To cope with 1 and 2 I use:
 
@@ -120,11 +118,23 @@ To cope with 3 I develop with durexForth v4 instead.
 
 I opened [#584] about a year ago, hoping the nagging feeling
 would force me to investigate and fix it. I still have not, so
-it's about time I close the issue and apologize for wasting
+it's probably time I close the issue and apologize for wasting
 Mr. Kotlinski's time.
+
+<!-- TODO make durexForth github discussion -->
 
 [#584]: https://github.com/jkotlinski/durexforth/issues/584
 
 You might think this is a lot of work to avoid storing files
 in disk images, and that's fair, but you can't argue with
 _Ctrl-S Alt-Tab_!
+
+---
+
+[Back to top][top]. Next step is probably to dive into the
+design doc. There's tons there, take your time.
+
+[top]: #sss-the-silent-soviet-stacker
+
+<!-- end of TINKERING.md -->
+

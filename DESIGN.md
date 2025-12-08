@@ -1,7 +1,5 @@
 # SSS: The Silent Soviet Stacker
 
-![A block falling into the well](shots/play.png)
-
 - See the README to [jump in and play][rea].
 - The [how-to][tin] takes you from player to tinkerer.
 - **This design rundown** is my bucket document: a mix of
@@ -13,6 +11,8 @@
 [rea]: README.md
 [tin]: TINKERING.md
 [sss]: sss.fs
+
+![A block falling into the well](shots/play.png)
 
 ## Spec and Background
 
@@ -543,10 +543,11 @@ expanded the big section 5 comment) I lament.
 
 ---
 
-That's about all really. Good God this document is twice the
-size of [the Forth source][sss]! It's way past time for you to
-[give it a play][rea] if you somehow haven't already. Happy
-stacking, comrade!
+[Back to top][top]. Some next steps: get your hands dirty with
+the source (good luck!) or give this thing a play (finally!).
+Happy stacking, comrade!
+
+[top]: #sss-the-silent-soviet-stacker
 
 <!-- end of DESIGN.md -->
 
