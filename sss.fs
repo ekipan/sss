@@ -46,9 +46,10 @@ $0400 + constant tilemem
   38 ( nextrow-2 ) + 21 ( rows ) 0 do
   dup 19 $a0 ( rvspace ) fill 40- loop
   ( top ) 2+ #10 $a0 fill ;
+: p+ ( aa-aa) 2dup #10 move >10+> 40- ;
+8 profile
 : paint ( aa-) colormem begin
-  2dup #10 move >10+> 40-
-  over 3 pick = until  drop 2drop ;
+  p+ over 3 pick = until  drop 2drop ;
 : th-c ( p-a) split 40* - colormem + ;
 : p! ( pc-c) dup rot th-c c! ;
 : plot ( ppppc-) p! p! p! p! drop ;
