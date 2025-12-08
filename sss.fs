@@ -25,8 +25,8 @@ create bx  $d020 eor, $d020 sta, rts,
 \ : prof drop ; : profile drop ;
 
 : erase ( au-) 0 fill ;          \ lang
-: ;then  postpone exit postpone then ;
-immediate
+: ;then ( syntax macro ) postpone exit
+  postpone then ; immediate
 : rdrop ( r:a-) pla, pla, ; immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
