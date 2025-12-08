@@ -221,11 +221,11 @@ create blocks \ compiled blockspace coords:
 ```
 
 > [!IMPORTANT]
-> The ASCII-art comments depict the first orientation of each
-> shape, [TGM-style pointy-end-down][ars] (please click, there
-> are illustrations!), though they all rest on row 0 and all are
-> centered on column 2 (instead of TGM's 1 or 2) to simplify
-> code.
+> The ASCII-art comments (`iici` etc) depict the first
+> orientation of each shape, [TGM-style pointy-end-down][ars]
+> (please click, there are illustrations!), though they all rest
+> on row 0 and all are centered on column 2 (instead of TGM's 1
+> or 2) to simplify code.
 
 [ars]: https://tetris.wiki/Arika_Rotation_System
 
@@ -314,8 +314,8 @@ with the current LCG. It's cute and I've grown fond of it.
 [xor]: https://github.com/impomatic/xorshift798
 
 The initial queue mimics [TGM randomizer][ran] behavior. First
-the queue is [S, Z, S, random I/J/L/T], then after flushing
-(`qnext` three times), the player starts with I/J/L/T, and the
+the queue is [S, Z, S, random IJLT], then after flushing
+(`qnext` three times), the player starts with IJLT, and the
 next 3 pieces are less likely to be S or Z (4 or 5).
 
 IJLT are first in the `blocks` table to enable simple
@@ -399,32 +399,6 @@ it's strictly easier than TGM in that sense.
     align="right" width="17%">
 </a>
 
-`redo` is a deeply magical development convenience:
-
-```forth
-marker --sss--
-: redo ( -) --sss-- s" sss.fs"
-  included ( must tco! safe w/ df. ) ;
-```
-
-Consider what happens when you type `redo` at the interpreter.
-It executes the marker `--sss--`, deleting the program,
-including `redo` itself. The processor doesn't care, it
-continues executing the code, now in free memory, pushing the
-`( addr len )` of the file name and then calling `included`,
-which recompiles the source.
-
-In most Forths, execution would then try to return from
-`included` back to `redo` code that might have moved, crashing
-the system in a fireball. DurexForth, however, optimizes the
-tail-call into a jump, so `included` returns directly to the
-interpreter safely.
-
-You can then **resume a game in progress with the new code**
-since the variables are outside the dictionary at `$cc00`,
-chosen to overlap unused hi-res graphics, just after `v`'s
-buffer.
-
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
@@ -476,6 +450,32 @@ updates happen right after the scanline passes. Tradeoffs:
 The reverse-video spaces make pleasant squares and also are
 ignored by the interpreter to make testing and experimenting
 easier.
+
+```forth
+marker --sss--
+: redo ( -) --sss-- s" sss.fs"
+  included ( must tco! safe w/ df. ) ;
+```
+
+`redo` is a deeply magical development convenience.
+
+Consider what happens when you type `redo` at the interpreter.
+It executes the marker `--sss--`, deleting the program,
+including `redo` itself. The processor doesn't care, it
+continues executing the code, now in free memory, pushing the
+`( addr len )` of the file name and then calling `included`,
+which recompiles the source.
+
+In most Forths, execution would then try to return from
+`included` back to `redo` code that might have moved, crashing
+the system in a fireball. durexForth, however, optimizes the
+tail-call into a jump, so `included` returns directly to the
+interpreter safely.
+
+You can then **resume a game in progress with the new code**
+since the variables are outside the dictionary at `$cc00`,
+chosen to overlap unused hi-res graphics, just after `v`'s
+buffer.
 
 ## Performance and Tradeoffs
 

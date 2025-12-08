@@ -26,6 +26,16 @@ number-stacking language Forth. **This thing:**
   General audiences will balk, but I play until Game Over to
   pass the time.
 
+<!--
+I see you there, reading the raw markdown source. Yeah, TTC
+are touchy about their mark, so ya gotta be real careful when
+you say "Tetris." We all know this. It's better left unsaid.
+
+But I do mean it earnestly as well: this thing doesn't try to
+be a slick product anyone would want to play. It's my toybox.
+Come, play with me.
+-->
+
 ## Trying It Out
 
 1. Load the [durexForth][dur] cart or disk into [VICE][vic].
