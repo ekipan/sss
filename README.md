@@ -7,7 +7,7 @@
     src="shots/devel.png"></td>
 </tr><tr>
   <td align="center"><em>Game in progress</em></td>
-  <td align="center"><a href="#file-3-devel-txt"><em>Live coding session</em></a></td>
+  <td align="center"><a href="shots/devel.txt"><em>Live coding session</em></a></td>
 </tr></table>
 
 A block-stacking game for the Commodore 64 written in the
