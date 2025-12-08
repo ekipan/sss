@@ -266,6 +266,8 @@ and just fast enough for [mostly full 50fps][per] during play.
 
 ## Touring the Rest, Part 1: Game Stuff
 
+### `kbinit`
+
 ```forth
 : kbinit ( -) $b80 $28a ! 0 $c6 c! ;
 : land ( -- gameover? ) kbinit ( ... ) ;
@@ -282,6 +284,8 @@ and just fast enough for [mostly full 50fps][per] during play.
 a keypress from leaking into the next piece, unless the player
 continues to hold it for the 11 frames. 2+3 and 1 should
 probably be separate words but I like the density.
+
+### `init` and `new`
 
 ```forth
 : ;then ( syntax macro ) postpone exit
@@ -320,6 +324,8 @@ very important but that's my rationale anyway.
 [jif]: https://www.c64-wiki.com/wiki/160-162
 [ran]: https://tetris.wiki/TGM_randomizer
 
+### `qnext`
+
 ```forth
 \ roll (u-u) 0 <= u2 < u1.
 : q? ( si-s/si-) th-q c@ over =
@@ -350,6 +356,8 @@ programmers will understand easier:
 > aren't important but I choose to spend the extra `rdrop`
 > cognitive load just for its aesthetic, which I'm fond of.
 > `qnext` in both versions enqueues only once per call.
+
+### `go` and `turnkick`
 
 ```forth
 : t@+ ( t-t) turns c@ + 3 and ;
@@ -389,6 +397,8 @@ it's strictly easier than TGM in that sense.
 <img alt="Example 20+ frames profile, showing color bands."
   src="shots/prof.png" align="right" width="15%">
 
+### `profile`
+
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
@@ -417,6 +427,8 @@ the `215` operand from `sync`'s `lda,#` instruction below.
 `0 prof` patches the first instruction at `bx` to an `rts`,
 disabling it. `1 prof` restores the `eor`.
 
+### `sync` and `bg`
+
 ```forth
 : sync ( -) [ 215 lda,# $d012 cmp,
   -5 bne, ] ;  6 profile
@@ -440,6 +452,8 @@ updates happen right after the scanline passes. Tradeoffs:
 The reverse-video spaces make pleasant squares and also are
 ignored by the interpreter to make testing and experimenting
 easier.
+
+### `redo`
 
 ```forth
 marker --sss--
