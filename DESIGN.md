@@ -152,13 +152,6 @@ ccee cced ok
 
 ### Data Shorthands `c: p:`
 
-<!-- TODO **Will become** true after I migrate from gist:
-> [!NOTE]
-> [sss.fs][sss] has CRLF line endings because of my wacky
-> dev workflow that uses VICE's host filesystem feature not
-> technically supported by durexForth.
--->
-
 > [!TIP]
 > You should probably refer to [the source][sss] in a separate
 > tab then Ctrl-F `: n:` to jump to:
