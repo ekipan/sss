@@ -280,10 +280,15 @@ and just fast enough for [mostly full 50fps][per] during play.
 2. `$b` repeat delay of 11 frames.
 3. `0` flushes the key buffer.
 
-`land` calls it _first,_ before all its other work, to prevent
-a keypress from leaking into the next piece, unless the player
-continues to hold it for the 11 frames. 2+3 and 1 should
-probably be separate words but I like the density.
+`land` calls it _first,_ before all its other work, to:
+
+4. Prevent a keypress from leaking to the next piece,
+5. Allow the player to leak it anyway, holding it through a 
+   12 frame line clear delay,
+6. Permit new buffered keypresses during that same delay.
+
+2+3 and 1 should probably be separate words but I like the
+density.
 
 ### `init` and `new`
 
