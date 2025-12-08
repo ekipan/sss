@@ -393,10 +393,8 @@ it's strictly easier than TGM in that sense.
 
 ## Touring the Rest, Part 2: Dev Stuff
 
-<a href="shots/prof.png">
-  <img alt="Example 20+ frames profile, showing color bands."
-    src="shots/prof.png" align="right" width="17%">
-</a>
+<img alt="Example 20+ frames profile, showing color bands."
+  src="shots/prof.png" align="right" width="15%">
 
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
