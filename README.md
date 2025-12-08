@@ -2,9 +2,9 @@
 
 <table><tr>
   <td><img alt="A block falling into the well"
-    src="https://imgur.com/YcWYiBM.png"></td>
+    src="shots/play.png"></td>
   <td><img alt="Log: game and memory commands, savestating, recompiling, etc."
-    src="https://imgur.com/Ykam6xL.png"></td>
+    src="shots/devel.png"></td>
 </tr><tr>
   <td align="center"><em>Game in progress</em></td>
   <td align="center"><a href="#file-3-devel-txt"><em>Live coding session</em></a></td>
@@ -67,18 +67,16 @@ including:
 - A [performance report][per], honestly that bigass document
   probably tries to serve too many audiences.
 
-<!-- these currently work in gist. TODO migrate eventually. -->
-<!-- [sss]: sss.fs -->
-[sss]: #file-2-sss-fs
-[des]: #file-1-design-md
-[dip]: #dipping-your-toes
-[div]: #diving-in
-[gam]: #touring-the-rest-part-1-game-stuff
-[dev]: #touring-the-rest-part-2-dev-stuff
-[per]: #performance-and-tradeoffs
-[inp]: #input
-[sou]: #sound
-[den]: #density
+[sss]: sss.fs
+[des]: DESIGN.md
+[dip]: DESIGN.md#dipping-your-toes
+[div]: DESIGN.md#diving-in
+[gam]: DESIGN.md#touring-the-rest-part-1-game-stuff
+[dev]: DESIGN.md#touring-the-rest-part-2-dev-stuff
+[per]: DESIGN.md#performance-and-tradeoffs
+[inp]: DESIGN.md#input
+[sou]: DESIGN.md#sound
+[den]: DESIGN.md#density
 
 <!-- end of README.md -->
 

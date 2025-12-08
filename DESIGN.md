@@ -1,6 +1,6 @@
 # SSS: The Silent Soviet Stacker
 
-![Log: game and memory commands, savestating, recompiling, etc.](https://imgur.com/Ykam6xL.png)
+![Log: game and memory commands, savestating, recompiling, etc.](shots/devel.png)
 
 See the README to [jump in and play][rea].
 
@@ -10,8 +10,8 @@ folk, with overview, implementation detail, tradeoff
 reflections, etc. Code excerpts try to stay up-to-date but the
 Forth file is of course the source of truth.
 
-[rea]: #file-0-tet-readme-md
-[sss]: #file-2-sss-fs
+[rea]: README.md
+[sss]: sss.fs
 
 ## Spec and Background
 
@@ -129,7 +129,7 @@ Packed hex `$yyxx` coordinates exist in three spaces:
   21x19 canvas, corresponding to well origin. Hold and next
   queue are on the right `11 <= x <= 14`.
 
-![Screenshot with encircled canvas/piece origins.](https://imgur.com/Oss6NTk.png)
+![Screenshot with encircled canvas/piece origins.](shots/origins.png)
 
 The well extends two rows above canvas (21 and 22) for new
 pieces (`$1305` = row 19 column 5) to rotate into.
@@ -393,10 +393,9 @@ it's strictly easier than TGM in that sense.
 
 ## Touring the Rest, Part 2: Dev Stuff
 
-<a href="https://imgur.com/xF5L3kF.png">
+<a href="shots/prof.png">
   <img alt="Example 20+ frames profile, showing color bands."
-    src="https://imgur.com/xF5L3kF.png"
-    align="right" width="17%">
+    src="shots/prof.png" align="right" width="17%">
 </a>
 
 ```forth
