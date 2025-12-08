@@ -84,6 +84,8 @@ It enables me to:
 4. "r" (or however I want to exercise the new code)
 5. Alt-Tab (back to KWrite)
 
+### Configuration
+
 Under VICE Preferences > Settings > Peripheral Devices:
 
 - **Drive:** check "Virtual device" and "IEC device",
@@ -101,6 +103,8 @@ Under VICE Preferences > Settings > Peripheral Devices:
 3. Something changed in durexForth v5 and now `parse-name` is
    interacting with all this in a way I don't understand.
 4. Probably more I'm forgetting, watch this space.
+
+### Workarounds
 
 To cope with 1 and 2 I use:
 
