@@ -90,15 +90,15 @@ Under VICE Preferences > Settings > Peripheral Devices:
   set IEC device type to "Host file system"
 - **Host file system device:** set directory.
 
-**CAVEATS:**
+### Caveats
 
 1. PETSCII lowercase = ASCII uppercase, but ASCII lowercase =
    not valid PETSCII letters, so source must be UPPERCASE.
 2. VICE seems to expect and translate CRLF to CR, sometimes.
-   Without the LF, INCLUDE causes VICE to chop off the first
+   Without the LF, `include` causes VICE to chop off the first
    character of the next line. Some weird interaction between
    VICE and durexForth?
-3. Something changed in durexForth v5 and now PARSE-NAME is
+3. Something changed in durexForth v5 and now `parse-name` is
    interacting with all this in a way I don't understand.
 4. Probably more I'm forgetting, watch this space.
 
