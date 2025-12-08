@@ -25,6 +25,9 @@ number-stacking language Forth. **This thing:**
 - **Is NOT a Tetris product!** No sound, no menus, weird keys.
   General audiences will balk, but I play until Game Over to
   pass the time.
+- **Is basically complete.** I'm married to my tradeoffs but
+  still poke when fancy strikes. Maybe you can show me an
+  angle I hadn't considered though?
 
 <!--
 I see you there, reading the raw markdown source. Yeah, TTC
