@@ -22,13 +22,19 @@ admire Tetris The Grandmaster (TGM), plus platform constraints
 and my own preferences make for an eclectic mix.
 
 I was personally drawn to the [Commodore 64][c64] _only after_
-stumbling on durexForth. They're both lots of fun!
+stumbling on durexForth. They're both lots of fun! Also oh my
+God I didn't realize _but apparently_ the C64 hosted the
+[_very first_ commercial Tetris][mir] way back in 1988! (After
+a couple noncommercial ones.) You _need_ to listen to Mr.
+Wally Beben's [epic 26-minute ballad][beb] if you haven't!
 
-Forth is an old and grumpy programming language that I adore.
-[Forth on Wikipedia][fow] and the beloved
-[Starting Forth][sta] are great places to start.
+SSS is implemented in Forth, an old and grumpy programming
+language I adore. [Forth on Wikipedia][fow] and the beloved
+[Starting Forth][sta] are great places to start learning.
 
 [c64]: https://www.c64-wiki.com/
+[mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
+[beb]: https://www.youtube.com/watch?v=Ny743c32gPg
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [sta]: https://www.forth.com/starting-forth/
 
@@ -515,6 +521,9 @@ cramped margins. I also enjoy the aesthetic of very little
 6502 code. Maybe I'm worrying too much.
 
 The silence, it strikes a certain Soviet charm, no?
+
+I again recommend listening to [Mr. Beben's composition][beb]
+for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
 
 ### Lock Delay
 
