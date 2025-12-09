@@ -43,6 +43,8 @@ language I adore. [Forth on Wikipedia][fow] and the beloved
 
 ## Diving In
 
+### Comment Convention
+
 Forth subroutines are called "words" and operate on a stack of
 values. I use compact stack comments to fit the cramped C64
 screen:
@@ -54,6 +56,8 @@ screen:
   -> boolean flag.
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
   conventional ANS style when I think the clarity is needed.
+
+### `piece` Example
 
 The `piece` word is the heart of this program. It computes
 block positions from a piece description. Read this
