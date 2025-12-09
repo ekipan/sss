@@ -78,7 +78,7 @@ ok \ paints rotated orange J piece at top of well.
 -2 -1 0 1 3 -1 ok \ coords out of bounds (last -1)
 ```
 
-### Coords
+### Coords `(p)`
 
 Packed hex `$yyxx` coordinates exist in three spaces:
 
