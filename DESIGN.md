@@ -269,7 +269,9 @@ density.
 
 Starting a `new` game fetches part of the [jiffy clock][jif]
 to seed the game state then enters the main loop, which is
-named `r` for easy typing by the player.
+named `r` for easy typing by the player. If you're new to
+Forth: the second `init` calls the first `init`, it's not
+recursion.
 
 The `dup 0= +` phrase in `entropy` ensures nonzero seed, which
 was important for [an old xorshift PRNG][xor] and harmless
