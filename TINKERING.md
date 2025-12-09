@@ -104,8 +104,9 @@ Under VICE Preferences > Settings > Peripheral Devices:
    character of the next line. Some weird interaction between
    VICE and durexForth? Luckily durexForth seems to ignore LFs 
    as harmless whitespace.
-3. Something changed in durexForth v5 and now `parse-name` is
-   interacting with all this in a way I don't understand.
+3. Something [changed in durexForth v5][#584] and now maybe
+   `parse-name` is interacting with all this in a way I don't
+   understand.
 4. Probably more I'm forgetting, watch this space.
 
 ### Workarounds
