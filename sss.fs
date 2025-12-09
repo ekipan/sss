@@ -1,7 +1,7 @@
 \ \ soviet stacker for durexforth 4.
+\ ctrl-f "a piece is" in section 5 if
+\ you're determined to read this.
 \ numbered 6->1 for compile countdown.
-\ if you're determined to read this,
-\ start w/ ctrl-f "a piece is" in 5.
 
 decimal marker --sss--
 
