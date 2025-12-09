@@ -19,7 +19,7 @@
 
 I've played tons of The Tetris Company (TTC) games, I strongly
 admire Tetris The Grandmaster (TGM), plus platform constraints
-and my own preferences make for an eclectic mix.
+and my own preferences make for an eclectic mixed spec.
 
 I was personally drawn to the [Commodore 64][c64] _only after_
 stumbling on durexForth. They're both lots of fun! Also oh my
