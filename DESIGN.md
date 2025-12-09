@@ -26,9 +26,9 @@ stumbling on durexForth. They're both lots of fun! Also oh my
 God I didn't realize _but apparently_ the C64 hosted the
 [_very first_ commercial Tetris][mir] way back in 1988! (After
 a couple noncommercial ones.) You _need_ to listen to Mr.
-Wally Beben's [epic 26-minute ballad][beb] if you haven't!
+Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
 
-SSS is implemented in Forth, an old and grumpy programming
+SSS is written in Forth, an old and grumpy programming
 language I adore. [Forth on Wikipedia][fow] and the beloved
 [Starting Forth][sta] are great places to start learning.
 
