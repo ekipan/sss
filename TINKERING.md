@@ -90,8 +90,10 @@ It enables me to:
 Under VICE Preferences > Settings > Peripheral Devices:
 
 - **Drive:** check "Virtual device" and "IEC device",
-  set IEC device type to "Host file system"
-- **Host file system device:** set directory.
+  set IEC device type to "Host file system".
+- **Host file system device:** set directory of your
+  UPPERCASE, CRLF-ended Forth source files. I like to set HFS
+  to drive 8 and attach the durexForth disk image to 9.
 
 ### Caveats
 
