@@ -10,5 +10,5 @@ code ti  here $a ldx,# $b jmp,
 \ 2*2*3*3*463=16668 ~= cycles/jiffy.
 
 here rts, \ subtract nop overhead:
-: ti ( x-) ti literal ti - u. ;
-: bench ( '-) ' ti ;
+: ti ( x-u) ti literal ti - ;
+: bench ( '-) ' ti u. ;
