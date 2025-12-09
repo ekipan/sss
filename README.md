@@ -18,7 +18,7 @@ number-stacking language Forth.
 ## Try It Out
 
 1. Get the [durexForth][dur] cart or disk.
-   SSS is tested with v4.
+   [SSS is developed in v4][hfs] but sometimes I also test v5.
 2. Load into [VICE][vic].
 3. Paste [`sss.fs`][sss] contents.
 4. Type `help` then `new`.
@@ -77,6 +77,7 @@ Come, play with me.
 
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
+[hfs]: TINKERING.md#getting-more-leverage
 [inp]: DESIGN.md#input
 [sou]: DESIGN.md#sound
 [den]: DESIGN.md#density
