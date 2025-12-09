@@ -1,13 +1,15 @@
 # SSS: The Silent Soviet Stacker
 
 <table><tr><td align="center">
+  <a href="DESIGN.md">
   <img alt="A block falling into the well"
     src="shots/play.png"><br>
-  <a href="DESIGN.md">Explore the design</a>
+  Explore the design</a>
 </td><td align="center">
+  <a href="TINKERING.md">
   <img alt="Log: game and memory commands, savestating, recompiling, etc."
     src="shots/devel.png"><br>
-  <a href="TINKERING.md">Start tinkering</a>
+  Start tinkering</a>
 </td></tr></table>
 
 A block-stacking game for the Commodore 64 written in the
