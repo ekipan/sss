@@ -48,8 +48,8 @@ $0400 + constant tilemem
   ( top ) 2+ #10 $a0 fill ;
 : p+ ( aa-aa) 2dup #10 move >10+> 40- ;
 8 profile
-: paint ( aa-) colormem begin
-  p+ over 3 pick = until  drop 2drop ;
+: paint ( aa-) >r colormem begin p+
+  over r@ = until  rdrop 2drop ;
 : th-c ( p-a) split 40* - colormem + ;
 : p! ( pc-c) dup rot th-c c! ;
 : plot ( ppppc-) p! p! p! p! drop ;
@@ -184,7 +184,7 @@ variable old 0 ,
 : q ( ip-ip) over th-q c@ over slot
   swap 1+ swap $300 - ;
 : draw ( -) sync
-  #well d? if spill well paint then
+  #well d? if well spill paint then
   #del d? if old@ piece 0* plot then
   #curr d? if curr piece plot >old then
   #queue d? if 1 $110d q q q 2drop then
