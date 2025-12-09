@@ -1,5 +1,8 @@
 # SSS: The Silent Soviet Stacker
 
+A block-stacking game for the Commodore 64 written in the
+number-stacking language Forth.
+
 <table><tr><td align="center">
   <a href="DESIGN.md">
   <img alt="A block falling into the well"
@@ -12,8 +15,23 @@
   Start tinkering</a>
 </td></tr></table>
 
-A block-stacking game for the Commodore 64 written in the
-number-stacking language Forth. **This thing:**
+## Try It Out
+
+1. Load the [durexForth][dur] cart or disk into [VICE][vic].
+2. Paste [`sss.fs`][sss] contents.
+3. Type `help` then `new`.
+
+### Keys
+
+- **S D F** - Shift left, soft drop, shift right.
+- **J K** - Rotate left and right.
+- **L** - Exchange piece with hold slot on bottom right.
+- Anything else - Pause game and return to Forth.
+
+My own strong preference. See [input rationale][inp] for a(n
+admittedly not easy) reconfiguration option.
+
+## This thing:
 
 - **Is a personal project** optimized strictly for **my own
   joy,** which means a 50fps target, [forgoing sound][sou],
@@ -40,22 +58,6 @@ But I do mean it earnestly as well: this thing doesn't try to
 be a slick product anyone would want to play. It's my toybox.
 Come, play with me.
 -->
-
-## Trying It Out
-
-1. Load the [durexForth][dur] cart or disk into [VICE][vic].
-2. Paste [`sss.fs`][sss] contents.
-3. Type `help` then `new`.
-
-### Keys
-
-- **S D F** - Shift left, soft drop, shift right.
-- **J K** - Rotate left and right.
-- **L** - Exchange piece with hold slot on bottom right.
-- Anything else - Pause game and return to Forth.
-
-My own strong preference. See [input rationale][inp] for a(n
-admittedly not easy) reconfiguration option.
 
 ## Further Reading
 
