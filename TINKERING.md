@@ -9,6 +9,7 @@
   audience is just myself. For the adventurous!
 
 [rea]: README.md
+[tin]: TINKERING.md
 [des]: DESIGN.md
 [sss]: sss.fs
 

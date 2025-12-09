@@ -59,21 +59,23 @@ admittedly not easy) reconfiguration option.
 
 ## Further Reading
 
-- The [how-to][tin] takes you from player to tinkerer.
+- The how-to takes you [from player to tinkerer][tin].
 - The [design rundown][des] is my bucket document: a mix of
   tutorial (how), background (why), and reference (what). I
   hope you'll indulge my sloppiness and dig for what you need.
 - The [Forth source][sss] is damn dense, as its intended
   audience is just myself. For the adventurous!
 
-[dur]: https://github.com/jkotlinski/durexforth
-[vic]: https://vice-emu.sourceforge.io/
+[rea]: README.md
 [tin]: TINKERING.md
 [des]: DESIGN.md
+[sss]: sss.fs
+
+[dur]: https://github.com/jkotlinski/durexforth
+[vic]: https://vice-emu.sourceforge.io/
 [inp]: DESIGN.md#input
 [sou]: DESIGN.md#sound
 [den]: DESIGN.md#density
-[sss]: sss.fs
 
 <!-- end of README.md -->
 
