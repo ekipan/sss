@@ -102,7 +102,8 @@ Under VICE Preferences > Settings > Peripheral Devices:
 2. VICE seems to expect and translate CRLF to CR, sometimes.
    Without the LF, `include` causes VICE to chop off the first
    character of the next line. Some weird interaction between
-   VICE and durexForth?
+   VICE and durexForth? Luckily durexForth seems to ignore LFs 
+   as harmless whitespace.
 3. Something changed in durexForth v5 and now `parse-name` is
    interacting with all this in a way I don't understand.
 4. Probably more I'm forgetting, watch this space.
