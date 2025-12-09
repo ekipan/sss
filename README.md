@@ -49,7 +49,8 @@ admittedly not easy) reconfiguration option.
   pass the time.
 - **Is basically complete.** I'm married to my tradeoffs but
   still poke when fancy strikes. Maybe you can show me an
-  angle I hadn't considered though?
+  angle I hadn't considered though? Would love to make it
+  _even denser_ somehow!
 
 <!--
 I see you there, reading the raw markdown source. Yeah, TTC
