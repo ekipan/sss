@@ -102,12 +102,14 @@ Under VICE Preferences > Settings > Peripheral Devices:
 2. VICE seems to expect and translate CRLF to CR, sometimes.
    Without the LF, `include` causes VICE to chop off the first
    character of the next line. Some weird interaction between
-   VICE and durexForth? Luckily durexForth seems to ignore LFs 
+   VICE and durexForth? Luckily durexForth seems to ignore LFs
    as harmless whitespace.
-3. Something [changed in durexForth v5][#584] and now maybe
+3. durexForth expects source stored in .PRG files so the first
+   two bytes of the file (the load address) are ignored.
+4. Something [changed in durexForth v5][#584] and now maybe
    `parse-name` is interacting with all this in a way I don't
    understand.
-4. Probably more I'm forgetting, watch this space.
+5. Probably more I'm forgetting, watch this space.
 
 ### Workarounds
 
@@ -123,7 +125,9 @@ To cope with 1 and 2 I use:
 	smudge = "tr '[:lower:]' '[:upper:]'"
 ```
 
-To cope with 3 I develop with durexForth v4 instead.
+Caveat 3 is why my sources start with `\ \ first comment`.
+
+To cope with 4 I develop with durexForth v4 instead.
 
 I opened [#584] about a year ago, hoping the nagging feeling
 would force me to investigate and fix it. I still have not, so
