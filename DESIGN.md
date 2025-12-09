@@ -13,6 +13,9 @@
 [des]: DESIGN.md
 [sss]: sss.fs
 
+If you're reading on Github, click the outline button on the
+top right.
+
 ![A block falling into the well](shots/play.png)
 
 ## Spec and Background
