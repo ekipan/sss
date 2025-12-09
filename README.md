@@ -17,9 +17,11 @@ number-stacking language Forth.
 
 ## Try It Out
 
-1. Load the [durexForth][dur] cart or disk into [VICE][vic].
-2. Paste [`sss.fs`][sss] contents.
-3. Type `help` then `new`.
+1. Get the [durexForth][dur] cart or disk.
+   SSS is tested with v4.
+2. Load into [VICE][vic].
+3. Paste [`sss.fs`][sss] contents.
+4. Type `help` then `new`.
 
 ### Keys
 
