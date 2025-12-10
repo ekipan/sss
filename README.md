@@ -24,8 +24,9 @@ number-stacking language Forth.
 4. Type `help` then `new`.
 
 > [!WARNING]
-> [No sound][sou], no high scores, no menus, and unconventional
-> controls. This is a programmer's toybox first, a game second.
+> [No sound][sou], [no high scores][sco], no menus, and
+> [unconventional controls][inp]. This is a programmer's
+> toybox first, a game second.
 
 ### Keys
 
@@ -34,8 +35,8 @@ number-stacking language Forth.
 - **L** - Exchange piece with hold slot on bottom right.
 - Anything else - Pause game and return to Forth.
 
-My own strong preference. See [input rationale][inp] for a(n
-admittedly not easy) reconfiguration option.
+My own strong preference. See input rationale for a(n
+admittedly not easy) [reconfiguration option][inp].
 
 ## This thing:
 
@@ -83,7 +84,8 @@ Come, play with me.
 [vic]: https://vice-emu.sourceforge.io/
 [hfs]: TINKERING.md#getting-more-leverage
 [inp]: DESIGN.md#input
-[sou]: DESIGN.md#sound
+[sco]: DESIGN.md#sound
+[sou]: DESIGN.md#score
 [den]: DESIGN.md#density
 
 <!-- end of README.md -->
