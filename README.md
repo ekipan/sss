@@ -41,7 +41,7 @@ admittedly not easy) [reconfiguration option][inp].
 ## This thing:
 
 - **Is a personal project** optimized strictly for **my own
-  joy,** which means among other thigns a 50fps target with as
+  joy,** which among other things means a 50fps target with as
   little assembly code as necessary, because Forth is fun!
 - **Explores creative constraints.** durexForth is
   _fast,_ but not as fast as hand-rolled 6502. Arbitrary
