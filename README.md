@@ -23,6 +23,10 @@ number-stacking language Forth.
 3. Paste [`sss.fs`][sss] contents.
 4. Type `help` then `new`.
 
+> [!WARNING]
+> No high scores, no menus, and unconventional controls.
+> This is a programmer's toybox first, a game second.
+
 ### Keys
 
 - **S D F** - Shift left, soft drop, shift right.

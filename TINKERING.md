@@ -17,10 +17,6 @@
 
 ## Grabbing a Wrench
 
-> [!WARNING]
-> No high scores, no menus, and unconventional controls.
-> This is a programmer's toybox first, a game second.
-
 First load the [durexForth][dur] cart or disk into [VICE][vic]
 to give it a try. Then you'll want the source in a disk file.
 You can reuse the durexForth disk or attach a new blank disk
