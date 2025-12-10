@@ -213,9 +213,9 @@ variable old 0 ,
   roof = until  nip roof over - erase ;
 
 \ check, store into well.
-\ reuse oob p as nonzero f:
-: h? ( pf-f) swap dup  split 23 u<
-  swap #10 u< and  if th-w c@ then or ;
+: h? ( pf-f; reuse oob p as nonzero f.)
+  swap dup  split 23 u< swap #10 u< and
+  if th-w c@ then or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
 1 profile
 : l! ( pc-c) dup rot th-w c! ;
