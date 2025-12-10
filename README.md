@@ -24,8 +24,8 @@ number-stacking language Forth.
 4. Type `help` then `new`.
 
 > [!WARNING]
-> No high scores, no menus, and unconventional controls.
-> This is a programmer's toybox first, a game second.
+> [No sound][sou], no high scores, no menus, and unconventional
+> controls. This is a programmer's toybox first, a game second.
 
 ### Keys
 
@@ -40,9 +40,8 @@ admittedly not easy) reconfiguration option.
 ## This thing:
 
 - **Is a personal project** optimized strictly for **my own
-  joy,** which means a 50fps target, [forgoing sound][sou],
-  and as little assembly code as necessary, because Forth is
-  fun!
+  joy,** which means among other thigns a 50fps target with as
+  little assembly code as necessary, because Forth is fun!
 - **Explores creative constraints.** durexForth is
   _fast,_ but not as fast as hand-rolled 6502. Arbitrary
   [source text constraints][den], too. They're my muse.
