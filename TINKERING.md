@@ -21,17 +21,14 @@
 > No high scores, no menus, and unconventional controls.
 > This is a programmer's toybox first, a game second.
 
-Load the [durexForth][dur] cart or disk into [VICE][vic] to
-give it a try. [`sss.fs`][sss] is _tested_ with v4 though I
-suspect it will work with v5 also.
+First load the [durexForth][dur] cart or disk into [VICE][vic]
+to give it a try. Then you'll want the source in a disk file.
+You can reuse the durexForth disk or attach a new blank disk
+from the VICE File menu. Typical VICE config has Alt-Insert to
+paste and `~` for the C64 `←` key:
 
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
-
-You'll want the source in a disk file. You can reuse the
-durexForth disk or attach a new blank disk from the VICE File
-menu. Typical VICE config has Alt-Insert to paste and `~` for
-the C64 `←` key:
 
 ```forth
 8 device   \ or 9, to select disk drive. 8 is default
