@@ -55,7 +55,10 @@ screen:
 - `hit? ( ppppc-f)` 4 positions, (ignored) color code
   -> boolean flag.
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
-  conventional ANS style when I think the clarity is needed.
+  conventional [ANS style][222] when I think the clarity is
+  needed.
+
+[222]: https://forth-standard.org/standard/notation#subsection.2.2.2
 
 ### `piece` Example
 
