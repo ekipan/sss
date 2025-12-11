@@ -221,14 +221,14 @@ variable old 0 ,
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 
-\ move. kick bias ccw>l cw>r. f hit?
-$-100 constant down
+$-100 constant down \ player movement:
 : go ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 ;then  curr+! #go d! 0 ;
 : tk ( pt-) go 0= if rdrop rdrop then ;
-: turnkick ( t-) >r  0 r@ tk  r@ r@ tk
-  0 r@ - r@ tk  down r@ tk  down r@ +
-  r@ tk  down r@ - r@ tk  rdrop ;
+: turnkick ( t-; bias ccw>l cw>r.) >r
+  0 r@ tk  r@ r@ tk  0 r@ - r@ tk
+  down r@ tk  down r@ + r@ tk
+  down r@ - r@ tk  rdrop ;
 : land ( -- gameover? ) kbinit  curr
   piece lock row mark ?dup if  lines +!
   12 %stop ! #well else #next then d!
