@@ -46,8 +46,12 @@ v          \ edit the source, maybe save or VICE snapshot
 redo       \ ask the program to recompile itself
 words      \ see what's available in the dictionary
 asdf       \ error: resets the stack for a clean workspace
-\ try things! beginners, do check out starting forth!
 ```
+
+Try things! Beginners, check out [Starting Forth][sta]. More
+info and next steps in the [design doc][des].
+
+[sta]: https://www.forth.com/starting-forth/
 
 > [!TIP]
 > If you see a reverse-video error message like `redo?` then the
