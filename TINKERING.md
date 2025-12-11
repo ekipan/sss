@@ -8,11 +8,6 @@
 - The [Forth source][sss] is damn dense, as its intended
   audience is just myself. For the adventurous!
 
-[rea]: README.md
-[tin]: TINKERING.md
-[des]: DESIGN.md
-[sss]: sss.fs
-
 ![Log: game and memory commands, savestating, recompiling, etc.](shots/devel.png)
 
 ## Grabbing a Wrench
@@ -22,9 +17,6 @@ to give it a try. Then you'll want the source in a disk file.
 You can reuse the durexForth disk or attach a new blank disk
 from the VICE File menu. Typical VICE config has Alt-Insert to
 paste and `~` for the C64 `←` key:
-
-[dur]: https://github.com/jkotlinski/durexforth
-[vic]: https://vice-emu.sourceforge.io/
 
 ```forth
 8 device   \ or 9, to select disk drive. 8 is default
@@ -50,8 +42,6 @@ asdf       \ error: resets the stack for a clean workspace
 
 Try things! Beginners, check out [Starting Forth][sta]. More
 info and next steps in the [design doc][des].
-
-[sta]: https://www.forth.com/starting-forth/
 
 > [!TIP]
 > If you see a reverse-video error message like `redo?` then the
@@ -133,8 +123,6 @@ Mr. Kotlinski's time.
 
 <!-- TODO make durexForth github discussion -->
 
-[#584]: https://github.com/jkotlinski/durexforth/issues/584
-
 You might think this is a lot of work to avoid storing files
 in disk images, and that's fair, but you can't argue with
 _Ctrl-S Alt-Tab_!
@@ -145,6 +133,16 @@ _Ctrl-S Alt-Tab_!
 design doc. There's tons there, take your time.
 
 [top]: #sss-the-silent-soviet-stacker
+
+[rea]: README.md
+[tin]: TINKERING.md
+[des]: DESIGN.md
+[sss]: sss.fs
+
+[#584]: https://github.com/jkotlinski/durexforth/issues/584
+[dur]: https://github.com/jkotlinski/durexforth
+[vic]: https://vice-emu.sourceforge.io/
+[sta]: https://www.forth.com/starting-forth/
 
 <!-- end of TINKERING.md -->
 

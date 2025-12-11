@@ -77,16 +77,16 @@ Come, play with me.
 
 [rea]: README.md
 [tin]: TINKERING.md
-[des]: DESIGN.md
-[sss]: sss.fs
-
-[dur]: https://github.com/jkotlinski/durexforth
-[vic]: https://vice-emu.sourceforge.io/
 [hfs]: TINKERING.md#getting-more-leverage
+[des]: DESIGN.md
 [inp]: DESIGN.md#input
 [sco]: DESIGN.md#sound
 [sou]: DESIGN.md#score
 [den]: DESIGN.md#density
+[sss]: sss.fs
+
+[dur]: https://github.com/jkotlinski/durexforth
+[vic]: https://vice-emu.sourceforge.io/
 
 <!-- end of README.md -->
 

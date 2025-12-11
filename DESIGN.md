@@ -8,11 +8,6 @@
 - The [Forth source][sss] is damn dense, as its intended
   audience is just myself. For the adventurous!
 
-[rea]: README.md
-[tin]: TINKERING.md
-[des]: DESIGN.md
-[sss]: sss.fs
-
 If you're reading on Github, click the outline button on the
 top right.
 
@@ -35,12 +30,6 @@ SSS is written in Forth, an old and grumpy programming
 language I adore. [Forth on Wikipedia][fow] and the beloved
 [Starting Forth][sta] are great places to start learning.
 
-[c64]: https://www.c64-wiki.com/
-[mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
-[beb]: https://www.youtube.com/watch?v=Ny743c32gPg
-[fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
-[sta]: https://www.forth.com/starting-forth/
-
 ## Diving In
 
 ### Comment Convention
@@ -57,8 +46,6 @@ screen:
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
   conventional [ANS style][222] when I think the clarity is
   needed.
-
-[222]: https://forth-standard.org/standard/notation#subsection.2.2.2
 
 ### `piece` Example
 
@@ -185,8 +172,6 @@ create blocks \ compiled blockspace coords:
 > on row 0 and all are centered on column 2 (instead of TGM's 1
 > or 2) to simplify code.
 
-[ars]: https://tetris.wiki/Arika_Rotation_System
-
 ```forth
 \ \ w = zp temp, lsb/msb,x = zp stack.
 \ \ p@ scan table, add center (p)osition.
@@ -226,8 +211,6 @@ index into the blocks table, calls `p@` to scan out 4
 
 Besides the assembly `w! p@`, the rest of the program is Forth
 and just fast enough for [mostly full 50fps][per] during play.
-
-[per]: #performance-and-tradeoffs
 
 ## Touring the Rest, Part 1: Game Stuff
 
@@ -280,8 +263,6 @@ The `dup 0= +` phrase in `entropy` ensures nonzero seed, which
 was important for [an old xorshift PRNG][xor] and harmless
 with the current LCG. It's cute and I've grown fond of it.
 
-[xor]: https://github.com/impomatic/xorshift798
-
 The initial queue mimics [TGM randomizer][ran] behavior. First
 the queue is [S, Z, S, random IJLT], then after flushing
 (`qnext` three times), the player starts with IJLT, and the
@@ -292,9 +273,6 @@ IJLT are first in the `blocks` table to enable simple
 did `2 roll 4 + ( s4-or-z5 ) held!` but I decided to simplify
 and also compensate for the init queue having only one Z. Not
 very important but that's my rationale anyway.
-
-[jif]: https://www.c64-wiki.com/wiki/160-162
-[ran]: https://tetris.wiki/TGM_randomizer
 
 ### `qnext`
 
@@ -361,9 +339,6 @@ floorkicking, but instead I have the horizontal rotations of
 the I piece rest on row 0 so the player has less need, though
 it's strictly easier than TGM in that sense.
 
-[wal]: https://tetris.wiki/Wall_kick
-[flo]: https://tetris.wiki/Floor_kick
-
 ## Touring the Rest, Part 2: Dev Stuff
 
 <img alt="Example 20+ frames profile, showing color bands."
@@ -388,8 +363,6 @@ The code at `bx` ("border xor") toggles the
 instrumenting the word with border-flipping behavior for
 [perf measurement][per]. The phrase `name>string +` addresses
 the code field stored after the name.
-
-[bor]: https://www.c64-wiki.com/wiki/53280
 
 `''` ticks through an instrumented word, recovering the
 `oldcode` xt from the `jsr` instruction. For `dump`ing or
@@ -492,8 +465,6 @@ joy._
 An option, though, is to edit `step` yourself and recompile.
 Search [C64 control codes][con] for "cursor" etc.
 
-[con]: https://www.c64-wiki.com/wiki/control_character
-
 A wilder option is to live-patch the code in memory:
 
 ```forth
@@ -515,9 +486,6 @@ r \ it's pretty hard to play!
 
 I lament the missing [ghost piece][gho] and the
 [hard drop][dro] that it enables.
-
-[gho]: https://tetris.wiki/Ghost_piece
-[dro]: https://tetris.wiki/Drop
 
 Computing all ghosts at entry time would cost entire seconds.
 Checking for one ghost across frames would add significant
@@ -542,8 +510,6 @@ for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
 I'm very fond of [lock delay][del], though I haven't given a
 huge amount of thought to implementing it. My intuition tells
 me it's not very simple.
-
-[del]: https://tetris.wiki/Lock_delay
 
 ### Score
 
@@ -570,6 +536,30 @@ the source (good luck!) or give this thing a play (finally!).
 Happy stacking, comrade!
 
 [top]: #sss-the-silent-soviet-stacker
+[per]: #performance-and-tradeoffs
+
+[rea]: README.md
+[tin]: TINKERING.md
+[des]: DESIGN.md
+[sss]: sss.fs
+
+[fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
+[222]: https://forth-standard.org/standard/notation#subsection.2.2.2
+[xor]: https://github.com/impomatic/xorshift798
+[ars]: https://tetris.wiki/Arika_Rotation_System
+[dro]: https://tetris.wiki/Drop
+[flo]: https://tetris.wiki/Floor_kick
+[gho]: https://tetris.wiki/Ghost_piece
+[del]: https://tetris.wiki/Lock_delay
+[mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
+[ran]: https://tetris.wiki/TGM_randomizer
+[wal]: https://tetris.wiki/Wall_kick
+[c64]: https://www.c64-wiki.com/
+[jif]: https://www.c64-wiki.com/wiki/160-162
+[bor]: https://www.c64-wiki.com/wiki/53280
+[con]: https://www.c64-wiki.com/wiki/control_character
+[sta]: https://www.forth.com/starting-forth/
+[beb]: https://www.youtube.com/watch?v=Ny743c32gPg
 
 <!-- end of DESIGN.md -->
 
