@@ -12,8 +12,8 @@
 
 ## Grabbing a Wrench
 
-First load the [durexForth][dur] cart or disk into [VICE][vic]
-to give it a try. Then you'll want the source in a disk file.
+First load the [durexForth][dur] cart or disk into
+[VICE][vic]. Then you'll want the source in a disk file.
 You can reuse the durexForth disk or attach a new blank disk
 from the VICE File menu. Typical VICE config has Alt-Insert to
 paste and `~` for the C64 `←` key:
