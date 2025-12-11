@@ -68,7 +68,7 @@ It enables me to:
 
 1. Do some edits in KWrite
 2. Ctrl-S Alt-Tab (to VICE)
-3. "redo" Alt-W (to warp speed compile) Alt-W (off)
+3. "[redo][red]" Alt-W (to warp speed compile) Alt-W (off)
 4. "r" (or however I want to exercise the new code)
 5. Alt-Tab (back to KWrite)
 
@@ -137,6 +137,7 @@ design doc. There's tons there, take your time.
 [rea]: README.md
 [tin]: TINKERING.md
 [des]: DESIGN.md
+[red]: DESIGN.md#redo
 [sss]: sss.fs
 
 [#584]: https://github.com/jkotlinski/durexforth/issues/584
