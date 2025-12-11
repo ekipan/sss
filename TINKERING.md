@@ -114,8 +114,8 @@ To cope with 1 and 2 I use:
 
 # .git/config
 [filter "petscii-case"]
-	clean = "tr '[:upper:]' '[:lower:]'"
-	smudge = "tr '[:lower:]' '[:upper:]'"
+	clean = "tr 'A-Z' 'a-z'"
+	smudge = "tr 'a-z' 'A-Z'"
 ```
 
 Caveat 3 is why my sources start with `\ \ first comment`.
