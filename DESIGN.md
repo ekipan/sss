@@ -391,12 +391,18 @@ updates happen right after the scanline passes. Tradeoffs:
 4. Actually learn raster interrupts: I don't wanna.
 
 ```forth
-: bg ( ... ) $a0 ( rvspace ) ( ... ) ;
+: bg ( -) 0 $d020 ( black bg+border ) !
+  11 $286 ( gray fg ) c! page tilemem
+  38 ( nextrow-2 ) + 21 ( rows ) 0 do
+  dup 19 $a0 ( rvspace ) fill 40- loop
+  ( top ) 2+ #10 $a0 fill ;
 ```
 
-The reverse-video spaces make pleasant squares and also are
-ignored by the interpreter to make testing and experimenting
-easier.
+The reverse-video spaces `$a0` make pleasant squares and also
+are ignored by the interpreter to make testing and
+experimenting easier. Above the main 21x19 canvas is an extra
+1x10 row, usually invisible because the empty well is painted
+onto it.
 
 ### `redo`
 
