@@ -125,7 +125,7 @@ Mr. Kotlinski's time.
 
 You might think this is a lot of work to avoid storing files
 in disk images, and that's fair, but you can't argue with
-_Ctrl-S Alt-Tab_!
+_Ctrl-S Alt-Tab!_
 
 ---
 
