@@ -24,7 +24,7 @@ paste and `~` for the C64 `←` key:
 ```forth
 8 device   \ or 9, to select disk drive. 8 is default
 v sss.fs   \ open durexForth vi-clone editor
-i<alt-insert>~ZZ  \ make file, return to Forth
+i<alt-insert>~ZZ  \ paste and save file, return to Forth
 include sss.fs    \ compile program. ~30 seconds, so:
 <alt-w>    \ VICE warp speed, and again to turn off
 help       \ learn the keys
