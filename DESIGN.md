@@ -101,9 +101,6 @@ Packed hex `$yyxx` coordinates exist in three spaces:
 
 ![Canvas/piece origins encircled.](shots/origins.png)
 
-The well extends two rows above canvas (21 and 22) for new
-pieces (`$1305` = row 19 column 5) to rotate into.
-
 The [orange value `8` above][pie] can be `lock`ed into the 4
 well positions if not `hit?`-detected, or `plot`ted on screen.
 These use memory indexing `n th` words: `0 th-w` for example
@@ -412,18 +409,18 @@ updates happen right after the scanline passes. Tradeoffs:
 4. Actually learn raster interrupts: I don't wanna.
 
 ```forth
+: r- ( au-a) over swap $a0 fill 40- ;
 : bg ( -) 0 $d020 ( black bg+border ) !
   11 $286 ( gray fg ) c! page tilemem
-  38 ( down1left2-2 ) + 21 ( rows ) 0 do
-  dup 19 $a0 ( rvspace ) fill 40- loop
-  ( top ) 2+ #10 $a0 fill ;
+  38 ( downleft ) + 21 0 do 19 r- loop
+  ( top ) 2+ 3 0 do #10 r- loop drop ;
 ```
 
 The reverse-video spaces `$a0` make pleasant squares and also
 are ignored by the interpreter to make testing and
 experimenting easier. Above the main 21x19 canvas is an extra
-1x10 row, usually invisible because the empty well is painted
-onto it.
+3x10 area for pieces to rotate into, usually invisible because
+the empty well is painted onto it.
 
 ### `redo`
 

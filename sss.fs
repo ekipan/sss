@@ -40,11 +40,11 @@ create bx  $d020 eor, $d020 sta, rts,
 13 22 ( col row ) 40* + dup    \ screen
 $d800 + constant colormem \ bottom left
 $0400 + constant tilemem  \ of well.
+: r- ( au-a) over swap $a0 fill 40- ;
 : bg ( -) 0 $d020 ( black bg+border ) !
   11 $286 ( gray fg ) c! page tilemem
-  38 ( down1left2 ) + 21 ( rows ) 0 do
-  dup 19 $a0 ( rvspace ) fill 40- loop
-  ( top ) 2+ #10 $a0 fill ;
+  38 ( downleft ) + 21 0 do 19 r- loop
+  ( top ) 2+ 3 0 do #10 r- loop drop ;
 : p+ ( aa-aa) 2dup #10 move >10+> 40- ;
 8 profile
 : paint ( aa-) >r colormem begin p+
@@ -119,8 +119,7 @@ b: 01 02 11 12  01 02 11 12  \ oc
 
 : var+ ( au'-a) over value + ;
 $cc00 \ global game variables:
-210 var+ well \ 21x10 visible playarea.
-20 var+ spill \ 2 rows above screen.
+230 var+ well \ 23x10 playarea.
 0 var+ roof   \ address after. values:
 \ 0 empty, 1 marked, 2-8 block colors.
 2 var+ pos   \ $yyxx from bottom left.
