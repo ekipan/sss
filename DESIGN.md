@@ -18,13 +18,14 @@ top right.
 Spec and Background
 -------------------
 
-I've played tons of The Tetris Company (TTC) games, I strongly
-admire Tetris The Grandmaster (TGM), plus platform constraints
-and my own preferences make for an eclectic mixed spec.
+I've played tons of [The Tetris Company (TTC)][ttc] games, I
+strongly admire [Tetris The Grandmaster (TGM)][tgm], plus
+platform constraints and my own preferences make for an
+eclectic mixed spec.
 
 I was personally drawn to the [Commodore 64][c64] _only after_
-stumbling on durexForth. They're both lots of fun! Also oh my
-God I didn't realize _but apparently_ the C64 hosted the
+stumbling on [durexForth][dur]. They're both lots of fun! Also
+oh my God I didn't realize _but apparently_ the C64 hosted the
 [_very first_ commercial Tetris][mir] way back in 1988! (After
 a couple noncommercial ones.) You _need_ to listen to Mr.
 Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
@@ -54,7 +55,7 @@ screen:
 - `hit? ( ppppc-f)` 4 positions, (ignored) color code
   -> boolean flag.
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
-  conventional [ANS style][222] when I think the clarity is
+  conventional [ANS notation][not] when I think the clarity is
   needed.
 
 Diving In
@@ -135,9 +136,9 @@ for compiling data.
 `c: (u'-)` loops `u` times, calling `n:` to parse a value and
 `c,` to compile a character (i.e. byte) to memory.
 
-`colors (-a)`, a `create`d word, pushes the `a`ddress of a
-table of 7 color code bytes in the TTC color scheme. Without
-the shorthand I could have just written this as:
+`colors (-a)`, [a `create`d word][arr], pushes the `a`ddress
+of a table of 7 color code bytes in the TTC color scheme.
+Without the shorthand I could have just written this as:
 `create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
 
 ```forth
@@ -237,7 +238,7 @@ Touring the Rest, Part 1: Game Stuff
 
 `kbinit` stores 3 bytes:
 
-1. `$80` configures the KERNAL to repeat all keys,
+1. `$80` configures the [KERNAL][ker] to repeat all keys,
    not just the cursors.
 2. `$b` repeat delay of 11 frames.
 3. `0` flushes the key buffer.
@@ -456,7 +457,7 @@ costs, eyeballing `1 prof` color bands:
 
 | Frame% | While a Piece is in Play |
 |--------|--------------------------|
-| 0-7%   | KERNAL interrupt. Rolls through the frame, stepping on `sync` and dropping 1 frame every 4 or 5. |
+| 0-7%   | KERNAL [interrupt][int]. Rolls through the frame, stepping on `sync` and dropping 1 frame every 4 or 5. |
 | 13%    | idle `draw step`, tons of margin. |
 | 17-19% | `piece hit?` move/gameover check. |
 | 95%    | hold `j` to rotate every frame, very tight. |
@@ -567,21 +568,27 @@ Happy stacking, comrade!
 [sss]: sss.fs
 
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
-[222]: https://forth-standard.org/standard/notation#subsection.2.2.2
+[not]: https://forth-standard.org/standard/notation#subsection.2.2.2
 [xor]: https://github.com/impomatic/xorshift798
+[dur]: https://github.com/jkotlinski/durexforth
 [ars]: https://tetris.wiki/Arika_Rotation_System
 [dro]: https://tetris.wiki/Drop
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
 [del]: https://tetris.wiki/Lock_delay
 [mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
+[tgm]: https://tetris.wiki/Tetris_The_Grand_Master_(series)
 [ran]: https://tetris.wiki/TGM_randomizer
+[ttc]: https://tetris.wiki/The_Tetris_Company
 [wal]: https://tetris.wiki/Wall_kick
 [c64]: https://www.c64-wiki.com/
 [jif]: https://www.c64-wiki.com/wiki/160-162
 [bor]: https://www.c64-wiki.com/wiki/53280
 [con]: https://www.c64-wiki.com/wiki/control_character
+[int]: https://www.c64-wiki.com/wiki/Interrupt
+[ker]: https://www.c64-wiki.com/wiki/Kernal
 [sta]: https://www.forth.com/starting-forth/
+[arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
 [exe]: https://www.forth.com/starting-forth/9-forth-execution/
 [beb]: https://www.youtube.com/watch?v=Ny743c32gPg
 
