@@ -32,12 +32,15 @@ Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
 ### Intended Audience
 
 SSS is written in Forth, an old and grumpy programming
-language I adore. I would like the text herein to be
+language I adore. _My wish_ is for the text herein to be
 accessible to less longbearded folk: the Forth-curious, who
 don't want the stack explained to them _yet again_ but haven't
-written anything substantial yet. If you get lost,
-[Forth on Wikipedia][fow] and [Starting Forth][sta] are
-great places to start.
+written anything substantial yet. _The reality is,_ though,
+that it will prove challenging. Maybe throw yourself in
+anyway and see where it takes you?
+
+If you get lost, [Forth on Wikipedia][fow] and
+[Starting Forth][sta] are great places to start.
 
 Diving In
 ---------
