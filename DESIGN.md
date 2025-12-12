@@ -380,9 +380,10 @@ instrumenting the word with border-flipping behavior for
 the code field stored after the name.
 
 `''` ticks through an instrumented word, recovering the
-`oldcode` xt from the `jsr` instruction. For `dump`ing or
-`execute`ing or whatever. Example: `'' sync 1+ c@ .` prints
-the `215` operand from `sync`'s `lda,#` instruction below.
+`oldcode` [execution token][exe] from the `jsr` instruction.
+For `dump`ing or `execute`ing or whatever. Example: `'' sync
+1+ c@ .` prints the `215` operand from `sync`'s `lda,#`
+instruction below.
 
 `0 prof` patches the first instruction at `bx` to an `rts`,
 disabling it. `1 prof` restores the `eor`.
@@ -581,6 +582,7 @@ Happy stacking, comrade!
 [bor]: https://www.c64-wiki.com/wiki/53280
 [con]: https://www.c64-wiki.com/wiki/control_character
 [sta]: https://www.forth.com/starting-forth/
+[exe]: https://www.forth.com/starting-forth/9-forth-execution/
 [beb]: https://www.youtube.com/watch?v=Ny743c32gPg
 
 <!-- end of DESIGN.md -->
