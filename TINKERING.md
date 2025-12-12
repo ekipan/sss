@@ -127,6 +127,10 @@ You might think this is a lot of work to avoid storing files
 in disk images, and that's fair, but you can't argue with
 _Ctrl-S Alt-Tab!_
 
+The more orthodox approach is to use VICE's c1541 tool to
+build a disk image from your sources and then reattach the new
+disk in VICE. See [durexForth's Makefile][mak] for an example.
+
 ---
 
 [Back to top][top]. Next step is probably to dive into the
@@ -142,6 +146,7 @@ design doc. There's tons there, take your time.
 
 [#584]: https://github.com/jkotlinski/durexforth/issues/584
 [dur]: https://github.com/jkotlinski/durexforth
+[mak]: https://github.com/jkotlinski/durexforth/blob/master/Makefile
 [vic]: https://vice-emu.sourceforge.io/
 [sta]: https://www.forth.com/starting-forth/
 
