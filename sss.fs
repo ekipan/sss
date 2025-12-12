@@ -264,8 +264,8 @@ cr ." any other key to pause. " cr ;
 : new ( -) entropy init r ;
 ' help start !  0 prof
 
-.( words: help new r  )
-
 : dd ( -) #all d! draw ;
 : ss ( -) well $ce00 size move ;
 : ll ( -) $ce00 well size move ;
+
+.( words: help new r  )
