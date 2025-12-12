@@ -42,9 +42,6 @@ anyway and see where it takes you?
 If you get lost, [Forth on Wikipedia][fow] and
 [Starting Forth][sta] are great places to start.
 
-Diving In
----------
-
 ### Comment Convention
 
 Forth subroutines are called "words" and operate on a stack of
@@ -59,6 +56,9 @@ screen:
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
   conventional [ANS style][222] when I think the clarity is
   needed.
+
+Diving In
+---------
 
 ### `piece` Example
 
