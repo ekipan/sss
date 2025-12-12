@@ -29,9 +29,15 @@ God I didn't realize _but apparently_ the C64 hosted the
 a couple noncommercial ones.) You _need_ to listen to Mr.
 Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
 
+### Intended Audience
+
 SSS is written in Forth, an old and grumpy programming
-language I adore. [Forth on Wikipedia][fow] and the beloved
-[Starting Forth][sta] are great places to start learning.
+language I adore. I would like the text herein to be
+accessible to less longbearded folk: the Forth-curious, who
+don't want the stack explained to them _yet again_ but haven't
+written anything substantial yet. If you get lost,
+[Forth on Wikipedia][fow] and [Starting Forth][sta] are
+great places to start.
 
 Diving In
 ---------
