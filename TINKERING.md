@@ -1,4 +1,6 @@
-# SSS: The Silent Soviet Stacker
+
+SSS: The Silent Soviet Stacker
+==============================
 
 - See the README to [jump in and play][rea].
 - **This how-to** takes you from player to tinkerer.
@@ -10,7 +12,8 @@
 
 ![Log: game and memory commands, savestating, recompiling, etc.](shots/devel.png)
 
-## Grabbing a Wrench
+Grabbing a Wrench
+-----------------
 
 First load the [durexForth][dur] cart or disk into
 [VICE][vic]. Then you'll want the source in a disk file.
@@ -53,7 +56,8 @@ C64 disk operations are painfully slow. I use JiffyDOS and
 VICE HFS (below) to cope. JiffyDOS config is out of document
 scope but if you're also feeling stifled maybe try:
 
-## Getting More Leverage
+Getting More Leverage
+---------------------
 
 My own workflow developing durexForth programs is
 _terribly janky,_ documented here for completeness sake.

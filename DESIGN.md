@@ -1,4 +1,6 @@
-# SSS: The Silent Soviet Stacker
+
+SSS: The Silent Soviet Stacker
+==============================
 
 - See the README to [jump in and play][rea].
 - The how-to takes you [from player to tinkerer][tin].
@@ -13,7 +15,8 @@ top right.
 
 ![A block falling into the well](shots/play.png)
 
-## Spec and Background
+Spec and Background
+-------------------
 
 I've played tons of The Tetris Company (TTC) games, I strongly
 admire Tetris The Grandmaster (TGM), plus platform constraints
@@ -30,7 +33,8 @@ SSS is written in Forth, an old and grumpy programming
 language I adore. [Forth on Wikipedia][fow] and the beloved
 [Starting Forth][sta] are great places to start learning.
 
-## Diving In
+Diving In
+---------
 
 ### Comment Convention
 
@@ -212,7 +216,8 @@ index into the blocks table, calls `p@` to scan out 4
 Besides the assembly `w! p@`, the rest of the program is Forth
 and just fast enough for [mostly full 50fps][per] during play.
 
-## Touring the Rest, Part 1: Game Stuff
+Touring the Rest, Part 1: Game Stuff
+------------------------------------
 
 ### `kbinit`
 
@@ -339,7 +344,8 @@ floorkicking, but instead I have the horizontal rotations of
 the I piece rest on row 0 so the player has less need, though
 it's strictly easier than TGM in that sense.
 
-## Touring the Rest, Part 2: Dev Stuff
+Touring the Rest, Part 2: Dev Stuff
+-----------------------------------
 
 <img alt="Example 20+ frames profile, showing color bands."
   src="shots/prof.png" align="right" width="15%">
@@ -432,7 +438,8 @@ since the variables are outside the dictionary at `$cc00`,
 chosen to overlap unused hi-res graphics, just after `v`'s
 buffer.
 
-## Performance and Tradeoffs
+Performance and Tradeoffs
+-------------------------
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
 costs, eyeballing `1 prof` color bands:
