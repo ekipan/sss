@@ -490,7 +490,7 @@ r \ it's pretty hard to play!
 ```
 
 > [!WARNING]
-> Obviously not for the faint-of-heart, a bad patch will crash
+> Obviously not for the faint-of-heart. A bad patch will crash
 > the program, but it saves a recompile! I do this kind of thing
 > sometimes while developing, it's how I determined the `215`
 > rasterline above.
