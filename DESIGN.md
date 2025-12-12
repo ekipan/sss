@@ -390,7 +390,7 @@ The `6 profile` here temporarily **undoes** the `6 profile` of
 Raster line 215 is near the bottom of the well so most `draw`
 updates happen right after the scanline passes. Tradeoffs:
 
-1. Hard code as above: correct by construction.
+1. Hard code `215` as above: correct by construction.
 2. Parameterize on 8-bit input:
    incorrect for lines 0-54 and 256-311.
 3. Parameterize on 9-bit input: more argument and loop code.
