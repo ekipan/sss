@@ -3,7 +3,7 @@ SSS: The Silent Soviet Stacker
 ==============================
 
 - See the README to [jump in and play][rea].
-- The how-to takes you [from player to tinkerer][tin].
+- The hands-on guide takes you [from player to tinkerer][tin].
 - **This design rundown** is my bucket document: a mix of
   tutorial (how), background (why), and reference (what). I
   hope you'll indulge my sloppiness and dig for what you need.

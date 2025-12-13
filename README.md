@@ -73,7 +73,7 @@ Come, play with me.
 Further Reading
 ---------------
 
-- The how-to takes you [from player to tinkerer][tin].
+- The hands-on guide takes you [from player to tinkerer][tin].
 - The [design rundown][des] is my bucket document: a mix of
   tutorial (how), background (why), and reference (what). I
   hope you'll indulge my sloppiness and dig for what you need.
