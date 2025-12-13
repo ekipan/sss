@@ -570,34 +570,34 @@ Happy stacking, comrade!
 [sss]: sss.fs
 
 <!-- forth -->
-[arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
-[exe]: https://www.forth.com/starting-forth/9-forth-execution/
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [not]: https://forth-standard.org/standard/notation#subsection.2.2.2
 [sta]: https://www.forth.com/starting-forth/
+[arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
+[exe]: https://www.forth.com/starting-forth/9-forth-execution/
 
 <!-- tetris -->
 [ars]: https://tetris.wiki/Arika_Rotation_System
-[beb]: https://www.youtube.com/watch?v=Ny743c32gPg
-[del]: https://tetris.wiki/Lock_delay
 [dro]: https://tetris.wiki/Drop
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
+[del]: https://tetris.wiki/Lock_delay
 [mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
-[ran]: https://tetris.wiki/TGM_randomizer
 [tgm]: https://tetris.wiki/Tetris_The_Grand_Master_(series)
+[ran]: https://tetris.wiki/TGM_randomizer
 [ttc]: https://tetris.wiki/The_Tetris_Company
 [wal]: https://tetris.wiki/Wall_kick
+[beb]: https://www.youtube.com/watch?v=Ny743c32gPg
 
 <!-- c64 -->
+[xor]: https://github.com/impomatic/xorshift798
+[dur]: https://github.com/jkotlinski/durexforth
+[jif]: https://www.c64-wiki.com/wiki/160-162
 [bor]: https://www.c64-wiki.com/wiki/53280
 [c64]: https://www.c64-wiki.com/wiki/C64
 [con]: https://www.c64-wiki.com/wiki/control_character
-[dur]: https://github.com/jkotlinski/durexforth
 [int]: https://www.c64-wiki.com/wiki/Interrupt
-[jif]: https://www.c64-wiki.com/wiki/160-162
 [ker]: https://www.c64-wiki.com/wiki/Kernal
-[xor]: https://github.com/impomatic/xorshift798
 
 <!-- end of DESIGN.md -->
 
