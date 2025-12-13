@@ -1,5 +1,7 @@
 [*.fs]
 max_line_length = 39
+indent_size = 2
+indent_style = space
 
 [*.md]
 max_line_length = 62
