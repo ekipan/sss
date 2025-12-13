@@ -591,7 +591,7 @@ Happy stacking, comrade!
 
 <!-- c64 -->
 [bor]: https://www.c64-wiki.com/wiki/53280
-[c64]: https://www.c64-wiki.com/
+[c64]: https://www.c64-wiki.com/wiki/C64
 [con]: https://www.c64-wiki.com/wiki/control_character
 [dur]: https://github.com/jkotlinski/durexforth
 [int]: https://www.c64-wiki.com/wiki/Interrupt
