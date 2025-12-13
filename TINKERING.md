@@ -65,16 +65,14 @@ It enables me to:
 
 - Store source outside of VICE on the disk of the actual
   computer I'm using, thus:
-- Use whatever editor I'm comfortable with. For the record it
-  was some Notepad2 fork back on Windows, and KWrite now on
-  Linux. Just the first thing I tried and it works fine.
+- Use whatever editor I'm comfortable with.
 - Have an immediate edit-test cycle:
 
-1. Do some edits in KWrite
-2. Ctrl-S Alt-Tab (to VICE)
-3. "[redo][red]" Alt-W (to warp speed compile) Alt-W (off)
-4. "r" (or however I want to exercise the new code)
-5. Alt-Tab (back to KWrite)
+1. Do some edits.
+2. Save, Alt-Tab to VICE.
+3. "[redo][red]" Alt-W to warp speed compile, Alt-W off.
+4. "r", or however I want to exercise the new code.
+5. Alt-Tab back to editor.
 
 ### Configuration
 
