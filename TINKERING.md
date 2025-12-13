@@ -89,10 +89,8 @@ Under VICE Preferences > Settings > Peripheral Devices:
 1. PETSCII lowercase = ASCII uppercase, but ASCII lowercase =
    not valid PETSCII letters, so source must be UPPERCASE.
 2. VICE seems to expect and translate CRLF to CR, sometimes.
-   Without the LF, `include` causes VICE to chop off the first
-   character of the next line. Some weird interaction between
-   VICE and durexForth? Luckily durexForth seems to ignore LFs
-   as harmless whitespace.
+   Executing `include` chops off the character after the CR,
+   but luckily durexForth seems to ignore LFs in other cases.
 3. durexForth expects source stored in .PRG files so the first
    two bytes of the file (the load address) are ignored.
 4. Something [changed in durexForth v5][#584] and now maybe
