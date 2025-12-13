@@ -54,13 +54,13 @@ $0400 + constant tilemem
 : rub ( p-) th-c 2 - dup 4 erase 40-
   4 erase ;
 
-\ w = zp temp, lsb/msb,x = zp stack.
-\ p@ scan table, add center (p)osition.
+\ zp: w = temp, lsb/msb,x = stack.
 : w! ( a-) [ lsb ldy,x w sty, msb ldy,x
   w 1+ sty, inx, 0 ldy,# ] ;
-: p@ ( p-pp) dup [ clc, w lda,(y) iny,
-  lsb 1+ dup adc,x sta,x w lda,(y) iny,
-  msb 1+ dup adc,x sta,x ] ;
+: p@ ( p -- p+a@ p ; a+=2.) dup [ clc,
+  w lda,(y) iny, lsb 1+ dup adc,x sta,x
+  w lda,(y) iny, msb 1+ dup adc,x sta,x
+  ] ; \ scan pos from blocks table.
 
 5 . \ data, piece definition.
 
