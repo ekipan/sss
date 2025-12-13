@@ -559,38 +559,43 @@ expanded the big section 5 comment) I lament.
 the source (good luck!) or give this thing a play (finally!).
 Happy stacking, comrade!
 
+<!-- these docs -->
 [top]: #sss-the-silent-soviet-stacker
 [per]: #performance-and-tradeoffs
-
 [rea]: README.md
 [tin]: TINKERING.md
 [des]: DESIGN.md
 [sss]: sss.fs
 
+<!-- forth -->
+[arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
+[exe]: https://www.forth.com/starting-forth/9-forth-execution/
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [not]: https://forth-standard.org/standard/notation#subsection.2.2.2
-[xor]: https://github.com/impomatic/xorshift798
-[dur]: https://github.com/jkotlinski/durexforth
+[sta]: https://www.forth.com/starting-forth/
+
+<!-- tetris -->
 [ars]: https://tetris.wiki/Arika_Rotation_System
+[beb]: https://www.youtube.com/watch?v=Ny743c32gPg
+[del]: https://tetris.wiki/Lock_delay
 [dro]: https://tetris.wiki/Drop
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
-[del]: https://tetris.wiki/Lock_delay
 [mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
-[tgm]: https://tetris.wiki/Tetris_The_Grand_Master_(series)
 [ran]: https://tetris.wiki/TGM_randomizer
+[tgm]: https://tetris.wiki/Tetris_The_Grand_Master_(series)
 [ttc]: https://tetris.wiki/The_Tetris_Company
 [wal]: https://tetris.wiki/Wall_kick
-[c64]: https://www.c64-wiki.com/
-[jif]: https://www.c64-wiki.com/wiki/160-162
+
+<!-- c64 -->
 [bor]: https://www.c64-wiki.com/wiki/53280
+[c64]: https://www.c64-wiki.com/
 [con]: https://www.c64-wiki.com/wiki/control_character
+[dur]: https://github.com/jkotlinski/durexforth
 [int]: https://www.c64-wiki.com/wiki/Interrupt
+[jif]: https://www.c64-wiki.com/wiki/160-162
 [ker]: https://www.c64-wiki.com/wiki/Kernal
-[sta]: https://www.forth.com/starting-forth/
-[arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
-[exe]: https://www.forth.com/starting-forth/9-forth-execution/
-[beb]: https://www.youtube.com/watch?v=Ny743c32gPg
+[xor]: https://github.com/impomatic/xorshift798
 
 <!-- end of DESIGN.md -->
 
