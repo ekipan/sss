@@ -82,6 +82,8 @@ ok \ paints rotated orange J piece at top of well.
 -2 -1 0 1 3 -1 ok \ coords out of bounds (last -1)
 ```
 
+![This session.](shots/piece.png)
+
 ### Coords `(p)`
 
 Packed hex `$yyxx` coordinates exist in three spaces:
@@ -95,7 +97,7 @@ Packed hex `$yyxx` coordinates exist in three spaces:
   21x19 canvas, corresponding to well origin. Hold and next
   queue are on the right `11 <= x <= 14`.
 
-![Screenshot with encircled canvas/piece origins.](shots/origins.png)
+![Canvas/piece origins encircled.](shots/origins.png)
 
 The well extends two rows above canvas (21 and 22) for new
 pieces (`$1305` = row 19 column 5) to rotate into.
