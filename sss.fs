@@ -154,12 +154,8 @@ well - constant size
 : th-q ( i-a) qidx c@ + 3 and queue + ;
 : enqueue ( s-) 1 qidx +!  3 th-q c!
   0 th-q c@ shape c! ;
-
-: roll ( u-u; 0 <= u2 < u1.) seed @
-  31421 * 6927 + dup seed !  um* nip ;
 : init ( u-) well size erase  seed !
-  4 enqueue 5 enqueue 4 enqueue 4 roll
-  enqueue  5 held!  enter  99 sig c! ;
+  5 held!  enter  99 sig c! ;
 
 3 . \ draw, with dirty bitset.
 
@@ -191,13 +187,17 @@ variable old 0 ,
 
 2 . \ rules: queue, well, player.
 
-\ tgmlike reroller rng. 4: roll (u-u).
+\ tgmlike reroller rng.
+: roll ( u-u; 0 <= u2 < u1.) seed @
+  31421 * 6927 + dup seed !  um* nip ;
 : q? ( si-s/si-) th-q c@ over =
   if drop rdrop then ;
 : qn ( -) 7 roll 0 q? 1 q? 2 q? 3 q?
   enqueue r> rdrop >r ;  12 profile
 : qnext ( -) qn qn qn 7 roll enqueue ;
-: init ( u-) init qnext qnext qnext ;
+: init ( u-) init 4 enqueue 5 enqueue
+  4 enqueue  4 roll enqueue
+  qnext qnext qnext ;
 
 \ count, whiten, delete rows (a).
 : full? ( a-f) dup >10+> begin  dup c@
