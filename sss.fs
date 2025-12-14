@@ -127,7 +127,7 @@ $cc00 \ global game variables:
 1 var+ shape \ 0-6 ijltszo.
 1 var+ held  \ 0-6 with pin bit $08.
 4 var+ queue \ 0-6 next random shapes.
-2 var+ qidx  \ queue head, used mod 4.
+2 var+ head  \ queue idx, used mod 4.
 2 var+ seed  \ for random generator.
 2 var+ lines \ for gravity curve.
 2 var+ %grav \ n->0 fall timer.
@@ -151,8 +151,8 @@ well - constant size
 : curr+! ( pt-) t@+ turns c!  pos +! ;
 : enter ( -) $1305 pos ! 0 turns c! ;
 
-: th-q ( i-a) qidx c@ + 3 and queue + ;
-: enqueue ( s-) 1 qidx +!  3 th-q c!
+: th-q ( i-a) head c@ + 3 and queue + ;
+: enqueue ( s-) 1 head +!  3 th-q c!
   0 th-q c@ shape c! ;
 : init ( u-) well size erase  seed !
   5 held!  enter  99 sig c! ;
