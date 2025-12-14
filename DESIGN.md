@@ -379,8 +379,8 @@ The code at `bx` ("border xor") toggles the
 [C64 border color register][bor] at `$d020`.
 `profile` adjusts the latest word to point to new code:
 `lda #color  jsr bx  jsr oldcode  lda #color  jmp bx`,
-instrumenting the word with border-flipping behavior for
-[perf measurement][per]. The phrase `name>string +` addresses
+instrumenting the word with border-flipping behavior to
+[measure perf][per]. The phrase `name>string +` addresses
 the code field stored after the name.
 
 `''` ticks through an instrumented word, recovering the
