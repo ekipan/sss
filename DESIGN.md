@@ -1,4 +1,7 @@
 
+If you're reading on Github, click the outline button on the
+top right.
+
 SSS: The Silent Soviet Stacker
 ==============================
 
@@ -9,9 +12,6 @@ SSS: The Silent Soviet Stacker
   hope you'll indulge my sloppiness and dig for what you need.
 - The [Forth source][sss] is damn dense, as its intended
   audience is just myself. For the adventurous!
-
-If you're reading on Github, click the outline button on the
-top right.
 
 ![A block falling into the well](shots/play.png)
 
