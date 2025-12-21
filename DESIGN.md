@@ -452,6 +452,10 @@ since the variables are outside the dictionary at `$cc00`,
 chosen to overlap unused hi-res graphics, just after `v`'s
 buffer.
 
+One consideration: invalid positions etc. in uninitialized
+game state will corrupt memory when trying to draw, so
+`init` and `r` [track a `sig`nature][ini] to prevent this.
+
 Performance and Tradeoffs
 -------------------------
 
@@ -564,6 +568,7 @@ Happy stacking, comrade!
 
 <!-- these docs -->
 [top]: #sss-the-silent-soviet-stacker
+[ini]: #init-and-new
 [per]: #performance-and-tradeoffs
 [rea]: README.md
 [tin]: TINKERING.md
