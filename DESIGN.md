@@ -118,7 +118,7 @@ dae2 dae2 ok
 ccee cced ok
 ```
 
-### Data Shorthands `c: p:`
+### Data Shorthands `c: b:`
 
 > [!TIP]
 > You should probably refer to [the source][sss] in a separate
@@ -145,7 +145,7 @@ Without the shorthand I could have just written this as:
 
 ```forth
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
-: p: ( '-) hex 8 0 do n: >p , loop decimal ;
+: b: ( '-) hex 8 0 do n: >p , loop decimal ;
 ```
 
 `>p (c-p)` does precomputation: expanding an 8-bit `c`haracter
@@ -155,19 +155,19 @@ may not contain a block. Negative x borrows from the y coord
 but `hit?` bounds checks before you can corrupt memory outside
 well and canvasspace.
 
-`p: ('-)` loops 8 times, parsing, expanding, and compiling hex
+`b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
 
 ### The `blocks` Table
 
 ```forth
 create blocks \ center (c/.) at yx=02:
-p: 00 01 02 03  02 12 22 32  \ iici
-p: 00 01 02 03  02 12 22 32
-p:  03 11 12 13  01 02 12 22 \    jjj
-p:  01 02 03 11  02 12 22 23 \     .j
-p: 01 11 12 13  02 12 22 21  \ lll
-p: 01 02 03 13  03 02 12 22  \ l.
+b: 00 01 02 03  02 12 22 32  \ iici
+b: 00 01 02 03  02 12 22 32
+b:  03 11 12 13  01 02 12 22 \    jjj
+b:  01 02 03 11  02 12 22 23 \     .j
+b: 01 11 12 13  02 12 22 21  \ lll
+b: 01 02 03 13  03 02 12 22  \ l.
 ( 4 shapes omitted. )
 ```
 
@@ -192,23 +192,23 @@ create blocks \ compiled blockspace coords:
 \ \ zp: w = temp, lsb/msb,x = stack.
 \ : w! ( a-) [ lsb ldy,x w sty, msb ldy,x
 \   w 1+ sty, inx, 0 ldy,# ] ;
-\ : p@ ( p -- p+a@ p ; a+=2.) dup [ clc,
+\ : b@ ( p -- p+a@ p ; a+=2.) dup [ clc,
 \   w lda,(y) iny, lsb 1+ dup adc,x sta,x
 \   w lda,(y) iny, msb 1+ dup adc,x sta,x
 \   ] ; \ scan pos from blocks table.
-: p@ ( pa-ppa) dup >r @ over + swap r> 2+ ;
+: b@ ( pa-ppa) dup >r @ over + swap r> 2+ ;
 
 \ 7 shapes 4 turns 4 blocks 2 bytes.
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
-  blocks + ( w! ) p@ p@ p@ p@ 2drop r>
+  blocks + ( w! ) b@ b@ b@ b@ 2drop r>
   colors + c@ ;
 ```
 
-For speed sake the table scan words `w! (a-) p@ (p-pp)` are
+For speed sake the table scan words `w! (a-) b@ (p-pp)` are
 written in assembly but for pedagogy sake I present above an
-older combined Forth definition of `p@ (pa-ppa)`.
+older combined Forth definition of `b@ (pa-ppa)`.
 
-`p@ (pa-ppa)` takes a piece center position `p1` `$yyxx`, an
+`b@ (pa-ppa)` takes a piece center position `p1` `$yyxx`, an
 address in the blocks table `a1`, and fetches `@` and adds `+`
 one cell of the table giving computed block position `p2`,
 keeping the piece center `p3=p1`, and moving to the next table
@@ -222,10 +222,10 @@ address `a2=a1+2` ready to fetch the next block.
 
 `piece (pts-ppppc)` takes a center `p`osition `$yyxx`, `t`urn
 count `0-3`, and `s`hape index `0-6`, combines `t` and `s` to
-index into the blocks table, calls `p@` to scan out 4
+index into the blocks table, calls `b@` to scan out 4
 `p`ositions, and then a `c`olor.
 
-Besides the assembly `w! p@`, the rest of the program is Forth
+Besides the assembly `w! b@`, the rest of the program is Forth
 and just fast enough for [mostly full 50fps][per] during play.
 
 Touring the Rest, Part 1: Game Stuff

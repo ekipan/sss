@@ -57,7 +57,7 @@ $0400 + constant tilemem
 \ zp: w = temp, lsb/msb,x = stack.
 : w! ( a-) [ lsb ldy,x w sty, msb ldy,x
   w 1+ sty, inx, 0 ldy,# ] ;
-: p@ ( p -- p+a@ p ; a+=2.) dup [ clc,
+: b@ ( p -- p+a@ p ; a+=2.) dup [ clc,
   w lda,(y) iny, lsb 1+ dup adc,x sta,x
   w lda,(y) iny, msb 1+ dup adc,x sta,x
   ] ; \ scan pos from blocks table.
@@ -68,27 +68,27 @@ $0400 + constant tilemem
 : n: ( *'-*) parse-name evaluate ;
 : c: ( u'-) 0 do n: c, loop ;
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
-: p:  hex 8 0 do n: >p , loop decimal ;
+: b:  hex 8 0 do n: >p , loop decimal ;
 
 create colors 7 c: 3 8 6 4 5 2 7
 create blocks \ center (c/.) at yx=02:
-p: 00 01 02 03  02 12 22 32  \ iici
-p: 00 01 02 03  02 12 22 32
-p:  03 11 12 13  01 02 12 22 \    jjj
-p:  01 02 03 11  02 12 22 23 \     .j
-p: 01 11 12 13  02 12 22 21  \ lll
-p: 01 02 03 13  03 02 12 22  \ l.
-p:  02 11 12 13  02 11 12 22 \    ttt
-p:  01 02 03 12  02 12 13 22 \     c
-p: 01 02 12 13  02 11 12 21  \  ss
-p: 01 02 12 13  02 11 12 21  \ sc
-p:  03 02 11 12  02 12 13 23 \    zz
-p:  03 02 11 12  02 12 13 23 \     cz
-p: 01 02 11 12  01 02 11 12  \ oo
-p: 01 02 11 12  01 02 11 12  \ oc
+b: 00 01 02 03  02 12 22 32  \ iici
+b: 00 01 02 03  02 12 22 32
+b:  03 11 12 13  01 02 12 22 \    jjj
+b:  01 02 03 11  02 12 22 23 \     .j
+b: 01 11 12 13  02 12 22 21  \ lll
+b: 01 02 03 13  03 02 12 22  \ l.
+b:  02 11 12 13  02 11 12 22 \    ttt
+b:  01 02 03 12  02 12 13 22 \     c
+b: 01 02 12 13  02 11 12 21  \  ss
+b: 01 02 12 13  02 11 12 21  \ sc
+b:  03 02 11 12  02 12 13 23 \    zz
+b:  03 02 11 12  02 12 13 23 \     cz
+b: 01 02 11 12  01 02 11 12  \ oo
+b: 01 02 11 12  01 02 11 12  \ oc
 \ 7 shapes 4 turns 4 blocks 2 bytes.
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
-  blocks + w! p@ p@ p@ p@ drop r>
+  blocks + w! b@ b@ b@ b@ drop r>
   colors + c@ ;  14 profile
 
 \ a piece is: center (p)osition hex
