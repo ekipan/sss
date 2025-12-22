@@ -39,7 +39,7 @@ r          \ continue playing
 0 prof     \ turn profiling back off
 123 init r \ restart with a fixed seed
 v          \ edit the source, maybe save or VICE snapshot
-redo       \ ask the program to recompile itself
+redo       \ ask the program to recompile itself from disk
 words      \ see what's available in the dictionary
 asdf       \ error: resets the stack for a clean workspace
 ```
