@@ -57,9 +57,33 @@ info and next steps in the [design doc][des].
 > recompile, then resort to loading a snapshot or resetting
 > VICE.
 
-C64 disk operations are painfully slow. I use JiffyDOS and
-VICE HFS (below) to cope. JiffyDOS config is out of document
-scope but if you're also feeling stifled maybe try:
+### Basic (and BASIC) Screen-Editing
+
+The durexForth interpreter uses the same KERNAL screen-editor
+routines as C64 BASIC, so you can press:
+
+- Up/Down to re-enter other input elsewhere on screen,
+- Left/Right to overtype input text,
+- Delete/Insert to move characters on the current line.
+  Inserted blanks accept nearly _every_ key, including
+  controls such as the arrows, putting the control codes
+  directly into your source, but you can press:
+- Shift-Return to abandon the current line and move to the
+  next.
+- Shift-Home to clear the screen.
+
+> [!NOTE]
+> The screen editor also has a weird 80-column feature that
+> links together pairs of lines when you type past the 40th
+> column. I don't fully understand it so I try to stay within
+> the 40.
+
+After experimenting on screen you'll want to edit source on
+disk. The above session saves to a disk file and uses the `v`
+vi-clone, but C64 disk operations are _painfully slow._ I use
+JiffyDOS and VICE HFS (below) to cope. JiffyDOS config is out
+of document scope but if you're also feeling stifled maybe
+try:
 
 Getting More Leverage
 ---------------------
