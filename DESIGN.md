@@ -483,7 +483,7 @@ Performance and Tradeoffs
 -------------------------
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
-costs, eyeballing `1 prof` color bands:
+costs, eyeballing [`1 prof` color bands][pro]:
 
 | Frame% | While a Piece is in Play |
 |--------|--------------------------|
@@ -592,6 +592,7 @@ Happy stacking, comrade!
 <!-- these docs -->
 [top]: #sss-the-silent-soviet-stacker
 [ini]: #init-and-new
+[pro]: #profile
 [per]: #performance-and-tradeoffs
 [rea]: README.md
 [tin]: TINKERING.md
