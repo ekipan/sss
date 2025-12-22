@@ -378,7 +378,7 @@ create bx  $d020 eor, $d020 sta, rts,
 The code at `bx` ("border xor") toggles the
 [C64 border color register][bor] at `$d020`.
 `profile` adjusts the latest word to point to new code:
-`lda #color  jsr bx  jsr oldcode  lda #color  jmp bx`,
+`lda #color | jsr bx | jsr oldcode | lda #color | jmp bx`,
 instrumenting the word with border-flipping behavior to
 [measure perf][per]. The phrase `name>string +` addresses
 the code field stored after the name.
@@ -455,6 +455,16 @@ buffer.
 One consideration: invalid positions etc. in uninitialized
 game state will corrupt memory when trying to draw, so
 `init` and `r` [track a `sig`nature][ini] to prevent this.
+
+### `10 value #10`
+
+A durexForth literal `: example $1234 ;` compiles to 5 bytes
+of code: `jsr lit | !word $1234` and the `lit` routine has to
+juggle stacks to fetch the value. However, a phrase
+`$1234 value example` compiles 7 bytes:
+`lda #$12 | ldy #$34 | jmp pushya` then a 3-byte `jsr` on each
+use, both faster and potentially smaller. I define words `#10`
+and `4` since those are used pretty often.
 
 Performance and Tradeoffs
 -------------------------
