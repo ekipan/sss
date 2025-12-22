@@ -59,8 +59,9 @@ info and next steps in the [design doc][des].
 
 ### Basic (and BASIC) Screen-Editing
 
-The durexForth interpreter uses the same KERNAL screen-editor
-routines as C64 BASIC, so you can press:
+The durexForth interpreter uses the same KERNAL
+[screen-editor][edi] (starts mid-page, click the right arrow
+to continue reading) routines as C64 BASIC, so you can press:
 
 - Up/Down to re-enter other input elsewhere on screen,
 - Left/Right to overtype input text,
@@ -176,6 +177,7 @@ design doc. There's tons there, take your time.
 [dur]: https://github.com/jkotlinski/durexforth
 [mak]: https://github.com/jkotlinski/durexforth/blob/master/Makefile
 [vic]: https://vice-emu.sourceforge.io/
+[edi]: https://www.devili.iki.fi/Computers/Commodore/C64/Programmers_Reference/Chapter_2/page_094.html
 [sta]: https://www.forth.com/starting-forth/
 
 <!-- end of TINKERING.md -->
