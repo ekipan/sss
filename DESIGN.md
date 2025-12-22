@@ -466,7 +466,7 @@ juggle stacks to fetch the value. However, a phrase
 use, both faster and potentially smaller. I define words `#10`
 and `4` since those are used pretty often.
 
-### Optional Tools `recent` and `bench`
+### Optional Tools `recent`, `bench`, `patch:`
 
 [`recent`][rec] checks the cursor column variable `$d3` for
 word wrap and uses [`dowords`][wor] to look through the
@@ -478,6 +478,13 @@ calling its clock fetcher `now` to avoid the `start` name
 clash. Of note, the second `ti` modifies the code of the first
 `ti`, restoring the stack depth before every call and jumping
 to the target xt with minimal overhead.
+
+[`patch:`][pat] I only just now came up with and so haven't
+exercised yet! Beyond the single given example. Heed the
+warning, it's a very sharp tool, but any word that calls
+(`jsr`s) most any other word will be safe to patch. An example
+unsafe word is `: mydrop drop ;`, which only compiles to 2
+bytes `inx | rts`.
 
 Performance and Tradeoffs
 -------------------------
@@ -600,6 +607,7 @@ Happy stacking, comrade!
 [sss]: sss.fs
 [rec]: recent.fs
 [ben]: bench.fs
+[pat]: patch.fs
 
 <!-- forth -->
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
