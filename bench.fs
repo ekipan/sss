@@ -1,4 +1,4 @@
-\ \ ex: 7 5 bench * ( measure cycles. )
+\ \ eg: 7 5 bench * ( measure cycles. )
 code now ( -j) sei, $a1 ldy, $a2 lda,
   cli, ' pushya jmp,
 
