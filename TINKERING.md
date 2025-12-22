@@ -35,6 +35,9 @@ dd         \ paint the new piece on screen and:
 r          \ continue playing, or:
 3 shape c! \ cheat: change to a T piece
 r          \ continue playing
+$2fc 2 go  \ move ($300-4) up 3 left 4 flipped 180(2)
+bg dd .    \ look at moved piece, consume go flag
+fall . dd  \ move down one row or land into well
 1 prof r   \ show blue=draw gray=game while framestepping
 0 prof     \ turn profiling back off
 123 init r \ restart with a fixed seed
