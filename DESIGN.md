@@ -466,7 +466,7 @@ juggle stacks to fetch the value. However, a phrase
 use, both faster and potentially smaller. I define words `#10`
 and `4` since those are used pretty often.
 
-### Optional tools `recent` and `bench`
+### Optional Tools `recent` and `bench`
 
 [`recent`][rec] checks the cursor column variable `$d3` for
 word wrap and uses [`dowords`][wor] to look through the
@@ -524,7 +524,7 @@ A wilder option is to live-patch the code in memory:
 ```forth
 '' step dump \ durexforth dumps 64 bytes of machine code.
 \ I search the character listing on the right for 's'.
-n \ dump 64 more, then I see the 's' at addr $34f3, ymmv.
+n \ dump 64 more, then I see the 's' at addr $43f3, ymmv.
 'z' $43f3 c! \ now 'z' is the shift-left key!
 r \ it's pretty hard to play!
 's' $43f3 c! \ so I put it back.
