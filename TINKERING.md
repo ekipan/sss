@@ -30,7 +30,8 @@ include sss.fs    \ compile program. ~30 seconds, so:
 help       \ learn the keys
 new        \ play a bit, press space to pause
 bg dd      \ clear screen, draw canvas so you can see:
-enter dd   \ cheat: move the piece back to top and:
+enter      \ cheat: move the piece back to top then:
+dd         \ paint the new piece on screen and:
 r          \ continue playing, or:
 3 shape c! \ cheat: change to a T piece
 r          \ continue playing
