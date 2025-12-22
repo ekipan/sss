@@ -466,6 +466,19 @@ juggle stacks to fetch the value. However, a phrase
 use, both faster and potentially smaller. I define words `#10`
 and `4` since those are used pretty often.
 
+### Optional tools `recent` and `bench`
+
+[`recent`][rec] checks the cursor column variable `$d3` for
+word wrap and uses [`dowords`][wor] to look through the
+dictionary.
+
+[`bench`][ben] is based on [durexForth's `timer`][tim], except
+with a builtin loop to measure much smaller cycle counts, and
+calling its clock fetcher `now` to avoid the `start` name
+clash. Of note, the second `ti` modifies the code of the first
+`ti`, restoring the stack depth before every call and jumping
+to the target xt with minimal overhead.
+
 Performance and Tradeoffs
 -------------------------
 
@@ -584,10 +597,15 @@ Happy stacking, comrade!
 [tin]: TINKERING.md
 [des]: DESIGN.md
 [sss]: sss.fs
+[rec]: recent.fs
+[ben]: bench.fs
 
 <!-- forth -->
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [not]: https://forth-standard.org/standard/notation#subsection.2.2.2
+[dur]: https://github.com/jkotlinski/durexforth
+[tim]: https://github.com/jkotlinski/durexforth/blob/master/forth/timer.fs
+[wor]: https://jkotlinski.github.io/durexforth/#_word_list
 [sta]: https://www.forth.com/starting-forth/
 [arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
 [exe]: https://www.forth.com/starting-forth/9-forth-execution/
@@ -607,7 +625,6 @@ Happy stacking, comrade!
 
 <!-- c64 -->
 [xor]: https://github.com/impomatic/xorshift798
-[dur]: https://github.com/jkotlinski/durexforth
 [jif]: https://www.c64-wiki.com/wiki/160-162
 [bor]: https://www.c64-wiki.com/wiki/53280
 [c64]: https://www.c64-wiki.com/wiki/C64
