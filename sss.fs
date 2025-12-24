@@ -238,10 +238,10 @@ $-100 constant down \ player movement:
 
 1 . \ main: timers, input.
 
-: help ( -) cr ." - game paused -"
-cr ." enter [new] or [r]esume to play."
-cr ." [sdf] move [jk] rotate [l] hold."
-cr ." any other key to pause. " cr ;
+: help ( -) cr ." - game paused -" cr
+." enter [new] or [r]esume to play." cr
+." [sdf] move [jk] rotate [l] hold." cr
+." any other key to pause. " cr ;
 
 : tick ( a-f) -1 over +! c@ 0= ;
 : step ( -- gameover? )
