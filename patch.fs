@@ -3,6 +3,7 @@
 \ overwritten w/ a jmp to the second.
 
 : patch:  $4c here ' tuck 1+ ! c! ] ;
-
-\ warning: patching a word w/ <3 code
-\ bytes will corrupt the dictionary!
+\ warning: needs >=3 code bytes!
+\  : bad drop ;   \ inx, rts, \ 2
+\  : victim 1 ;   \ pushone jmp, \ 3
+\  patch: bad + ; \ kills jmp instrxn!
