@@ -223,11 +223,12 @@ variable old 0 ,
   12 %stop ! #well else  #next then  d!
   qnext enter unpin  curr piece hit? ;
 
-: go ( pt-f) 2dup curr+ piece hit?
-  if 2drop 1 ;then  curr+! #go d! 0 ;
-: fall ( -f) down 0 go if  land else
+: go ( pt-) curr+! #go d! ;    \ player
+: go? ( pt-f) 2dup curr+ piece hit?
+  if 2drop 1 ;then go 0 ;
+: fall ( -f) down 0 go? if  land else
   0 then  lines @ th-g c@ %grav ! ;
-: tk ( pt-) go 0= if rdrop rdrop then ;
+: tk ( pt) go? 0= if rdrop rdrop then ;
 : turnkick ( t-; bias ccw>l cw>r.) >r
   0 r@ tk  r@ r@ tk  0 r@ - r@ tk
   down r@ tk  down r@ + r@ tk
@@ -248,9 +249,9 @@ variable old 0 ,
     if sweep #all d! then 0 ;then
   %grav tick if fall ;then
   kbpoll 0 of 0 ;then
-  's' of -1 0 go 0* ;then
+  's' of -1 0 go? 0* ;then
   'd' of fall ;then
-  'f' of 1 0 go 0* ;then
+  'f' of 1 0 go? 0* ;then
   'j' of -1 turnkick 0 ;then
   'k' of 1 turnkick 0 ;then
   'l' of tryhold 0 ;then
