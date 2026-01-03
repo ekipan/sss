@@ -266,8 +266,9 @@ density.
 : init ( u-) init 4 enqueue 5 enqueue
   4 enqueue  4 roll enqueue
   qnext qnext qnext ;
+: dd ( -) #all d! draw ;
 : r ( -) 99 sig c@ <> if ;then kbinit
-  bg #all d! begin draw step until ;
+  bg dd begin step draw until ;
 : new ( -) entropy init r ;
 ```
 
@@ -332,9 +333,9 @@ programmers will understand easier:
 : curr+ ( pt-pts) swap pos @ +
   swap t@+  shape c@ ;
 : curr+! ( pt-) t@+ turns c!  pos +! ;
+$-100 constant down
 : go ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 ;then  curr+! #go d! 0 ;
-$-100 constant down
 : tk ( pt-) go 0= if rdrop rdrop then ;
 : turnkick ( t-) >r  0 r@ tk  r@ r@ tk
   0 r@ - r@ tk  down r@ tk  down r@ +

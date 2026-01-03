@@ -112,7 +112,7 @@ b: 01 02 11 12  01 02 11 12  \ oc
 
 create frames 5 c: 33 25 21 17 15
 11 c: 13 12 10 8 7 6 5 4 3 3 2
-: grav ( u-u) 15 min frames + c@ ;
+: th-g ( u-u)3 rshift 15 min frames + ;
 
 4 . \ core: vars, index, fetch, store.
 
@@ -215,24 +215,23 @@ variable old 0 ,
   swap #10 u< and if th-w c@ then
   ( well-color/nonzero-oob-p ) or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
-1 profile
+1 profile   $-100 constant down
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
+: land ( -- gameover? ) kbinit  curr
+  piece lock row mark ?dup if  lines +!
+  12 %stop ! #well else  #next then  d!
+  qnext enter unpin  curr piece hit? ;
 
-$-100 constant down \ player movement:
 : go ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 ;then  curr+! #go d! 0 ;
+: fall ( -f) down 0 go if  land else
+  0 then  lines @ th-g c@ %grav ! ;
 : tk ( pt-) go 0= if rdrop rdrop then ;
 : turnkick ( t-; bias ccw>l cw>r.) >r
   0 r@ tk  r@ r@ tk  0 r@ - r@ tk
   down r@ tk  down r@ + r@ tk
   down r@ - r@ tk  rdrop ;
-: land ( -- gameover? ) kbinit  curr
-  piece lock row mark ?dup if  lines +!
-  12 %stop ! #well else #next then d!
-  qnext enter unpin  curr piece hit? ;
-: fall ( -f) down 0 go if land else 0
-  then lines @ 3 rshift grav %grav ! ;
 : tryhold ( -) pinned? if ;then
   hold enter  #hold d! ;
 
@@ -257,12 +256,12 @@ $-100 constant down \ player movement:
   'l' of tryhold 0 ;then
   page help ;  11 profile
 
+: dd ( -) #all d! draw ;
 : r ( -) 99 sig c@ <> if ;then kbinit
-  bg #all d! begin draw step until ;
+  bg dd begin step draw until ;
 : new ( -) entropy init r ;
 ' help start !  0 prof
 
-: dd ( -) #all d! draw ;
 : ss ( -) well $ce00 size move ;
 : ll ( -) $ce00 well size move ;
 
