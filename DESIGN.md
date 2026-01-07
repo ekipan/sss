@@ -41,7 +41,9 @@ that it will prove challenging. Maybe throw yourself in
 anyway and see where it takes you?
 
 If you get lost, [Forth on Wikipedia][fow] and
-[Starting Forth][sta] are great places to start.
+[Starting Forth][sta] are great places to start. The
+[durexForth manual][dfm] is worth referring to, and the
+[ANS Forth glossary][glo] is thorough but a bit opaque.
 
 ### Comment Convention
 
@@ -622,8 +624,10 @@ Happy stacking, comrade!
 <!-- forth -->
 [fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [not]: https://forth-standard.org/standard/notation#subsection.2.2.2
+[glo]: https://forth-standard.org/standard/alpha
 [dur]: https://github.com/jkotlinski/durexforth
 [tim]: https://github.com/jkotlinski/durexforth/blob/master/forth/timer.fs
+[dfm]: https://jkotlinski.github.io/durexforth/
 [wor]: https://jkotlinski.github.io/durexforth/#_word_list
 [sta]: https://www.forth.com/starting-forth/
 [arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
