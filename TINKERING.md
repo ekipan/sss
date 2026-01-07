@@ -123,7 +123,7 @@ Under VICE Preferences > Settings > Peripheral Devices:
    but luckily durexForth seems to ignore LFs in other cases.
 3. durexForth expects source stored in .PRG files so the first
    two bytes of the file (the load address) are ignored.
-4. Something [changed in durexForth v5][#584] and now maybe
+4. Something [changed in durexForth v5][584] and now maybe
    `parse-name` is interacting with all this in a way I don't
    understand.
 5. Probably more I'm forgetting, watch this space.
@@ -146,10 +146,10 @@ Caveat 3 is why my sources start with `\ \ first comment`.
 
 To cope with 4 I develop with durexForth v4 instead.
 
-I opened [#584] about a year ago, hoping the nagging feeling
-would force me to investigate and fix it. I still have not, so
-it's probably time I close the issue and apologize for wasting
-Mr. Kotlinski's time.
+I opened [#584][584] about a year ago, hoping the nagging
+feeling would force me to investigate and fix it. I still have
+not, so it's probably time I close the issue and apologize for
+wasting Mr. Kotlinski's time.
 
 <!-- TODO make durexForth github discussion -->
 
@@ -173,9 +173,9 @@ design doc. There's tons there, take your time.
 [red]: DESIGN.md#redo
 [sss]: sss.fs
 
-[#584]: https://github.com/jkotlinski/durexforth/issues/584
 [dur]: https://github.com/jkotlinski/durexforth
 [mak]: https://github.com/jkotlinski/durexforth/blob/master/Makefile
+[584]: https://github.com/jkotlinski/durexforth/issues/584
 [vic]: https://vice-emu.sourceforge.io/
 [edi]: https://www.devili.iki.fi/Computers/Commodore/C64/Programmers_Reference/Chapter_2/page_094.html
 [sta]: https://www.forth.com/starting-forth/
