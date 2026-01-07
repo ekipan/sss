@@ -544,6 +544,18 @@ r \ it's pretty hard to play!
 > sometimes while developing, it's how I determined the `215`
 > rasterline above.
 
+### Sound
+
+I've never done sound programming before. The SID looks neat,
+though I wonder if the extra code might strain the already
+cramped margins. I also enjoy the aesthetic of very little
+6502 code. Maybe I'm worrying too much.
+
+The silence, it strikes a certain Soviet charm, no?
+
+I again recommend listening to [Mr. Beben's composition][beb]
+for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
+
 ### Ghost and Sonic Drop
 
 Implementing the [ghost piece][gho] in a perfomant way is
@@ -563,18 +575,6 @@ sonic drop between pieces.
 
 I just went with hard drop, I'm more used to it anyway. Might
 revisit.
-
-### Sound
-
-I've never done sound programming before. The SID looks neat,
-though I wonder if the extra code might strain the already
-cramped margins. I also enjoy the aesthetic of very little
-6502 code. Maybe I'm worrying too much.
-
-The silence, it strikes a certain Soviet charm, no?
-
-I again recommend listening to [Mr. Beben's composition][beb]
-for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
 
 ### Lock Delay
 
