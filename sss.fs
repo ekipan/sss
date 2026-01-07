@@ -216,6 +216,8 @@ variable old 0 ,
   ( well-color/nonzero-oob-p ) or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
 1 profile   $-100 constant down
+: ghost ( -p) 0 begin  down + dup
+  0 curr+ piece hit? until  down - ;
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 : land ( -- gameover? ) kbinit  curr
@@ -224,6 +226,7 @@ variable old 0 ,
   qnext enter unpin  curr piece hit? ;
 
 : go ( pt-) curr+! #go d! ;    \ player
+: slam ( -) ghost 0 go 1 %grav ! ;
 : go? ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 ;then go 0 ;
 : fall ( -f) down 0 go? if  land else
@@ -240,7 +243,7 @@ variable old 0 ,
 
 : help ( -) cr ." - game paused -" cr
 ." enter [new] or [r]esume to play." cr
-." [sdf] move [jk] rotate [l] hold." cr
+." [esdf] move [jk] rotate [l] hold."cr
 ." any other key to pause. " cr ;
 
 : tick ( a-f) -1 over +! c@ 0= ;
@@ -255,6 +258,7 @@ variable old 0 ,
   'j' of -1 turnkick 0 ;then
   'k' of 1 turnkick 0 ;then
   'l' of tryhold 0 ;then
+  'e' of slam 0 ;then
   page help ;  11 profile
 
 : dd ( -) #all d! draw ;

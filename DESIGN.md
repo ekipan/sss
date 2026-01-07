@@ -544,16 +544,25 @@ r \ it's pretty hard to play!
 > sometimes while developing, it's how I determined the `215`
 > rasterline above.
 
-### Hard Drop
+### Ghost and Sonic Drop
 
-I lament the missing [ghost piece][gho] and the
-[hard drop][dro] that it enables.
-
-Computing all ghosts at entry time would cost entire seconds.
-Checking for one ghost across frames would add significant
-complexity and the game-feel is subtle. I've seen NES
+Implementing the [ghost piece][gho] in a perfomant way is
+subtle. Probably I'd check one row per frame, adding some
+complexity, to say nothing of drawing. I've seen NES
 ~~Tetrises~~--sorry, _block games_--with the feature but the
 complexity cost probably outspends my joy budget.
+
+It's necessary for [instant drop][dro] which I value enough to
+just calculate all at once on input, usually taking several
+frames. Hard drop locks the piece instantly, and sonic drop
+doesn't, allowing for more player agency at the cost of more
+inputs in the usual case. Both are valid player actions but
+sonic requires more subtle code for good game feel: you want
+lock delay, plus you _don't_ want to accidentally buffer a
+sonic drop between pieces.
+
+I just went with hard drop, I'm more used to it anyway. Might
+revisit.
 
 ### Sound
 
