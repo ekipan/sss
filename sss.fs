@@ -37,8 +37,8 @@ create bx  $d020 eor, $d020 sta, rts,
 : entropy ( -u) $a1 @ dup 0= + ;
 
 13 22 ( col row ) 40* + dup    \ screen
-$d800 + constant colormem
-$0400 + constant tilemem
+$d800 + constant colormem \ bottom left
+$0400 + constant tilemem  \ of well.
 : bg ( -) 0 $d020 ( black bg+border ) !
   11 $286 ( gray fg ) c! page tilemem
   38 ( nextrow-2 ) + 21 ( rows ) 0 do
