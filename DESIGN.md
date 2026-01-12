@@ -613,9 +613,8 @@ Happy stacking, comrade!
 [ini]: #init-and-new
 [pro]: #profile
 [per]: #performance-and-tradeoffs
-[rea]: README.md
+[rea]: .
 [tin]: TINKERING.md
-[des]: DESIGN.md
 [sss]: sss.fs
 [rec]: recent.fs
 [ben]: bench.fs

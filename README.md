@@ -81,7 +81,6 @@ Further Reading
 - The [Forth source][sss] is damn dense, as its intended
   audience is just myself. For the adventurous!
 
-[rea]: README.md
 [tin]: TINKERING.md
 [hfs]: TINKERING.md#getting-more-leverage
 [des]: DESIGN.md
