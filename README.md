@@ -37,6 +37,7 @@ Try It Out
 - **S D F** - Shift left, soft drop, shift right.
 - **J K** - Rotate left and right.
 - **L** - Exchange piece with hold slot on bottom right.
+- **E** - Hard drop.
 - Anything else - Pause game and return to Forth.
 
 My own strong preference. See input rationale for a(n
