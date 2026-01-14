@@ -613,7 +613,7 @@ Happy stacking, comrade!
 [ini]: #init-and-new
 [pro]: #profile
 [per]: #performance-and-tradeoffs
-[rea]: .
+[rea]: .#sss-the-silent-soviet-stacker
 [tin]: TINKERING.md
 [sss]: sss.fs
 [rec]: recent.fs

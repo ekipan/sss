@@ -167,7 +167,7 @@ disk in VICE. See [durexForth's Makefile][mak] for an example.
 design doc. There's tons there, take your time.
 
 [top]: #sss-the-silent-soviet-stacker
-[rea]: .
+[rea]: .#sss-the-silent-soviet-stacker
 [des]: DESIGN.md
 [red]: DESIGN.md#redo
 [sss]: sss.fs
