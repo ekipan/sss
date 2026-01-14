@@ -23,7 +23,7 @@ Try It Out
 1. Get the [VICE][vic] C64 emulator.
 2. Load the [durexForth][dur] cart or disk.
    [SSS is developed in v4][hfs] but sometimes I also test v5.
-3. Paste [`sss.fs`][sss] contents into the interpreter. Takes
+3. Paste [`sss.fs`][raw] contents into the interpreter. Takes
    about a minute to compile.
 4. Type `help` then `new`.
 
@@ -90,6 +90,7 @@ Further Reading
 [den]: DESIGN.md#density
 [sss]: sss.fs
 
+[raw]: https://raw.githubusercontent.com/ekipan/sss/refs/heads/main/sss.fs
 [dur]: https://github.com/jkotlinski/durexforth
 [vic]: https://vice-emu.sourceforge.io/
 
