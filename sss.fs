@@ -2,7 +2,7 @@
 \ readers: ctrl-f "a piece is".
 \ numbered 6->1 for compile countdown.
 
-decimal marker --sss--
+marker --sss--  decimal
 10 value #10  4 value 4         \ arith
 : 40- 40 - ;  : >10+> swap #10 + swap ;
 : 4* 2* 2* ;  : 10* dup 4* + 2* ;

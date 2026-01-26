@@ -104,8 +104,8 @@ Packed hex `$yyxx` coordinates exist in three spaces:
 The well extends two rows above canvas (21 and 22) for new
 pieces (`$1305` = row 19 column 5) to rotate into.
 
-The orange value `8` above can be `lock`ed into the 4 well
-positions if not `hit?`-detected, or `plot`ted on screen.
+The [orange value `8` above][pie] can be `lock`ed into the 4
+well positions if not `hit?`-detected, or `plot`ted on screen.
 These use memory indexing `n th` words: `0 th-w` for example
 gives the address of the **(0,0)th space in the well.**
 
@@ -485,9 +485,10 @@ to the target xt with minimal overhead.
 [`patch:`][pat] I only just now came up with and so haven't
 exercised yet! Beyond the single given example. Heed the
 warning, it's a very sharp tool, but any word that calls
-(`jsr`s) most any other word will be safe to patch. An example
-unsafe word is `: mydrop drop ;`, which only compiles to 2
-bytes `inx | rts`.
+(`jsr`s) most any other word will be safe to patch. The
+example unsafe word `: bad drop ;` only compiles to 2 bytes
+`inx | rts`. Another is `: nop ;` which is only an `rts`.
+I think these are the only unpatchable cases.
 
 Performance and Tradeoffs
 -------------------------
@@ -610,6 +611,7 @@ Happy stacking, comrade!
 
 <!-- these docs -->
 [top]: #sss-the-silent-soviet-stacker
+[pie]: #piece-example
 [ini]: #init-and-new
 [pro]: #profile
 [per]: #performance-and-tradeoffs

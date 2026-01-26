@@ -6,4 +6,4 @@
 \ warning: needs >=3 code bytes!
 \  : bad drop ;   \ inx, rts, \ 2
 \  : victim 1 ;   \ pushone jmp, \ 3
-\  patch: bad + ; \ kills jmp instrxn!
+\  patch: bad + ; \ breaks victim!
