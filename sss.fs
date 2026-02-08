@@ -243,7 +243,7 @@ variable old 0 ,
 
 : help ( -) cr ." - game paused -" cr
 ." enter [new] or [r]esume to play." cr
-." [esdf] move [jk] rotate [l] hold."cr
+." esdf move, jk rotate, l hold." cr
 ." any other key to pause. " cr ;
 
 : tick ( a-f) -1 over +! c@ 0= ;
@@ -253,11 +253,11 @@ variable old 0 ,
   %grav tick if fall ;then
   kbpoll 0 of 0 ;then
   's' of -1 0 go? 0* ;then
-  'd' of fall ;then
   'f' of 1 0 go? 0* ;then
   'j' of -1 turnkick 0 ;then
   'k' of 1 turnkick 0 ;then
   'l' of tryhold 0 ;then
+  'd' of fall ;then
   'e' of slam 0 ;then
   page help ;  11 profile
 
