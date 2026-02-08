@@ -479,8 +479,8 @@ dictionary.
 with a builtin loop to measure much smaller cycle counts, and
 calling its clock fetcher `now` to avoid the `start` name
 clash. Of note, the second `ti` modifies the code of the first
-`ti`, restoring the stack depth before every call and jumping
-to the target xt with minimal overhead.
+`ti`, keeping a stable stack depth and for each jump to the
+target xt.
 
 [`patch:`][pat] I only just now came up with and so haven't
 exercised yet! Beyond the single given example. Heed the
@@ -564,17 +564,17 @@ for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
 Implementing the [ghost piece][gho] in a perfomant way is
 subtle. Probably I'd check one row per frame, adding some
 complexity, to say nothing of drawing. I've seen NES
-~~Tetrises~~--sorry, _block games_--with the feature but the
-complexity cost probably outspends my joy budget.
+Tetrislikes with the feature but the complexity cost probably
+outspends my joy budget.
 
-It's necessary for [instant drop][dro] which I value enough to
-just calculate all at once on input, usually taking several
-frames. Hard drop locks the piece instantly, and sonic drop
-doesn't, allowing for more player agency at the cost of more
-inputs in the usual case. Both are valid player actions but
-sonic requires more subtle code for good game feel: you want
-lock delay, plus you _don't_ want to accidentally buffer a
-sonic drop between pieces.
+Ghost calculation is necessary for [instant drop][dro] which I
+value enough to just do all at once on input, usually taking
+several frames. Hard drop locks the piece instantly, and sonic
+drop doesn't, allowing for more player agency at the cost of
+more inputs in the usual case. Both are valid player actions
+but sonic requires more subtle code for good game feel: you
+want lock delay, plus you _don't_ want to accidentally buffer
+a sonic drop between pieces.
 
 I just went with hard drop, I'm more used to it anyway. Might
 revisit.

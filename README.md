@@ -3,7 +3,8 @@ SSS: The Silent Soviet Stacker
 ==============================
 
 A block-stacking game for the Commodore 64 written in the
-number-stacking language Forth.
+number-stacking language Forth. Pause a game in progess then
+tinker with the live game state in the interpreter.
 
 | [Explore the design][des] | [Start tinkering][tin]      |
 |---------------------------|-----------------------------|
