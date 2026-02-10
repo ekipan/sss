@@ -110,9 +110,9 @@ b: 01 02 11 12  01 02 11 12  \ oc
 \   lock (ppppc-) store to playfield.
 \   plot (ppppc-) store to screen.
 
-create frames 5 c: 33 25 21 17 15
-11 c: 13 12 10 8 7 6 5 4 3 3 2
-: th-g ( u-u)3 rshift 15 min frames + ;
+create gravs 7 c: 33 25 21 17 15 13 12
+9 c: 10 8 7 6 5 4 3 3 2 \ framecounts
+: th-g ( u-u) 3 rshift 15 min gravs + ;
 
 4 . \ core: vars, index, fetch, store.
 
