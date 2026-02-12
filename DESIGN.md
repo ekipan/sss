@@ -416,7 +416,7 @@ updates happen right after the scanline passes. Tradeoffs:
 ```forth
 : bg ( -) 0 $d020 ( black bg+border ) !
   11 $286 ( gray fg ) c! page tilemem
-  38 ( nextrow-2 ) + 21 ( rows ) 0 do
+  38 ( down1left2-2 ) + 21 ( rows ) 0 do
   dup 19 $a0 ( rvspace ) fill 40- loop
   ( top ) 2+ #10 $a0 fill ;
 ```
