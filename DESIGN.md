@@ -479,8 +479,8 @@ dictionary.
 with a builtin loop to measure much smaller cycle counts, and
 calling its clock fetcher `now` to avoid the `start` name
 clash. Of note, the second `ti` modifies the code of the first
-`ti`, keeping a stable stack depth and for each jump to the
-target xt.
+`ti`, keeping a stable stack depth for each jump to the target
+xt.
 
 [`patch:`][pat] I only just now came up with and so haven't
 exercised yet! Beyond the single given example. Heed the
