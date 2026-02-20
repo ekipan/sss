@@ -622,18 +622,6 @@ Happy stacking, comrade!
 [ben]: bench.fs
 [pat]: patch.fs
 
-<!-- forth -->
-[fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
-[not]: https://forth-standard.org/standard/notation#subsection.2.2.2
-[glo]: https://forth-standard.org/standard/alpha
-[dur]: https://github.com/jkotlinski/durexforth
-[tim]: https://github.com/jkotlinski/durexforth/blob/master/forth/timer.fs
-[dfm]: https://jkotlinski.github.io/durexforth/
-[wor]: https://jkotlinski.github.io/durexforth/#_word_list
-[sta]: https://www.forth.com/starting-forth/
-[arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
-[exe]: https://www.forth.com/starting-forth/9-forth-execution/
-
 <!-- tetris -->
 [ars]: https://tetris.wiki/Arika_Rotation_System
 [dro]: https://tetris.wiki/Drop
@@ -646,6 +634,18 @@ Happy stacking, comrade!
 [ttc]: https://tetris.wiki/The_Tetris_Company
 [wal]: https://tetris.wiki/Wall_kick
 [beb]: https://www.youtube.com/watch?v=Ny743c32gPg
+
+<!-- forth -->
+[fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
+[not]: https://forth-standard.org/standard/notation#subsection.2.2.2
+[glo]: https://forth-standard.org/standard/alpha
+[dur]: https://github.com/jkotlinski/durexforth
+[tim]: https://github.com/jkotlinski/durexforth/blob/master/forth/timer.fs
+[dfm]: https://jkotlinski.github.io/durexforth/
+[wor]: https://jkotlinski.github.io/durexforth/#_word_list
+[sta]: https://www.forth.com/starting-forth/
+[arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
+[exe]: https://www.forth.com/starting-forth/9-forth-execution/
 
 <!-- c64 -->
 [xor]: https://github.com/impomatic/xorshift798
