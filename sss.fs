@@ -155,7 +155,7 @@ well - constant size
 : enqueue ( s-) 1 head +!  3 th-q c!
   0 th-q c@ shape c! ;
 : init ( u-) well size erase  seed !
-  5 held!  enter  99 sig c! ;
+  enter  99 sig c! ;
 
 3 . \ draw, with dirty bitset.
 
@@ -195,8 +195,8 @@ variable old 0 ,
 : qn ( -) 7 roll 0 q? 1 q? 2 q? 3 q?
   enqueue r> rdrop >r ;  12 profile
 : qnext ( -) qn qn qn 7 roll enqueue ;
-: init ( u-) init 4 enqueue 5 enqueue
-  4 enqueue  4 roll enqueue
+: init ( u-) init 5 held! 4 enqueue
+  5 enqueue 4 enqueue 4 roll enqueue
   qnext qnext qnext ;
 
 \ count, whiten, delete rows (a).

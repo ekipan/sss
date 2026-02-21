@@ -264,9 +264,9 @@ density.
   postpone then ; immediate
 : entropy ( -u) $a1 @ dup 0= + ;
 : init ( u-) well size erase  seed !
-  5 held!  enter  99 sig c! ;
-: init ( u-) init 4 enqueue 5 enqueue
-  4 enqueue  4 roll enqueue
+  enter  99 sig c! ;
+: init ( u-) init 5 held! 4 enqueue
+  5 enqueue 4 enqueue 4 roll enqueue
   qnext qnext qnext ;
 : dd ( -) #all d! draw ;
 : r ( -) 99 sig c@ <> if ;then kbinit
