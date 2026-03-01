@@ -70,6 +70,10 @@ $0400 + constant tilemem  \ of well.
 : >p ( c-p) dup 4* 4* or $f0f and 2 - ;
 : b:  hex 8 0 do n: >p , loop decimal ;
 
+create gravs 7 c: 33 25 21 17 15 13 12
+9 c: 10 8 7 6 5 4 3 3 2 \ framecounts
+: th-g ( u-u) 3 rshift 15 min gravs + ;
+
 create colors 7 c: 3 8 6 4 5 2 7
 create blocks \ center (c/.) at yx=02:
 b: 00 01 02 03  02 12 22 32  \ iici
@@ -110,10 +114,6 @@ b: 01 02 11 12  01 02 11 12  \ oc
 \   lock (ppppc-) store to playfield.
 \   plot (ppppc-) store to screen.
 
-create gravs 7 c: 33 25 21 17 15 13 12
-9 c: 10 8 7 6 5 4 3 3 2 \ framecounts
-: th-g ( u-u) 3 rshift 15 min gravs + ;
-
 4 . \ core: vars, index, fetch, store.
 
 : var+ ( au'-a) over value + ;
@@ -135,12 +135,11 @@ $cc00 \ global game variables:
 1 var+ sig   \ 99 if initialized.
 well - constant size
 
-: pinned? ( -f) held c@ 8 and ;
-: held@ ( -s) held c@ 7 and ;
-: held! ( s-) held c! ;
-: unpin ( -) held@ held! ;
-: hold ( -) held@  shape c@ 8 or held!
-  shape c! ;
+: enter ( -) $1305 pos ! 0 turns c! ;
+: clear ( -) well size erase  enter
+  99 sig c! ;
+: ss ( -) well $ce00 size move ;
+: ll ( -) $ce00 well size move ;
 
 : th-w ( p-a) split 10* + well + ;
 : row ( -a) pos 1+ c@ 10* well + ;
@@ -149,13 +148,17 @@ well - constant size
 : curr+ ( pt-pts) swap pos @ +
   swap t@+  shape c@ ;
 : curr+! ( pt-) t@+ turns c!  pos +! ;
-: enter ( -) $1305 pos ! 0 turns c! ;
+
+: pinned? ( -f) held c@ 8 and ;
+: held@ ( -s) held c@ 7 and ;
+: held! ( s-) held c! ;
+: unpin ( -) held@ held! ;
+: hold ( -) held@  shape c@ 8 or held!
+  shape c! ;
 
 : th-q ( i-a) head c@ + 3 and queue + ;
 : enqueue ( s-) 1 head +!  3 th-q c!
   0 th-q c@ shape c! ;
-: clear ( -) well size erase  enter
-  99 sig c! ;
 
 3 . \ draw, with dirty bitset.
 
@@ -266,8 +269,5 @@ create old  5 , 0 , \ just in case.
   bg dd begin step draw until ;
 : new ( -) entropy seeded r ;
 ' help start !  0 prof
-
-: ss ( -) well $ce00 size move ;
-: ll ( -) $ce00 well size move ;
 
 .( words: help new r  )
