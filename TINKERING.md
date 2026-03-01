@@ -40,7 +40,7 @@ bg dd .    \ look at moved piece, consume go? flag
 fall . dd  \ move down one row or land into well
 1 prof r   \ show blue=draw gray=game while framestepping
 0 prof     \ turn profiling back off
-123 init r \ restart with a fixed seed
+123 seeded \ restart with a fixed seed
 v          \ edit the source, maybe save or VICE snapshot
 redo       \ ask the program to recompile itself from disk
 words      \ see what's available in the dictionary

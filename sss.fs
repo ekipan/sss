@@ -154,8 +154,8 @@ well - constant size
 : th-q ( i-a) head c@ + 3 and queue + ;
 : enqueue ( s-) 1 head +!  3 th-q c!
   0 th-q c@ shape c! ;
-: init ( u-) well size erase  seed !
-  enter  99 sig c! ;
+: clear ( -) well size erase  enter
+  99 sig c! ;
 
 3 . \ draw, with dirty bitset.
 
@@ -195,9 +195,9 @@ create old  5 , 0 , \ just in case.
 : qn ( -) 7 roll 0 q? 1 q? 2 q? 3 q?
   enqueue r> rdrop >r ;  12 profile
 : qnext ( -) qn qn qn 7 roll enqueue ;
-: init ( u-) init 5 held! 4 enqueue
-  5 enqueue 4 enqueue 4 roll enqueue
-  qnext qnext qnext ;
+: seeded ( u-) clear  seed !  5 held!
+  4 enqueue 5 enqueue 4 enqueue
+  4 roll enqueue  qnext qnext qnext ;
 
 \ count, whiten, delete rows (a).
 : full? ( a-f) dup >10+> begin  dup c@
@@ -264,7 +264,7 @@ create old  5 , 0 , \ just in case.
 : dd ( -) #all d! draw ;
 : r ( -) 99 sig c@ <> if ;then kbinit
   bg dd begin step draw until ;
-: new ( -) entropy init r ;
+: new ( -) entropy seeded r ;
 ' help start !  0 prof
 
 : ss ( -) well $ce00 size move ;

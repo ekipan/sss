@@ -257,28 +257,26 @@ Touring the Rest, Part 1: Game Stuff
 2+3 and 1 should probably be separate words but I like the
 density.
 
-### `init` and `new`
+### `new`
 
 ```forth
 : ;then ( syntax macro ) postpone exit
   postpone then ; immediate
 : entropy ( -u) $a1 @ dup 0= + ;
-: init ( u-) well size erase  seed !
-  enter  99 sig c! ;
-: init ( u-) init 5 held! 4 enqueue
-  5 enqueue 4 enqueue 4 roll enqueue
-  qnext qnext qnext ;
+: clear ( -) well size erase  enter
+  99 sig c! ;
+: seeded ( u-) clear  seed !  5 held!
+  4 enqueue 5 enqueue 4 enqueue
+  4 roll enqueue  qnext qnext qnext ;
 : dd ( -) #all d! draw ;
 : r ( -) 99 sig c@ <> if ;then kbinit
   bg dd begin step draw until ;
-: new ( -) entropy init r ;
+: new ( -) entropy seeded r ;
 ```
 
 Starting a `new` game fetches part of the [jiffy clock][jif]
 to seed the game state then enters the main loop, which is
-named `r` for easy typing by the player. If you're new to
-Forth: the second `init` calls the first `init`, it's not
-recursion.
+named `r` for easy typing by the player.
 
 The `dup 0= +` phrase in `entropy` ensures nonzero seed, which
 was important for [an old xorshift PRNG][xor] and harmless
@@ -457,7 +455,7 @@ buffer.
 
 One consideration: invalid positions etc. in uninitialized
 game state will corrupt memory when trying to draw, so
-`init` and `r` [track a `sig`nature][ini] to prevent this.
+`clear` and `r` [track a `sig`nature][new] to prevent this.
 
 ### `10 value #10`
 
@@ -612,7 +610,7 @@ Happy stacking, comrade!
 <!-- these docs -->
 [top]: #sss-the-silent-soviet-stacker
 [pie]: #piece-example
-[ini]: #init-and-new
+[new]: #new
 [pro]: #profile
 [per]: #performance-and-tradeoffs
 [rea]: .#sss-the-silent-soviet-stacker
