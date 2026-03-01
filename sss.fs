@@ -11,6 +11,7 @@ marker --sss--  decimal
 6 . \ tools and nonportable.
 
 : h. ( u-) hex u. decimal ;  \ devtools
+: test ( -) s" tests.fs" included ;
 : redo ( -) --sss-- s" sss.fs"
   included ( must tco! safe w/ df. ) ;
 create bx  $d020 eor, $d020 sta, rts,
