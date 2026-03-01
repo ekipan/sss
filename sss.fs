@@ -165,11 +165,11 @@ $02 constant #curr  $06 constant #next
 $04 constant #queue $0b constant #hold
 $08 constant #held  $1e constant #all
 $10 constant #well
-variable dirty
+create dirty  #all ,
 : d? ( u-f) dirty @ and ;
 : d! ( u-) dirty @ or dirty ! ;
 
-variable old 0 ,
+create old  5 , 0 , \ just in case.
 : old@ ( -pts) old @ old 2+ @ split ;
 : >old ( -) pos old 4 move ;
 
