@@ -173,7 +173,7 @@ create dirty  #all ,
 : d? ( u-f) dirty @ and ;
 : d! ( u-) dirty @ or dirty ! ;
 
-create old  5 , 0 , \ just in case.
+create old  5 , 0 ,
 : old@ ( -pts) old @ old 2+ @ split ;
 : >old ( -) pos old 4 move ;
 

@@ -43,6 +43,7 @@ fall . dd  \ move down one row or land into well
 123 seeded \ restart with a fixed seed
 v          \ edit the source, maybe save or VICE snapshot
 redo       \ ask the program to recompile itself from disk
+test       \ run the test suite
 words      \ see what's available in the dictionary
 .s         \ look at the stack, or cause an:
 asdf       \ error: resets the stack for a clean workspace
