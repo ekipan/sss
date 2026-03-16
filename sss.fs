@@ -137,8 +137,9 @@ $cc00 \ global game variables:
 well - constant size
 
 : enter ( -) $1305 pos ! 0 turns c! ;
-: clear ( -) well size erase  enter
-  99 sig c! ;
+: ?init ( f-) if  well size erase
+  enter  99 sig c!  then ;
+99 sig c@ <> ?init \ not on redo.
 : ss ( -) well $ce00 size move ;
 : ll ( -) $ce00 well size move ;
 
@@ -199,7 +200,7 @@ create old  5 , 0 ,
 : qn ( -) 7 roll 0 q? 1 q? 2 q? 3 q?
   enqueue r> rdrop >r ;  12 profile
 : qnext ( -) qn qn qn 7 roll enqueue ;
-: seeded ( u-) clear  seed !  5 held!
+: seeded ( u-) 1 ?init  seed !  5 held!
   4 enqueue 5 enqueue 4 enqueue
   4 roll enqueue  qnext qnext qnext ;
 
@@ -266,8 +267,8 @@ create old  5 , 0 ,
   page help ;  11 profile
 
 : dd ( -) #all d! draw ;
-: r ( -) 99 sig c@ <> if ;then kbinit
-  bg dd begin step draw until ;
+: r ( -) kbinit bg dd
+  begin step draw until ;
 : new ( -) entropy seeded r ;
 ' help start !  0 prof
 
