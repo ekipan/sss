@@ -263,14 +263,14 @@ density.
 : ;then ( syntax macro ) postpone exit
   postpone then ; immediate
 : entropy ( -u) $a1 @ dup 0= + ;
-: clear ( -) well size erase  enter
-  99 sig c! ;
-: seeded ( u-) clear  seed !  5 held!
+: ?init ( f-) if  well size erase
+  enter  99 sig c!  then ;
+99 sig c@ <> ?init \ not on redo
+: seeded ( u-) 1 ?init  seed !  5 held!
   4 enqueue 5 enqueue 4 enqueue
   4 roll enqueue  qnext qnext qnext ;
-: dd ( -) #all d! draw ;
-: r ( -) 99 sig c@ <> if ;then kbinit
-  bg dd begin step draw until ;
+: r ( -) kbinit bg dd
+  begin step draw until ;
 : new ( -) entropy seeded r ;
 ```
 
@@ -455,7 +455,7 @@ buffer.
 
 One consideration: invalid positions etc. in uninitialized
 game state will corrupt memory when trying to draw, so
-`clear` and `r` [track a `sig`nature][new] to prevent this.
+init [tracks a `sig`nature][new] to prevent this.
 
 ### `10 value #10`
 
