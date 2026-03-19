@@ -104,9 +104,9 @@ b: 01 02 11 12  01 02 11 12  \ oc
 \   enter (-) row 19 col 5 turns 0.
 \   curr+! (pt-) move/rotate player.
 \   hold (-) swap s and reserve s.
-\   >old (-) remember drawn piece.
+\   note (-) remember drawn piece.
 \ fetched out of gamestate:
-\   old@ (-pts) to erase from screen.
+\   noted (-pts) to erase from screen.
 \   curr (-pts) in play.
 \   curr+ (pt-pts) to check a move.
 \ then block positions computed:
@@ -175,8 +175,8 @@ create dirty  #all ,
 : d! ( u-) dirty @ or dirty ! ;
 
 create old  5 , 0 ,
-: old@ ( -pts) old @ old 2+ @ split ;
-: >old ( -) pos old 4 move ;
+: noted ( -pts) old @ old 2+ @ split ;
+: note ( -) pos old 4 move ;
 
 \ 6: rub (p-) plot (ppppc-) paint (aa-)
 : slot ( sp) dup rub 0 rot piece plot ;
@@ -184,8 +184,8 @@ create old  5 , 0 ,
   swap 1+ swap $300 - ;
 : draw ( -) sync
   #well d? if well spill paint then
-  #del d? if old@ piece 0* plot then
-  #curr d? if curr piece plot >old then
+  #del d? if noted piece 0* plot then
+  #curr d? if note curr piece plot then
   #queue d? if 1 $110d q q q 2drop then
   #held d? if held@ $050d slot then
   0 dirty ! ;  6 profile
