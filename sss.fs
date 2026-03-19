@@ -170,11 +170,11 @@ $02 constant #curr  $06 constant #next
 $04 constant #queue $0b constant #hold
 $08 constant #held  $1e constant #all
 $10 constant #well
-create dirty  #all ,
+
+create dirty 0 ,   \ bits to draw.
+create old 5 , 0 , \ (pts) to erase.
 : d? ( u-f) dirty @ and ;
 : d! ( u-) dirty @ or dirty ! ;
-
-create old  5 , 0 ,
 : noted ( -pts) old @ old 2+ @ split ;
 : note ( -) pos old 4 move ;
 
