@@ -73,7 +73,7 @@ $0400 + constant tilemem  \ of well.
 
 create gravs 7 c: 33 25 21 17 15 13 12
 9 c: 10 8 7 6 5 4 3 3 2 \ framecounts
-: th-g ( u-u) 3 rshift 15 min gravs + ;
+: th-g ( u-a) 3 rshift 15 min gravs + ;
 
 create colors 7 c: 3 8 6 4 5 2 7
 create blocks \ center (c/.) at yx=02:
