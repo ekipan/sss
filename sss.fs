@@ -143,8 +143,11 @@ well - constant size
 : ss ( -) well $ce00 size move ;
 : ll ( -) $ce00 well size move ;
 
+: in-w? ( p=$yyxx -- in-well-bounds? )
+  split 23 u< swap #10 u< and ;
 : th-w ( p-a) split 10* + well + ;
 : row ( -a) pos 1+ c@ 10* well + ;
+
 : curr ( -pts) pos @ turns @ split ;
 : t@+ ( t-t) turns c@ + 3 and ;
 : curr+ ( pt-pts) swap pos @ +
@@ -216,9 +219,8 @@ create old 5 , 0 , \ (pts) to erase.
   roof = until  nip roof over - erase ;
 
 \ check, store into well.
-: h? ( pf-f) swap dup  split 23 u<
-  swap #10 u< and if th-w c@ then
-  ( well-color/nonzero-oob-p ) or ;
+: h? ( pf-f) swap dup in-w? if th-w c@
+  ( color else nonzero-p ) then or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
 1 profile   $-100 constant down
 : ghost ( -p) 0 begin  down + dup
