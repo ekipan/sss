@@ -223,8 +223,6 @@ create old 5 , 0 , \ (pts) to erase.
   ( color else nonzero-p ) then or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
 1 profile   $-100 constant down
-: ghost ( -p) 0 begin  down + dup
-  0 curr+ piece hit? until  down - ;
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 : land ( -- gameover? ) kbinit  curr
@@ -233,11 +231,13 @@ create old 5 , 0 , \ (pts) to erase.
   qnext enter unpin  curr piece hit? ;
 
 : go ( pt-) curr+! #go d! ;    \ player
-: slam ( -) ghost 0 go 1 %grav ! ;
 : go? ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 ;then go 0 ;
 : fall ( -f) down 0 go? if  land else
   0 then  lines @ th-g c@ %grav ! ;
+: slam ( -) 0 begin
+  down + dup 0 curr+ piece hit? until
+  down - 0 go  1 %grav ! ;
 : tk ( pt) go? 0= if rdrop rdrop then ;
 : turnkick ( t-; bias ccw>l cw>r.) >r
   0 r@ tk  r@ r@ tk  0 r@ - r@ tk
