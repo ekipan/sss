@@ -222,7 +222,7 @@ create old 5 , 0 , \ (pts) to erase.
 : h? ( pf-f) swap dup in-w? if th-w c@
   ( color else nonzero-p ) then or ;
 : hit? ( ppppc-f) 0* h? h? h? h? ;
-1 profile   $-100 constant down
+1 profile
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 : land ( -- gameover? ) kbinit  curr
@@ -230,7 +230,8 @@ create old 5 , 0 , \ (pts) to erase.
   12 %stop ! #well else  #next then  d!
   qnext enter unpin  curr piece hit? ;
 
-: go ( pt-) curr+! #go d! ;    \ player
+$-100 constant down            \ player
+: go ( pt-) curr+! #go d! ;
 : go? ( pt-f) 2dup curr+ piece hit?
   if 2drop 1 ;then go 0 ;
 : fall ( -f) down 0 go? if  land else
@@ -252,6 +253,7 @@ create old 5 , 0 , \ (pts) to erase.
 ." enter [new] or [r]esume to play." cr
 ." esdf move, jk rotate, l hold." cr
 ." any other key to pause. " cr ;
+' help start ! \ for turnkey.
 
 : tick ( a-f) -1 over +! c@ 0= ;
 : step ( -- gameover? )
@@ -272,6 +274,5 @@ create old 5 , 0 , \ (pts) to erase.
 : r ( -) kbinit bg dd
   begin step draw until ;
 : new ( -) entropy seeded r ;
-' help start !  0 prof
 
-.( words: help new r  )
+.( words [help new r] ) 0 prof
