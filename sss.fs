@@ -20,7 +20,7 @@ create bx  $d020 eor, $d020 sta, rts,
   bx jmp,  r> latest name>string + ! ;
 : '' ( "name" -- xt ) ' 6 + @ ;
 : prof ( enable-time-profiling? -- )
-  if $4d else $60 then bx c! ;
+  if $4d else $60 then bx c! ;  0 prof
 \ : prof drop ; : profile drop ;
 
 : erase ( au-) 0 fill ;          \ lang
@@ -137,11 +137,11 @@ $cc00 \ global game variables:
 well - constant size
 
 : enter ( -) $1305 pos ! 0 turns c! ;
+: ss ( -) well $ce00 size move ;
+: ll ( -) $ce00 well size move ;
 : ?init ( f-) if  well size erase
   enter  99 sig c!  then ;
 99 sig c@ <> ?init \ not on redo.
-: ss ( -) well $ce00 size move ;
-: ll ( -) $ce00 well size move ;
 
 : in-w? ( p=$yyxx -- in-well-bounds? )
   split 23 u< swap #10 u< and ;
@@ -275,4 +275,4 @@ $-100 constant down            \ player
   begin step draw until ;
 : new ( -) entropy seeded r ;
 
-.( words [help new r] ) 0 prof
+.( words [help new r] )
