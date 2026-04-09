@@ -304,8 +304,8 @@ very important but that's my rationale anyway.
 `qnext` itself reflects the complexity of the TGM algorithm.
 It uses `rdrop` to affect control: either breaking out or
 rolling again, though `qn` has to take care to dodge the
-profiling instrument. Here's a more conventional version more
-programmers will understand easier:
+[profiling instrument][pro]. Here's a more conventional
+version more programmers will understand easier:
 
 ```forth
 : reroll ( s-s) drop 7 roll ;
