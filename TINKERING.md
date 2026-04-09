@@ -90,17 +90,14 @@ try:
 Getting More Leverage
 ---------------------
 
-A typical approach to developing C64 programs is to use
-VICE's c1541 tool to build a disk image from your sources and
-then reattach the new disk in VICE. See
-[durexForth's Makefile][mak] for an example. My own workflow
-is instead _terribly janky,_ documented here for completeness
-sake. It enables me to:
+A typical approach to developing C64 programs is edit your
+canonical source outside of VICE with whatever editor you're
+comfortable with, and then build a disk image with VICE's
+c1541 tool. See [durexForth's Makefile][mak] for an example.
 
-- Store source outside of VICE on the disk of the actual
-  computer I'm using, thus:
-- Use whatever editor I'm comfortable with.
-- Have an immediate edit-test cycle:
+My own workflow is instead _terribly janky,_ documented here
+for completeness sake. It mainly enables me to skip the build,
+for an immediate edit-test cycle:
 
 1. Do some edits.
 2. Save, Alt-Tab to VICE.
