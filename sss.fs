@@ -185,7 +185,7 @@ create old 5 , 0 , \ (pts) to erase.
 : q ( ip-ip) over th-q c@ over slot
   swap 1+ swap $300 - ;
 : draw ( -) sync
-  #well d? if well spill paint then
+  #well d? if well roof paint then
   #del d? if noted piece 0* plot then
   #curr d? if note curr piece plot then
   #queue d? if 1 $110d q q q 2drop then
