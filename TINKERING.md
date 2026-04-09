@@ -90,9 +90,12 @@ try:
 Getting More Leverage
 ---------------------
 
-My own workflow developing durexForth programs is
-_terribly janky,_ documented here for completeness sake.
-It enables me to:
+A typical approach to developing C64 programs is to use
+VICE's c1541 tool to build a disk image from your sources and
+then reattach the new disk in VICE. See
+[durexForth's Makefile][mak] for an example. My own workflow
+is instead _terribly janky,_ documented here for completeness
+sake. It enables me to:
 
 - Store source outside of VICE on the disk of the actual
   computer I'm using, thus:
@@ -157,10 +160,6 @@ wasting Mr. Kotlinski's time.
 You might think this is a lot of work to avoid storing files
 in disk images, and that's fair, but you can't argue with
 _Ctrl-S Alt-Tab!_
-
-The more orthodox approach is to use VICE's c1541 tool to
-build a disk image from your sources and then reattach the new
-disk in VICE. See [durexForth's Makefile][mak] for an example.
 
 ---
 
