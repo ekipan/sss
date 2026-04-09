@@ -5,13 +5,15 @@ require sss.fs \ start w/ either file.
 marker --tests-- \ reclaimed if ok.
 : test  --tests-- test ; \ if failed.
 
+\ set a known state to load with ll.
+decimal 123 seeded ss bg
+
 depth constant d0 \ tests, sections:
 : & ( nfn-f) rot = and ;
 : ? ( f-) 0= abort" x" '.' emit ;
 : .. ( u-) cr . depth d0 - .
   s" -- marker --" evaluate ;
 marker -- \ reset each section.
-decimal clear bg \ known state.
 
 7 .. \ >10+> 4* 40*
 
@@ -65,23 +67,23 @@ $1305 2 1 piece \ top flipped j.
 8 = $1404 & $1306 & $1305 & $1304 & ?
 $1305 2 1 piece plot \ on screen.
 
-4 .. \ var+ ss ll hold pinned? unpin
+4 .. \ var+ hold pinned? unpin
 
 5 1 var+ v  6 = ?  v 5 = ? \ def/scan.
-clear ss \ savestate for devel.
 1 well +! well @ 1 = ?  ll well @ 0 = ?
 5 shape c! hold pinned? ? \ hold pins.
-shape c@ 0= ? unpin hold shape c@ 5 = ?
+shape c@ 5 = ? \ depends on seed.
+unpin hold shape c@ 5 = ?
 
 \ todo th-w th-q
 
 3 .. \ todo
 
-2 .. \ enqueue seeded
+2 .. \ enqueue
 
 : q enqueue ;  1 q 2 q 3 q 4 q enter
 curr 1 = ? 0 = ? $1305 = ? \ top j.
-123 seeded 7 roll 123 seeded 7 roll = ?
+ll 7 roll ll 7 roll = ?
 
 space \ hit? lock
 
