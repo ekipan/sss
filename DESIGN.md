@@ -32,7 +32,7 @@ Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
 
 ### Intended Audience
 
-SSS is written in Forth, an old and grumpy programming
+SSS is written in [Forth][fow], an old and grumpy programming
 language I adore. _My wish_ is for the text herein to be
 accessible to less longbearded folk: the Forth-curious, who
 have toyed around and don't want the stack explained to them
@@ -45,12 +45,13 @@ and make you feel like you could write something like this
 too, but it _is_ a daunting task. Throw yourself in and see
 where it takes you!
 
+Resources: [Starting Forth][sta], [durexForth manual][dfm],
+[ANS Forth glossary][glo] (thorough but opaque),
+[Easy 6502][eas], [6502.org][650]. Also check the Tetris and
+C64 wikis linked earlier.
+
 Feedback wanted. Tell me what confuses you or give me more
 references to link!
-
-Forth resources: [Wikipedia][fow], [Starting Forth][sta], the
-[durexForth manual][dfm], the [ANS Forth glossary][glo]. The
-last is thorough but opaque.
 
 ### Comment Convention
 
@@ -652,7 +653,9 @@ Happy stacking, comrade!
 [exe]: https://www.forth.com/starting-forth/9-forth-execution/
 
 <!-- c64 -->
+[650]: https://6502.org
 [xor]: https://github.com/impomatic/xorshift798
+[eas]: https://skilldrick.github.io/easy6502/
 [jif]: https://www.c64-wiki.com/wiki/160-162
 [buf]: https://www.c64-wiki.com/wiki/198
 [bor]: https://www.c64-wiki.com/wiki/53280
