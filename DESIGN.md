@@ -45,10 +45,10 @@ and make you feel like you could write something like this
 too, but it _is_ a daunting task. Throw yourself in and see
 where it takes you!
 
-Resources: [Starting Forth][sta], [durexForth manual][dfm],
-[ANS Forth glossary][glo] (thorough but opaque),
-[Easy 6502][eas], [6502.org][650]. Also check the Tetris and
-C64 wikis linked earlier.
+Resources: [C64 wiki][c64], [Easy 6502][eas], [6502.org][650],
+[Starting Forth][sta], [durexForth manual][dfm],
+[ANS Forth glossary][glo], [Tetris wiki][tet]. The glossary
+is thorough but opaque.
 
 Feedback wanted. Tell me what confuses you or give me more
 references to link!
@@ -628,6 +628,7 @@ Happy stacking, comrade!
 [pat]: patch.fs
 
 <!-- tetris -->
+[tet]: https://tetris.wiki/
 [ars]: https://tetris.wiki/Arika_Rotation_System
 [dro]: https://tetris.wiki/Drop
 [flo]: https://tetris.wiki/Floor_kick
