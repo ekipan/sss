@@ -307,9 +307,11 @@ very important but that's my rationale anyway.
 ```
 
 `qnext` itself reflects the complexity of the TGM algorithm.
-It uses `rdrop` to affect control: either breaking out or
-rolling again, though `qn` has to take care to dodge the
-[profiling instrument][pro]. Here's a more conventional
+It uses `rdrop` for nonlocal returns: if `q?` detects a
+duplicate roll it returns to `qnext` to roll again, but if
+`qn` passes all four `q?` it queues the successful roll and
+returns to `qnext`'s caller, though it must take care to dodge
+the [profiling instrument][pro]. Here's a more conventional
 version more programmers will understand easier:
 
 ```forth
