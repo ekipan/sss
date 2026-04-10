@@ -37,13 +37,20 @@ language I adore. _My wish_ is for the text herein to be
 accessible to less longbearded folk: the Forth-curious, who
 have toyed around and don't want the stack explained to them
 _yet again_ but haven't written much of substance yet. _The
-reality is,_ though, that it will prove challenging. Maybe
-throw yourself in anyway and see where it takes you?
+reality is,_ though, that it will prove challenging.
 
-If you get lost, [Forth on Wikipedia][fow] and
-[Starting Forth][sta] are great places to start. The
-[durexForth manual][dfm] is worth referring to, and the
-[ANS Forth glossary][glo] is thorough but a bit opaque.
+The 6502 assembly, Commodore 64, and Tetris details get pretty
+gory; I link wikis where I can. I want to show you cool stuff
+and make you feel like you could write something like this
+too, but it _is_ a daunting task. Throw yourself in and see
+where it takes you!
+
+Feedback wanted. Tell me what confuses you or give me more
+references to link!
+
+Forth resources: [Wikipedia][fow], [Starting Forth][sta], the
+[durexForth manual][dfm], the [ANS Forth glossary][glo]. The
+last is thorough but opaque.
 
 ### Comment Convention
 
