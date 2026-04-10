@@ -246,10 +246,10 @@ Touring the Rest, Part 1: Game Stuff
 
 `kbinit` stores 3 bytes:
 
-1. `$80` configures the [KERNAL][ker] to repeat all keys,
-   not just the cursors.
+1. `$80` configures the [KERNAL][ker] to
+   [repeat all keys][rep], not just the cursors.
 2. `$b` repeat delay of 11 frames.
-3. `0` flushes the key buffer.
+3. `0` flushes the [key buffer][buf].
 
 `land` calls it _first,_ before all its other work, to:
 
@@ -652,7 +652,9 @@ Happy stacking, comrade!
 <!-- c64 -->
 [xor]: https://github.com/impomatic/xorshift798
 [jif]: https://www.c64-wiki.com/wiki/160-162
+[buf]: https://www.c64-wiki.com/wiki/198
 [bor]: https://www.c64-wiki.com/wiki/53280
+[rep]: https://www.c64-wiki.com/wiki/650
 [c64]: https://www.c64-wiki.com/wiki/C64
 [con]: https://www.c64-wiki.com/wiki/control_character
 [int]: https://www.c64-wiki.com/wiki/Interrupt
