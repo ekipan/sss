@@ -264,12 +264,10 @@ density.
 ### `new`
 
 ```forth
-: ;then ( syntax macro ) postpone exit
-  postpone then ; immediate
 : entropy ( -u) $a1 @ dup 0= + ;
 : ?init ( f-) if  well size erase
   enter  99 sig c!  then ;
-99 sig c@ <> ?init \ not on redo
+99 sig c@ <> ?init \ not on redo.
 : seeded ( u-) 1 ?init  seed !  5 held!
   4 enqueue 5 enqueue 4 enqueue
   4 roll enqueue  qnext qnext qnext ;
@@ -315,6 +313,8 @@ rolling again, though `qn` has to take care to dodge the
 version more programmers will understand easier:
 
 ```forth
+: ;then ( syntax macro ) postpone exit
+  postpone then ; immediate
 : reroll ( s-s) drop 7 roll ;
 : q? ( sfi-sf) swap if drop 1 ;then
   th-q c@ over = ;
