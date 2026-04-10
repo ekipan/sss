@@ -11,7 +11,7 @@ decimal 123 seeded ss bg
 depth constant d0 \ tests, sections:
 : & ( nfn-f) rot = and ;
 : ? ( f-) 0= abort" x" '.' emit ;
-: .. ( u-) cr . depth d0 - .
+: .. ( u-) cr . depth d0 - . ll
   s" -- marker --" evaluate ;
 marker -- \ reset each section.
 
