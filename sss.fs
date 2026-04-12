@@ -10,6 +10,13 @@ marker --sss--  decimal
 
 6 . \ tools and nonportable.
 
+: erase ( au-) 0 fill ;          \ lang
+: ;then ( syntax macro ) postpone exit
+  postpone then ; immediate
+: rdrop ( r:n-) pla, pla, ; immediate
+: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
+  msb lda,x msb sty,x ] pushya ;
+
 : h. ( u-) hex u. decimal ;  \ devtools
 : test ( -) s" tests.fs" included ;
 : redo ( -) --sss-- s" sss.fs"
@@ -22,13 +29,6 @@ create bx  $d020 eor, $d020 sta, rts,
 : prof ( enable-time-profiling? -- )
   if $4d else $60 then bx c! ;  0 prof
 \ : prof drop ; : profile drop ;
-
-: erase ( au-) 0 fill ;          \ lang
-: ;then ( syntax macro ) postpone exit
-  postpone then ; immediate
-: rdrop ( r:a-) pla, pla, ; immediate
-: split ( $yyxx -- $xx $yy ) [ 0 ldy,#
-  msb lda,x msb sty,x ] pushya ;
 
 : sync ( -) [ 215 lda,# $d012 cmp, \ hw
   -5 bne, ] ;  6 profile
