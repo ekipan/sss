@@ -119,7 +119,7 @@ b: 01 02 11 12  01 02 11 12  \ oc
 
 : var+ ( au'-a) over value + ;
 $cc00 \ global game variables:
-230 var+ well \ 23x10 playarea.
+230 var+ well \ 23x10 playfield.
 0 var+ roof   \ address after. values:
 \ 0 empty, 1 marked, 2-8 block colors.
 2 var+ pos   \ $yyxx from bottom left.
