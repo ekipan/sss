@@ -99,8 +99,8 @@ comfortable with, and then build a disk image with VICE's
 c1541 tool. See [durexForth's Makefile][mak] for an example.
 
 My own workflow is instead _terribly janky,_ documented here
-for completeness sake. It mainly enables me to skip the build,
-for an immediate edit-test cycle:
+for completeness sake. It skips the disk build, giving me an
+immediate edit-test cycle:
 
 1. Do some edits.
 2. Save, Alt-Tab to VICE.
