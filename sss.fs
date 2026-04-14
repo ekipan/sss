@@ -11,8 +11,8 @@ marker --sss--  decimal
 6 . \ tools and nonportable.
 
 : erase ( au-) 0 fill ;          \ lang
-: ;then ( syntax macro ) postpone exit
-  postpone then ; immediate
+: ;then  postpone exit postpone then ;
+immediate \ macro: ;then = exit then
 : rdrop ( r:n-) pla, pla, ; immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;

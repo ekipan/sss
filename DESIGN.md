@@ -320,8 +320,7 @@ the [profiling instrument][pro]. Here's a more conventional
 version more programmers will understand easier:
 
 ```forth
-: ;then ( syntax macro ) postpone exit
-  postpone then ; immediate
+\ macro: ;then = exit then
 : reroll ( s-s) drop 7 roll ;
 : q? ( sfi-sf) swap if drop 1 ;then
   th-q c@ over = ;
