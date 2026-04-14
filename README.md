@@ -29,7 +29,8 @@ tinker with the live game state in the interpreter.
 
 ### Keys
 
-- **S D F** - Shift left, soft drop, shift right.
+- **S F** - Shift left and right.
+- **E D** - Hard drop, soft drop.
 - **J K** - Rotate left and right.
 - **L** - Store piece in hold slot on bottom right.
 - Anything else - Pause game and return to Forth.
