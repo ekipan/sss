@@ -1,6 +1,5 @@
 
-SSS: The Silent Soviet Stacker
-==============================
+# SSS: The Silent Soviet Stacker
 
 A block-stacking game written in the number-stacking language
 Forth, for the Commodore 64. Pause a game in progess then
@@ -13,8 +12,8 @@ tinker with the live game state in the interpreter.
 [p]: shots/play.png
 [d]: shots/devel.png
 
-Try It Out
-----------
+## Try It Out
+<!---------->
 
 1. Get the [VICE][vic] C64 emulator.
 2. Load the [durexForth][dur] cart or disk.
@@ -32,15 +31,14 @@ Try It Out
 
 - **S D F** - Shift left, soft drop, shift right.
 - **J K** - Rotate left and right.
-- **L** - Exchange piece with hold slot on bottom right.
-- **E** - Hard drop.
+- **L** - Store piece in hold slot on bottom right.
 - Anything else - Pause game and return to Forth.
 
 My own strong preference. See input rationale for a(n
 admittedly not easy) [reconfiguration option][inp].
 
-This thing:
-----------
+## This thing:
+<!----------->
 
 - **Is a personal project** optimized strictly for **my own
   joy,** which among other things means a 50fps target with as
@@ -68,8 +66,8 @@ be a slick product anyone would want to play. It's my toybox.
 Come, play with me.
 -->
 
-Further Reading
----------------
+## Further Reading
+<!--------------->
 
 - The hands-on guide takes you [from player to tinkerer][tin].
 - The [design rundown][des] is my bucket document: a mix of

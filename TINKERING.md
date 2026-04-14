@@ -1,6 +1,5 @@
 
-SSS: The Silent Soviet Stacker
-==============================
+# SSS: The Silent Soviet Stacker
 
 A block-stacking game written in the number-stacking language
 Forth, for the Commodore 64. Pause a game in progess then
@@ -16,8 +15,8 @@ tinker with the live game state in the interpreter.
 
 ![Log: game and memory commands, savestating, recompiling, etc.](shots/devel.png)
 
-Grabbing a Wrench
------------------
+## Grabbing a Wrench
+<!----------------->
 
 First load the [durexForth][dur] cart or disk into
 [VICE][vic]. Then you'll want the source in a disk file.
@@ -91,8 +90,8 @@ JiffyDOS and VICE HFS (below) to cope. JiffyDOS config is out
 of document scope but if you're also feeling stifled maybe
 try:
 
-Getting More Leverage
----------------------
+## Getting More Leverage
+<!--------------------->
 
 A typical approach to developing C64 programs is edit your
 canonical source outside of VICE with whatever editor you're

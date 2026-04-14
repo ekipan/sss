@@ -1,9 +1,5 @@
 
-If you're reading on Github, click the outline button on the
-top right.
-
-SSS: The Silent Soviet Stacker
-==============================
+# SSS: The Silent Soviet Stacker
 
 A block-stacking game written in the number-stacking language
 Forth, for the Commodore 64. Pause a game in progess then
@@ -19,8 +15,12 @@ tinker with the live game state in the interpreter.
 
 ![A block falling into the well](shots/play.png)
 
-Spec and Background
--------------------
+If you're reading on Github, click the
+outline button on the top right.
+<!-- Raw readers try: grep -n '^#' DESIGN.md -->
+
+## Spec and Background
+<!------------------->
 
 I've played tons of [The Tetris Company (TTC)][ttc] games, I
 strongly admire [Tetris The Grandmaster (TGM)][tgm], plus
@@ -72,8 +72,8 @@ screen:
   conventional [ANS notation][not] when I think the clarity is
   needed.
 
-Diving In
----------
+## Diving In
+<!--------->
 
 ### `piece` Example
 
@@ -239,8 +239,8 @@ index into the blocks table, calls `b@` to scan out 4
 Besides the assembly `w! b@`, the rest of the program is Forth
 and just fast enough for [mostly full 50fps][per] during play.
 
-Touring the Rest, Part 1: Game Stuff
-------------------------------------
+## Touring the Rest, Part 1: Game Stuff
+<!------------------------------------>
 
 ### `kbinit`
 
@@ -369,8 +369,8 @@ floorkicking, but instead I have the horizontal rotations of
 the I piece rest on row 0 so the player has less need, though
 it's strictly easier than TGM in that sense.
 
-Touring the Rest, Part 2: Dev Stuff
------------------------------------
+## Touring the Rest, Part 2: Dev Stuff
+<!----------------------------------->
 
 <img alt="Example 20+ frames profile, showing color bands."
   src="shots/prof.png" align="right" width="15%">
@@ -499,8 +499,8 @@ example unsafe word `: bad drop ;` only compiles to 2 bytes
 `inx | rts`. Another is `: nop ;` which is only an `rts`.
 I think these are the only unpatchable cases.
 
-Performance and Tradeoffs
--------------------------
+## Performance and Tradeoffs
+<!------------------------->
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
 costs, eyeballing [`1 prof` color bands][pro]:
