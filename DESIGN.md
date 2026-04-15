@@ -507,9 +507,9 @@ costs, eyeballing [`1 prof` color bands][pro]:
 | Frame% | While a Piece is in Play |
 |--------|--------------------------|
 | 0-7%   | KERNAL [interrupt][int]. Rolls through the frame, stepping on `sync` and dropping 1 frame every 4 or 5. |
-| 13%    | idle `draw step`, tons of margin. |
 | 17-19% | `piece hit?` move/gameover check. |
-| 95%    | hold `j` to rotate every frame, very tight. |
+| 13%    | idle `draw step`, tons of margin. |
+| 95%    | busy `draw step`, holding `j` to rotate every frame. |
 
 Rotation wallkicks check up to 5 extra moves so might eat a
 second or third frame.
