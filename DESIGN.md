@@ -29,33 +29,34 @@ eclectic mixed spec.
 
 I was personally drawn to the [Commodore 64][c64] _only after_
 stumbling on [durexForth][dur]. They're both lots of fun! Also
-oh my God I didn't realize _but apparently_ the C64 hosted the
-[_very first_ commercial Tetris][mir] way back in 1988! (After
+I only realized after _but apparently_ the C64 hosted the
+[_very first_ commercial Tetris][mir] way back in 1988. (After
 a couple noncommercial ones.) You _need_ to listen to Mr.
 Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
 
 ### Intended Audience
 
-SSS is written in [Forth][fow], an old and grumpy programming
-language I adore. _My wish_ is for the text herein to be
-accessible to less longbearded folk: the Forth-curious, who
-have toyed around and don't want the stack explained to them
-_yet again_ but haven't written much of substance yet. _The
-reality is,_ though, that it will prove challenging.
+SSS is written in [Forth][fow], an old and grumpy language I
+adore. This text is for the Forth-curious: you've toyed
+around, don't need the stack explained _yet again,_ but
+haven't written much substance. Fair warning: the 6502, C64,
+and Tetris details get gory. Lemme know if some details could
+use a wiki referral link.
 
-The 6502 assembly, Commodore 64, and Tetris details get pretty
-gory; I link wikis where I can. I want to show you cool stuff
-and make you feel like you could write something like this
-too, but it _is_ a daunting task. Throw yourself in and see
-where it takes you!
+Throw yourself in and see where it takes you! Resources:
 
-Resources: [C64 wiki][c64], [Easy 6502][eas], [6502.org][650],
-[Starting Forth][sta], [durexForth manual][dfm],
-[ANS Forth glossary][glo], [Tetris wiki][tet]. The glossary
-is thorough but opaque.
+* Hardware: the [C64 wiki][c64], [Easy 6502][eas],
+  [6502.org][650], though if the details below intimidate you
+  try to move past. The interesting stuff is the Tetris, so:
+* A walk through the [Tetris wiki][tet] can't hurt!
+* If the above _doesn't_ describe you and you _do_ need stacks
+  explained to you, [Starting Forth][sta] is your next step.
+  Grab your favorite C64 emulator and a [durexForth cart][car]
+  and try the examples.
+* Refer to the [durexForth manual][dfm] and the [ANS Forth
+  glossary][glo]. The latter is thorough but opaque.
 
-Feedback wanted. Tell me what confuses you or give me more
-references to link!
+Just one more bit of document setup before diving in:
 
 ### Comment Convention
 
@@ -63,11 +64,15 @@ Forth subroutines are called "words" and operate on a stack of
 values. I use compact stack comments to fit the cramped C64
 screen:
 
-- `erase ( au-)` address, unsigned count -> (no result).
-- `piece ( pts-ppppc)` piece position, turn count, shape index
-  -> 4 block positions, color code.
-- `hit? ( ppppc-f)` 4 positions, (ignored) color code
-  -> boolean flag.
+- `erase ( au-)` takes an address and unsigned count -> gives
+  no result but fills the named region of memory with zeroes.
+- `curr ( -pts)` takes no arguments -> fetches piece position,
+  turn count, and shape index from game state table.
+- `piece ( pts-ppppc)` takes those three values -> gives 4
+  block positions and a color code.
+- `hit? ( ppppc-f)` takes those five values -> gives a boolean
+  flag, so the full phrase `curr piece hit?` does what you'd
+  expect.
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
   conventional [ANS notation][not] when I think the clarity is
   needed.
@@ -602,7 +607,7 @@ interfering with interpreter experimentation, just thinking
 about it doesn't spark joy in me.
 
 If you're curious, try `lines @ .` at the prompt. Forth wants
-you to explore it! Makes for an awful Tetris product though!
+you to explore it. Makes for an awful Tetris product though!
 
 ### Density
 
@@ -650,6 +655,7 @@ Happy stacking, comrade!
 [glo]: https://forth-standard.org/standard/alpha
 [dur]: https://github.com/jkotlinski/durexforth
 [tim]: https://github.com/jkotlinski/durexforth/blob/master/forth/timer.fs
+[car]: https://github.com/jkotlinski/durexforth/releases
 [dfm]: https://jkotlinski.github.io/durexforth/
 [wor]: https://jkotlinski.github.io/durexforth/#_word_list
 [sta]: https://www.forth.com/starting-forth/
