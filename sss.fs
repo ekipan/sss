@@ -3,24 +3,25 @@
 \ numbered 6->1 for compile countdown.
 
 marker --sss--  decimal
-10 value #10  4 value 4         \ arith
+
+10 value #10  4 value 4        \ basics
 : 40- 40 - ;  : >10+> swap #10 + swap ;
 : 4* 2* 2* ;  : 10* dup 4* + 2* ;
 : 0* drop 0 ; : 40* 10* 4* ;
-
-6 . \ tools and nonportable.
-
-: erase ( au-) 0 fill ;          \ lang
+: h. ( u-) hex u. decimal ;
+: erase ( au-) 0 fill ;
 : ;then  postpone exit postpone then ;
 immediate \ macro: ;then = exit then
+
+6 . \ nonportable.
+
 : rdrop ( r:n-) pla, pla, ; immediate
 : split ( $yyxx -- $xx $yy ) [ 0 ldy,#
   msb lda,x msb sty,x ] pushya ;
 
-: h. ( u-) hex u. decimal ;  \ devtools
-: test ( -) s" tests.fs" included ;
-: redo ( -) --sss-- s" sss.fs"
+: redo ( -) --sss-- s" sss.fs"  \ devel
   included ( must tco! safe w/ df. ) ;
+: test ( -) s" tests.fs" included ;
 create bx  $d020 eor, $d020 sta, rts,
 : profile ( color -- ) here >r  dup
   lda,# bx jsr, latest >xt jsr, lda,#
