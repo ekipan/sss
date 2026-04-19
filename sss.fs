@@ -29,7 +29,6 @@ create bx  $d020 eor, $d020 sta, rts,
 : '' ( "name" -- xt ) ' 6 + @ ;
 : prof ( enable-time-profiling? -- )
   if $4d else $60 then bx c! ;  0 prof
-\ : prof drop ; : profile drop ;
 
 : sync ( -) [ 215 lda,# $d012 cmp, \ hw
   -5 bne, ] ;  6 profile
