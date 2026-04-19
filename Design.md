@@ -606,7 +606,7 @@ interfering with interpreter experimentation, just thinking
 about it doesn't spark joy in me.
 
 If you're curious, try `lines @ .` at the prompt. Forth wants
-you to explore it. Makes for an awful Tetris product though!
+you to explore it! Makes for an awful Tetris product though.
 
 ### Density
 
