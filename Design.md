@@ -556,8 +556,8 @@ r \ it's pretty hard to play!
 > [!WARNING]
 > Obviously not for the faint-of-heart. A bad patch will crash
 > the program, but it saves a recompile! I do this kind of thing
-> sometimes while developing, it's how I determined the `215`
-> rasterline above.
+> sometimes while developing, it's how I determined the
+> [`215` rasterline][syn] above.
 
 ### Sound
 
@@ -626,6 +626,7 @@ Happy stacking, comrade!
 [pie]: #piece-example
 [new]: #new
 [pro]: #profile
+[syn]: #sync-and-bg
 [per]: #performance-and-tradeoffs
 [rea]: README.md
 [tin]: Tinkering.md
