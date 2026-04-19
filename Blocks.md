@@ -64,7 +64,7 @@ spawn in well:         rotate clockwise:
 
 The spawn orientation 0 is pointy-end down and J2 L2 T2 are
 downshifted to lie flat, consistent with [ARS] and opposed to
-[SRS]. Unlike both, I2 _also_ rests on row 0, obviating much
+[SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating much
 of the need for floorkicking, which is unimplemented.
 
 Rows in the well count up from the bottom 0 <= y <= 22, and
