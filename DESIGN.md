@@ -198,11 +198,12 @@ create blocks \ compiled blockspace coords:
 ```
 
 > [!IMPORTANT]
-> The ASCII-art comments (`iici` etc) depict the first
-> orientation of each shape, [TGM-style pointy-end-down][ars]
-> (please click, there are illustrations!), though they all rest
-> on row 0 and all are centered on column 2 (instead of TGM's 1
-> or 2) to simplify code.
+> The most important decisions impacting game-feel are baked
+> into the values in the blocks table. The ASCII-art comments
+> (`iici` etc) depict the first orientation of each shape,
+> [TGM-style pointy-end-down][ars] (click for illustrations!),
+> though unlike TGM they all rest on row 0 and all are centered
+> on column 2 (instead of TGM's 1 or 2) to simplify code.
 
 ```forth
 \ \ zp: w = temp, lsb/msb,x = stack.
