@@ -198,12 +198,10 @@ create blocks \ compiled blockspace coords:
 ```
 
 > [!IMPORTANT]
-> The most important decisions impacting game-feel are baked
-> into the values in the blocks table. The ASCII-art comments
-> (`iici` etc) depict the first orientation of each shape,
-> [TGM-style pointy-end-down][ars] (click for illustrations!),
-> though unlike TGM they all rest on row 0 and all are centered
-> on column 2 (instead of TGM's 1 or 2) to simplify code.
+> The values here have some of the biggest impact on game-feel.
+> The details get weedy but if you're into that then here's
+> some [ascii art illustrations][blo] and further links to
+> corresponding descriptions of both TGM and TTC.
 
 ```forth
 \ \ zp: w = temp, lsb/msb,x = stack.
@@ -631,6 +629,7 @@ Happy stacking, comrade!
 [per]: #performance-and-tradeoffs
 [rea]: README.md
 [tin]: TINKERING.md
+[blo]: Blocks.md
 [sss]: sss.fs
 [rec]: recent.fs
 [ben]: bench.fs
@@ -643,6 +642,7 @@ Happy stacking, comrade!
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
 [del]: https://tetris.wiki/Lock_delay
+[srs]: https://tetris.wiki/Super_Rotation_System
 [mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
 [tgm]: https://tetris.wiki/Tetris_The_Grand_Master_(series)
 [ran]: https://tetris.wiki/TGM_randomizer
