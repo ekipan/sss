@@ -169,8 +169,8 @@ design doc. There's tons there, take your time.
 
 [top]: #sss-the-silent-soviet-stacker
 [rea]: README.md
-[des]: DESIGN.md
-[red]: DESIGN.md#redo
+[des]: Design.md
+[red]: Design.md#redo
 [sss]: sss.fs
 
 [dur]: https://github.com/jkotlinski/durexforth
@@ -180,5 +180,5 @@ design doc. There's tons there, take your time.
 [edi]: https://www.devili.iki.fi/Computers/Commodore/C64/Programmers_Reference/Chapter_2/page_094.html
 [sta]: https://www.forth.com/starting-forth/
 
-<!-- end of TINKERING.md -->
+<!-- end of Tinkering.md -->
 

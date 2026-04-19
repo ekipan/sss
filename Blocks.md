@@ -74,7 +74,7 @@ Back to the design run-down:
 [continue][blo] or [from the top][des].
 
 [sss]: README.md
-[des]: DESIGN.md
-[blo]: DESIGN.md#the-blocks-table
+[des]: Design.md
+[blo]: Design.md#the-blocks-table
 [ars]: https://tetris.wiki/Arika_Rotation_System
 [srs]: https://tetris.wiki/Super_Rotation_System

@@ -17,7 +17,7 @@ tinker with the live game state in the interpreter.
 
 If you're reading on Github, click the
 outline button on the top right.
-<!-- Raw readers try: grep -n '^#' DESIGN.md -->
+<!-- Raw readers try: grep -n '^#' Design.md -->
 
 ## Spec and Background
 <!------------------->
@@ -628,7 +628,7 @@ Happy stacking, comrade!
 [pro]: #profile
 [per]: #performance-and-tradeoffs
 [rea]: README.md
-[tin]: TINKERING.md
+[tin]: Tinkering.md
 [blo]: Blocks.md
 [sss]: sss.fs
 [rec]: recent.fs
@@ -676,5 +676,5 @@ Happy stacking, comrade!
 [int]: https://www.c64-wiki.com/wiki/Interrupt
 [ker]: https://www.c64-wiki.com/wiki/Kernal
 
-<!-- end of DESIGN.md -->
+<!-- end of Design.md -->
 

@@ -77,13 +77,13 @@ Come, play with me.
 - The [Forth source][sss] is damn dense, as its intended
   audience is just myself. For the adventurous!
 
-[tin]: TINKERING.md
-[hfs]: TINKERING.md#getting-more-leverage
-[des]: DESIGN.md
-[inp]: DESIGN.md#input
-[sco]: DESIGN.md#sound
-[sou]: DESIGN.md#score
-[den]: DESIGN.md#density
+[tin]: Tinkering.md
+[hfs]: Tinkering.md#getting-more-leverage
+[des]: Design.md
+[inp]: Design.md#input
+[sco]: Design.md#sound
+[sou]: Design.md#score
+[den]: Design.md#density
 [sss]: sss.fs
 
 [dur]: https://github.com/jkotlinski/durexforth
