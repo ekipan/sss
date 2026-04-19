@@ -41,11 +41,11 @@ create bx  $d020 eor, $d020 sta, rts,
 13 22 ( col row ) 40* + dup    \ screen
 $d800 + constant colormem \ bottom left
 $0400 + constant tilemem  \ of well.
-: r- ( au-a) over swap $a0 fill 40- ;
+: rect ( awh-a) 0 do  2dup $a0 ( rvbl )
+  fill  swap 40- swap loop  drop ;
 : bg ( -) 0 $d020 ( black bg+border ) !
   11 $286 ( gray fg ) c! page tilemem
-  38 ( downleft ) + 21 0 do 19 r- loop
-  ( top ) 2+ 3 0 do #10 r- loop drop ;
+  38 + 19 21 rect 2+ #10 3 rect drop ;
 : p+ ( aa-aa) 2dup #10 move >10+> 40- ;
 8 profile
 : paint ( aa-) >r colormem begin p+
