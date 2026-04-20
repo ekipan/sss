@@ -69,7 +69,7 @@ screen:
 - `curr ( -pts)` takes no arguments -> fetches piece position,
   turn count, and shape index from game state table.
 - `piece ( pts-ppppc)` takes those three values -> gives 4
-  block positions and a color code.
+  block positions and a [color code][col].
 - `hit? ( ppppc-f)` takes those five values -> gives a boolean
   flag, so the full phrase `curr piece hit?` does what you'd
   expect.
@@ -155,8 +155,8 @@ for compiling data.
 `c,` to compile a character (i.e. byte) to memory.
 
 `colors (-a)`, [a `create`d word][arr], pushes the `a`ddress
-of a table of 7 color code bytes in the TTC color scheme.
-Without the shorthand I could have just written this as:
+of a table of 7 [color code][col] bytes. Without the shorthand
+I could have just written this as:
 `create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
 
 ```forth
@@ -673,6 +673,7 @@ Happy stacking, comrade!
 [bor]: https://www.c64-wiki.com/wiki/53280
 [rep]: https://www.c64-wiki.com/wiki/650
 [c64]: https://www.c64-wiki.com/wiki/C64
+[col]: https://www.c64-wiki.com/wiki/Color
 [con]: https://www.c64-wiki.com/wiki/control_character
 [int]: https://www.c64-wiki.com/wiki/Interrupt
 [ker]: https://www.c64-wiki.com/wiki/Kernal
