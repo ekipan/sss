@@ -92,9 +92,11 @@ b:  03 02 11 12  02 12 13 23 \     cz
 b: 01 02 11 12  01 02 11 12  \ oo
 b: 01 02 11 12  01 02 11 12  \ oc
 \ 7 shapes 4 turns 4 blocks 2 bytes.
-: piece ( pts-ppppc) dup >r 4* + 4* 2*
-  blocks + w! b@ b@ b@ b@ drop r>
-  colors + c@ ;  14 profile
+: th-b ( ts-a) 4* + 4* 2* blocks + ;
+: row ( pts-p) th-b @ + $ff00 and ;
+: piece ( pts-ppppc) dup >r th-b
+  w! b@ b@ b@ b@ drop r> colors + c@ ;
+14 profile
 
 \ a piece is: center (p)osition hex
 \ $yyxx from bottom left, clockwise
@@ -145,7 +147,6 @@ well - constant size
 : in-w? ( p=$yyxx -- in-well-bounds? )
   split 23 u< swap #10 u< and ;
 : th-w ( p-a) split 10* + well + ;
-: row ( -a) pos 1+ c@ 10* well + ;
 
 : curr ( -pts) pos @ turns @ split ;
 : t@+ ( t-t) turns c@ + 3 and ;
@@ -225,8 +226,9 @@ create old 5 , 0 , \ (pts) to erase.
 : l! ( pc-c) dup rot th-w c! ;
 : lock ( ppppc-) l! l! l! l! drop ;
 : land ( -- gameover? ) kbinit  curr
-  piece lock row mark ?dup if  lines +!
-  12 %stop ! #well else  #next then  d!
+  piece lock  curr row th-w mark ?dup
+  if  lines +!  12 %stop ! #well
+  else  #next then  d!
   qnext enter unpin  curr piece hit? ;
 
 $-100 constant down            \ player
