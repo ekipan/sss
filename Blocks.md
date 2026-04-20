@@ -19,8 +19,8 @@ origin row. The origin itself must then be bounded by the
 piece's blocks or else the check risks going out of well
 bounds.
 
-In both [ARS] and [SRS] the I piece biases to the right,
-closer to the where players usually [gap]. The 3-wide pieces
+In [ARS] the I piece biases to the right, closer to the where
+players usually [gap]. In both ARS and [SRS] the 3-wide pieces
 JLTSZ, however, bias to the left, so to support both I'd have
 to code exceptions. Instead I chose to uniformly bias right,
 which is simpler, though it clashes with veteran player muscle
