@@ -200,8 +200,8 @@ create blocks \ compiled blockspace coords:
 > [!IMPORTANT]
 > The values here have some of the biggest impact on game-feel.
 > The details get weedy but if you're into that then here's
-> some [ascii art illustrations][blo] and further links to
-> corresponding descriptions of both TGM and TTC.
+> the [blocks rationale][rat] with ASCII art illustrations
+> and further reference links.
 
 ```forth
 \ \ zp: w = temp, lsb/msb,x = stack.
@@ -630,7 +630,7 @@ Happy stacking, comrade!
 [per]: #performance-and-tradeoffs
 [rea]: README.md
 [tin]: Tinkering.md
-[blo]: Blocks.md
+[rat]: Blocks.md
 [sss]: sss.fs
 [rec]: recent.fs
 [ben]: bench.fs

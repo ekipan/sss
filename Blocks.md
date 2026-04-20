@@ -1,23 +1,26 @@
 This is a rationale for the [blocks table][blo] of [SSS].
 
-Each piece exists in a 4x4 blockspace where
--2 <= x <= 1 and 0 <= y <= 3:
+The block table source (x, y) ranges (0..3, 0..3), though
+[when compiled][dat] the x coord is adjusted to blockspace
+(-2..1).
 
 ```
-3 . . . .
-2 . . . .
-1 . . . .
-0 . . x . <- origin
- -2-1 0 1
+3   . . . .
+2   . . . .
+1   . . . .
+0   . . o . <- origin
+
+    0 1 2 3 <- table source x
+   -2-1 0 1 <- blockspace x
 ```
 
-When `land`ing a piece, the phrase `row mark` starts the line
-clear check at the origin row, so the origin itself must be
-bounded by the piece's blocks or else it risks going out of
-well bounds.
+The adjustment allows to check for line clears at the piece's
+origin row. The origin itself must then be bounded by the
+piece's blocks or else the check risks going out of well
+bounds.
 
 In both [ARS] and [SRS] the I piece biases to the right,
-closer to the where players usually gap. The 3-wide pieces
+closer to the where players usually [gap]. The 3-wide pieces
 JLTSZ, however, bias to the left, so to support both I'd have
 to code exceptions. Instead I chose to uniformly bias right,
 which is simpler, though it clashes with veteran player muscle
@@ -34,12 +37,12 @@ spawn in well:         rotate clockwise:
 |    J0 . . . .      | J1 . . . . J2 . . . . J3 . . . .
 |       . . . .      |    . .[] .    . . . .    . .[][]
 |       .[][][]      |    . .[] .    .[] . .    . .[] .
-| . . . . . x[] . . .|    .[]() .    .[]()[]    . .() .
+| . . . . . o[] . . .|    .[]() .    .[]()[]    . .() .
 
 |    L0 . . . .      | L1 . . . . L2 . . . . T3 . . . .
 |       . . . .      |    .[][] .    . . . .    . .[] .
 |       .[][][]      |    . .[] .    . . .[]    . .[] .
-| . . . .[] x . . . .|    . .() .    .[]()[]    . .()[]
+| . . . .[] o . . . .|    . .() .    .[]()[]    . .()[]
 
 |    T0 . . . .      | T1 . . . . T2 . . . . T3 . . . .
 |       . . . .      |    . .[] .    . . . .    . .[] .
@@ -65,13 +68,19 @@ spawn in well:         rotate clockwise:
 The spawn orientation 0 is pointy-end down and J2 L2 T2 are
 downshifted to lie flat, consistent with [ARS] and opposed to
 [SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating much
-of the need for floorkicking, which is unimplemented.
+of the need for [floorkicking][flo], which is unimplemented.
 
 Back to the design run-down:
 [continue][blo] or [from the top][des].
 
 [sss]: README.md
 [des]: Design.md
+[dat]: Design.md#data-shorthands-c-b
 [blo]: Design.md#the-blocks-table
 [ars]: https://tetris.wiki/Arika_Rotation_System
+[flo]: https://tetris.wiki/Floor_kick
+[gap]: https://tetris.wiki/Stacking_for_Tetrises
 [srs]: https://tetris.wiki/Super_Rotation_System
+
+<!-- end of Blocks.md -->
+
