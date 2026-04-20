@@ -426,11 +426,11 @@ updates happen right after the scanline passes. Tradeoffs:
 4. Actually learn raster interrupts: I don't wanna.
 
 ```forth
-: r- ( au-a) over swap $a0 fill 40- ;
+: rect ( awh-a) 0 do  2dup $a0 ( rvbl )
+  fill  swap 40- swap loop  drop ;
 : bg ( -) 0 $d020 ( black bg+border ) !
   11 $286 ( gray fg ) c! page tilemem
-  38 ( downleft ) + 21 0 do 19 r- loop
-  ( top ) 2+ 3 0 do #10 r- loop drop ;
+  38 + 19 21 rect 2+ #10 3 rect drop ;
 ```
 
 The reverse-video spaces `$a0` make pleasant squares and also
