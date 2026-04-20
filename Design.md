@@ -160,16 +160,13 @@ I could have just written this as:
 `create colors 3 c, 8 c, 6 c, 4 c, 5 c, 2 c, 7 c,`
 
 ```forth
-: >p ( c-p) dup 4* 4* or $f0f and 2 - ;
+: >p ( c-p) dup 4* 4* or $f0f and ;
 : b: ( '-) hex 8 0 do n: >p , loop decimal ;
 ```
 
 `>p (c-p)` does precomputation: expanding an 8-bit `c`haracter
-hex `$yx` into 16-bit `$0y0x`, then subtracting source center
-`02` into compiled blockspace `p`osition `$0000`, which may or
-may not contain a block. Negative x borrows from the y coord
-but `hit?` bounds checks before you can corrupt memory outside
-well and canvasspace.
+hex `$yx` into 16-bit blockspace `p`osition `$0y0x` for
+compilation.
 
 `b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
@@ -193,7 +190,7 @@ for the data in the source to be compact and easier to read.
 
 ```forth
 create blocks \ compiled blockspace coords:
--2 , -1 , 0 , 1 , 0 , $100 , $200 , $300 ,
+0 , 1 , 2 , 3 , 2 , $102 , $202 , $302 ,
 ( etc etc )
 ```
 

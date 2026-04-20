@@ -52,7 +52,7 @@ $0400 + constant tilemem  \ of well.
 : th-c ( p-a) split 40* - colormem + ;
 : p! ( pc-c) dup rot th-c c! ;
 : plot ( ppppc-) p! p! p! p! drop ;
-: rub ( p-) th-c 2 - dup 4 erase 40-
+: rub ( p-) th-c dup 4 erase 40-
   4 erase ;
 
 \ zp: w = temp, lsb/msb,x = stack.
@@ -68,7 +68,7 @@ $0400 + constant tilemem  \ of well.
 \ (') means parse, (*) means varying.
 : n: ( *'-*) parse-name evaluate ;
 : c: ( u'-) 0 do n: c, loop ;
-: >p ( c-p) dup 4* 4* or $f0f and 2 - ;
+: >p ( c-p) dup 4* 4* or $f0f and ;
 : b:  hex 8 0 do n: >p , loop decimal ;
 
 create gravs 7 c: 33 25 21 17 15 13 12
@@ -137,7 +137,7 @@ $cc00 \ global game variables:
 1 var+ sig   \ 99 if initialized.
 well - constant size
 
-: enter ( -) $1305 pos ! 0 turns c! ;
+: enter ( -) $1303 pos ! 0 turns c! ;
 : ss ( -) well $ce00 size move ;
 : ll ( -) $ce00 well size move ;
 : ?init ( f-) if  well size erase

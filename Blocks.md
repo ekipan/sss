@@ -1,23 +1,14 @@
 This is a rationale for the [blocks table][blo] of [SSS].
-
-The block table source (x, y) ranges (0..3, 0..3), though
-[when compiled][dat] the x coord is adjusted to blockspace
-(-2..1).
+The block table source (x, y) ranges (0..3, 0..3):
 
 ```
 3   . . . .
 2   . . . .
 1   . . . .
-0   . . o . <- origin
+0   . . . .
 
-    0 1 2 3 <- table source x
-   -2-1 0 1 <- blockspace x
+    0 1 2 3
 ```
-
-The adjustment allows to check for line clears at the piece's
-origin row. The origin itself must then be bounded by the
-piece's blocks or else the check risks going out of well
-bounds.
 
 In [ARS] the I piece biases to the right, closer to the where
 players usually [gap]. In both ARS and [SRS] the 3-wide pieces
@@ -32,37 +23,37 @@ spawn in well:         rotate clockwise:
 |    I0 . . . .      | I1 . .[] . I2 I3 repeat
 |       . . . .      |    . .[] .
 |       . . . .      |    . .[] .
-| . . .[][]()[] . . .|    . .() .
+| . . .[][][][] . . .|    . .[] .
 
 |    J0 . . . .      | J1 . . . . J2 . . . . J3 . . . .
 |       . . . .      |    . .[] .    . . . .    . .[][]
 |       .[][][]      |    . .[] .    .[] . .    . .[] .
-| . . . . . o[] . . .|    .[]() .    .[]()[]    . .() .
+| . . . . . .[] . . .|    .[][] .    .[][][]    . .[] .
 
 |    L0 . . . .      | L1 . . . . L2 . . . . T3 . . . .
 |       . . . .      |    .[][] .    . . . .    . .[] .
 |       .[][][]      |    . .[] .    . . .[]    . .[] .
-| . . . .[] o . . . .|    . .() .    .[]()[]    . .()[]
+| . . . .[] . . . . .|    . .[] .    .[][][]    . .[][]
 
 |    T0 . . . .      | T1 . . . . T2 . . . . T3 . . . .
 |       . . . .      |    . .[] .    . . . .    . .[] .
 |       .[][][]      |    .[][] .    . .[] .    . .[][]
-| . . . . .() . . . .|    . .() .    .[]()[]    . .() .
+| . . . . .[] . . . .|    . .[] .    .[][][]    . .[] .
 
 |    S0 . . . .      | S1 . . . . S2 S3 repeat
 |       . . . .      |    .[] . .
 |       . .[][]      |    .[][] .
-| . . . .[]() . . . .|    . .() .
+| . . . .[][] . . . .|    . .[] .
 
 |    Z0 . . . .      | Z1 . . . . Z2 Z3 repeat
 |       . . . .      |    . . .[]
 |       .[][] .      |    . .[][]
-| . . . . .()[] . . .|    . .() .
+| . . . . .[][] . . .|    . .[] .
 
 |    O0 . . . .      | O1 O2 O3 repeat
 |       . . . .      |
 |       .[][] .      |
-| . . . .[]() . . . .|
+| . . . .[][] . . . .|
 ```
 
 The spawn orientation 0 is pointy-end down and J2 L2 T2 are
