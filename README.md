@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD026 -->
 
 # SSS: The Silent Soviet Stacker
 
@@ -90,4 +91,3 @@ Come, play with me.
 [vic]: https://vice-emu.sourceforge.io/
 
 <!-- end of README.md -->
-

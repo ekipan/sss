@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD026 MD029 MD033 MD060 -->
 
 # SSS: The Silent Soviet Stacker
 
@@ -679,4 +680,3 @@ Happy stacking, comrade!
 [ker]: https://www.c64-wiki.com/wiki/Kernal
 
 <!-- end of Design.md -->
-

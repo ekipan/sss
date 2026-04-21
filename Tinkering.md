@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD010 -->
 
 # SSS: The Silent Soviet Stacker
 
@@ -168,6 +169,7 @@ _Ctrl-S Alt-Tab!_
 design doc. There's tons there, take your time.
 
 [top]: #sss-the-silent-soviet-stacker
+
 [rea]: README.md
 [des]: Design.md
 [red]: Design.md#redo
@@ -181,4 +183,3 @@ design doc. There's tons there, take your time.
 [sta]: https://www.forth.com/starting-forth/
 
 <!-- end of Tinkering.md -->
-
