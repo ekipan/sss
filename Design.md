@@ -13,7 +13,6 @@ tinker with the live game state in the interpreter.
 - [Tinkering][tin]: Make your own dev environment.
 - [Forth source][sss]: Damn dense, beware dragons.
 
-Click to expand the **▶ fluffier _why_ explanations.**
 Github readers, click the outline button on the top right.
 <!-- Raw readers try: grep -n '^#' Design.md -->
 
@@ -217,12 +216,13 @@ Show ASCII art illustration.
 </strong></summary>
 
 ```txt
-3 . . . .
-2 . . . .
-1 . . . .
-0 . . o . <- origin
- -2-1 0 1 <- blockspace x
-  0 1 2 3 <- table source x
+3 | . . . .    L-piece, pointed down
+2 | . . . .    in spawn orientation.
+1 | .[][][]
+0 | .[] o . <- origin
+   --------
+   -2-1 0 1 <- blockspace x
+    0 1 2 3 <- table source x
 
 spawn in well:         rotate clockwise:
 
@@ -264,6 +264,10 @@ spawn in well:         rotate clockwise:
 
 </details>
 
+> [!IMPORTANT]
+> The values here have some of the biggest
+> [›impact on game-feel][#4r].
+
 `blocks (-a)` gives the `a`ddress of the table. Again I could
 have written this without shorthand as below but the goal was
 for the data in the source to be compact and easier to read.
@@ -273,10 +277,6 @@ create blocks \ compiled blockspace coords:
 -2 , -1 , 0 , 1 , 0 , $100 , $200 , $300 ,
 ( etc etc )
 ```
-
-> [!IMPORTANT]
-> The values here have some of the biggest
-> [›impact on game-feel][rot].
 
 ```forth
 \ \ zp: w = temp, lsb/msb,x = stack.
@@ -448,11 +448,8 @@ move there. `turnkick` calls it up to six times to implement
 > A vertical I-piece against the left wall _cannot kick._ I
 > chose to keep the code simple without an exception for it.
 > I suspect most players will never notice.
-
-There are no [floor kicks][flo]. TGM3 allows limited I and T
-floorkicking, but instead I have the horizontal rotations of
-the I piece rest on row 0 so the player has less need, though
-it's strictly easier than TGM in that sense.
+>
+> [No floorkicks][#4r], either.
 
 ## Touring the Rest, Part 2: Dev Stuff
 <!----------------------------------->
@@ -686,18 +683,43 @@ me it's not very simple.
 [#4r]: #rotation
 ### Rotation
 
-The positions of the blocks in the [blocks table][#1t] has
-arguable the largest impact on game-feel, but it's perhaps
-only noticeable to veteran Tetrisers. SSS uses neither TTC's
-[SRS] nor TGM's [ARS]. Piece origin is coupled to line clear
-check to save a few cycles and a few words of code, but the
-cognitive load (and doc burden) is pretty high:
-<!-- TODO in progress! -->
+> [!NOTE]
+> Refer to the above [›blocks table][#1t] for details.
 
-The check starts at the origin row. Negative x borrows from
-the y coord but `hit?` bounds checks before memory outside
-well and canvasspace is corrupted, so the origin must be
-bounded inside the piece's blocks.
+The positions encoded, the larger part of a game's
+"[Rotation System][rot]," have large impact on game-feel, but
+it's perhaps only noticeable to veteran Tetrisers. SSS uses
+neither TTC's [SRS] nor TGM's [ARS].
+
+```forth
+: >p ( ... ) 2 - ;
+: b: ( ... ) n: >p , ( ... ) ;
+
+create blocks
+( ... )
+b: 01 11 12 13 ( ... )
+\ 3 | . . . .    L-piece, pointed down
+\ 2 | . . . .    in spawn orientation.
+\ 1 | .[][][]
+\ 0 | .[] o . <- origin
+\    --------
+\    -2-1 0 1 <- blockspace x
+\     0 1 2 3 <- table source x
+
+: row ( compute from current piece origin ) ;
+: mark ( write to wellspace ) ;
+: land ( ... ) row mark ( ... ) ;
+```
+
+Negative x in the table borrows from the y coord but when
+re-added to the blocks offsets and `hit?` checked, the final
+coords must be in-bounds, preventing memory corruption.
+To save a few cycles and a few words of code, `mark` is
+coupled to piece origin, which must then be surrounded or
+overlapped by blocks.
+<!--TODO WIP-->
+
+#### Spawn, Kicks
 
 In [ARS] the I piece biases to the right, closer to the where
 players usually [gap]. In both ARS and [SRS] the 3-wide pieces
@@ -705,10 +727,11 @@ JLTSZ, however, bias to the left. I chose to uniformly bias
 right, which is simpler, though it clashes with veteran player
 muscle memory.
 
-The spawn orientation 0 is pointy-end down and J2 L2 T2 are
-downshifted to lie flat, consistent with [ARS] and opposed to
-[SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating much
-of the need for [floorkicking][flo], which is unimplemented.
+The spawn orientation 0 is pointy-end down and [J2 L2 T2][#1t]
+are downshifted to lie flat, consistent with [ARS] and opposed
+to [SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating
+much of the need for [floorkicking][flo], which is
+unimplemented.
 
 [#4s]: #score
 ### Score
