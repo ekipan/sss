@@ -18,8 +18,30 @@ top right.
 
 ![A block falling into the well](shots/play.png)
 
-## Spec and Background
-<!------------------->
+## Front Matter
+<!------------>
+
+### Intended Audience
+
+SSS is written in [Forth][fow], an old and grumpy language I
+adore. This text is for the Forth-curious: you've toyed
+around, don't need the stack explained _yet again,_ but
+haven't written much substance. I link references throughout
+for many gory details. Lemme know if you can think of more or
+better!
+
+- Hardware: the [C64 wiki][c64], [Easy 6502][eas],
+  [6502.org][650], though if details below intimidate you,
+  try to move past. The interesting stuff is the Tetris, so:
+- A walk through the [Tetris wiki][tet] can't hurt!
+- If the above _doesn't_ describe you and you _do_ need stacks
+  explained to you, [Starting Forth][sta] is your next step.
+  Grab your favorite C64 emulator and a [durexForth cart][car]
+  and follow along the examples.
+- Refer to the [durexForth manual][dfm] and the
+  [ANS Forth glossary][glo] which is thorough but opaque.
+
+### Background
 
 I've played tons of [The Tetris Company (TTC)][ttc] games, I
 strongly admire [Tetris The Grandmaster (TGM)][tgm], plus
@@ -32,30 +54,6 @@ I only realized after _but apparently_ the C64 hosted the
 [_very first_ commercial Tetris][mir] way back in 1988. (After
 a couple noncommercial ones.) You _need_ to listen to Mr.
 Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
-
-### Intended Audience
-
-SSS is written in [Forth][fow], an old and grumpy language I
-adore. This text is for the Forth-curious: you've toyed
-around, don't need the stack explained _yet again,_ but
-haven't written much substance. Fair warning: the 6502, C64,
-and Tetris details get gory. Lemme know if some details could
-use a wiki referral link.
-
-Throw yourself in and see where it takes you! Resources:
-
-* Hardware: the [C64 wiki][c64], [Easy 6502][eas],
-  [6502.org][650], though if the details below intimidate you
-  try to move past. The interesting stuff is the Tetris, so:
-* A walk through the [Tetris wiki][tet] can't hurt!
-* If the above _doesn't_ describe you and you _do_ need stacks
-  explained to you, [Starting Forth][sta] is your next step.
-  Grab your favorite C64 emulator and a [durexForth cart][car]
-  and try the examples.
-* Refer to the [durexForth manual][dfm] and the [ANS Forth
-  glossary][glo]. The latter is thorough but opaque.
-
-Just one more bit of document setup before diving in:
 
 ### Comment Convention
 
