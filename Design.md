@@ -397,8 +397,11 @@ It uses `rdrop` for nonlocal returns: if `q?` detects a
 duplicate roll it returns to `qnext` to roll again, but if
 `qn` passes all four `q?` it queues the successful roll and
 returns to `qnext`'s caller, though it must take care to dodge
-the [›profiling instrument][#3p]. Here's a more conventional
-version more programmers will understand easier:
+the [›profiling instrument][#3p].
+
+<details><summary><strong>
+A more conventional version with flags instead of `rdrop`:
+</strong></summary>
 
 ```forth
 \ macro: ;then = exit then
@@ -410,6 +413,8 @@ version more programmers will understand easier:
 : qnext ( -) 0 1 qn qn qn
   if reroll then enqueue ;
 ```
+
+</details>
 
 > [!NOTE]
 > This isn't critical path so the codesize and cycle savings
