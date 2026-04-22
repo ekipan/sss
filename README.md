@@ -24,9 +24,8 @@ tinker with the live game state in the interpreter.
 4. Type `help` then `new`.
 
 > [!WARNING]
-> [No sound][sou], [no high scores][sco], no menus, and
-> [unconventional controls][inp]. This is a programmer's
-> toybox first, a game second.
+> Not a product for general audiences: [No sound][sou],
+> [no high scores][sco], no menus, and weird controls:
 
 ### Keys
 
@@ -75,13 +74,13 @@ Come, play with me.
 - [Tinkering][tin]: Make your own dev environment.
 - [Forth source][sss]: Damn dense, beware dragons.
 
-[tin]: Tinkering.md
-[hfs]: Tinkering.md#getting-more-leverage
 [des]: Design.md
 [inp]: Design.md#input
 [sco]: Design.md#sound
 [sou]: Design.md#score
 [den]: Design.md#density
+[tin]: Tinkering.md
+[hfs]: Tinkering.md#getting-more-leverage
 [sss]: sss.fs
 
 [dur]: https://github.com/jkotlinski/durexforth
