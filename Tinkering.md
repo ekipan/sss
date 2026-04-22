@@ -6,13 +6,10 @@ A block-stacking game written in the number-stacking language
 Forth, for the Commodore 64. Pause a game in progress then
 tinker with the live game state in the interpreter.
 
-- See the README to [jump in and play][rea].
-- **This hands-on guide** takes you from player to tinkerer.
-- The [design rundown][des] is my bucket document: a mix of
-  tutorial (how), background (why), and reference (what). I
-  hope you'll indulge my sloppiness and dig for what you need.
-- The [Forth source][sss] is damn dense, as its intended
-  audience is just myself. For the adventurous!
+- [README][rea]: Jump in and play.
+- [Design Tour][des]: Tutorial, background, reference.
+- **Tinkering (here)**: Make your own dev environment.
+- [Forth source][sss]: Damn dense, beware dragons.
 
 ![Log: game and memory commands, savestating, recompiling, etc.](shots/devel.png)
 

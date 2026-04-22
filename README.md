@@ -71,12 +71,9 @@ Come, play with me.
 ## Further Reading
 <!--------------->
 
-- The hands-on guide takes you [from player to tinkerer][tin].
-- The [design rundown][des] is my bucket document: a mix of
-  tutorial (how), background (why), and reference (what). I
-  hope you'll indulge my sloppiness and dig for what you need.
-- The [Forth source][sss] is damn dense, as its intended
-  audience is just myself. For the adventurous!
+- [Design Tour][des]: Tutorial, background, reference.
+- [Tinkering][tin]: Make your own dev environment.
+- [Forth source][sss]: Damn dense, beware dragons.
 
 [tin]: Tinkering.md
 [hfs]: Tinkering.md#getting-more-leverage
