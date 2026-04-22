@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD010 -->
+<!-- markdownlint-disable no-hard-tabs -->
 
 # SSS: The Silent Soviet Stacker
 

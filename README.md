@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD026 -->
+<!-- markdownlint-disable no-trailing-punctuation -->
 
 # SSS: The Silent Soviet Stacker
 

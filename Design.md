@@ -1,5 +1,4 @@
-<!-- markdownlint-disable MD022 MD026 MD029 MD033 MD060 -->
-<!-- 22headbl 26headpunct 29ol123 33html 60tablecols -->
+<!-- markdownlint-disable blanks-around-headings ol-prefix no-inline-html table-column-style -->
 
 # SSS: The Silent Soviet Stacker
 [#00]: #sss-the-silent-soviet-stacker
