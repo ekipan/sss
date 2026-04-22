@@ -192,7 +192,7 @@ I could have just written this as:
 
 `>p (c-p)` does precomputation: expanding an 8-bit
 `c`haracter hex `$yx` into 16-bit `$0y0x`, then `2 -`
-[adjusts the origin][#4r].
+[›adjusts the origin][#4r].
 
 `b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
@@ -449,7 +449,7 @@ move there. `turnkick` calls it up to six times to implement
 > chose to keep the code simple without an exception for it.
 > I suspect most players will never notice.
 >
-> [No floorkicks][#4r], either.
+> [›No floorkicks][#4r], either.
 
 ## Touring the Rest, Part 2: Dev Stuff
 <!----------------------------------->
@@ -727,11 +727,11 @@ JLTSZ, however, bias to the left. I chose to uniformly bias
 right, which is simpler, though it clashes with veteran player
 muscle memory.
 
-The spawn orientation 0 is pointy-end down and [J2 L2 T2][#1t]
-are downshifted to lie flat, consistent with [ARS] and opposed
-to [SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating
-much of the need for [floorkicking][flo], which is
-unimplemented.
+The spawn orientation 0 is pointy-end down and
+[›J2 L2 T2][#1t] are downshifted to lie flat, consistent with
+[ARS] and opposed to [SRS]. Unlike both, I0 I2 _also_ rest on
+row 0, obviating much of the need for [floorkicking][flo],
+which is unimplemented.
 
 [#4s]: #score
 ### Score
