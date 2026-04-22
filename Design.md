@@ -11,9 +11,9 @@ tinker with the live game state in the interpreter.
 - [Tinkering][tin]: Make your own dev environment.
 - [Forth source][sss]: Damn dense, beware dragons.
 
-Click the **▶ expand markers** for fluffier _why_
-explanations. Github readers, click the outline button on the
-top right. <!-- Raw readers try: grep -n '^#' Design.md -->
+Click to expand the **▶ fluffier _why_ explanations.**
+Github readers, click the outline button on the top right.
+<!-- Raw readers try: grep -n '^#' Design.md -->
 
 ![A block falling into the well](shots/play.png)
 
@@ -196,8 +196,8 @@ hex `$yx` into 16-bit `$0y0x`, then `2 -` adjusts the origin.
 2 . . . .
 1 . . . .
 0 . . o . <- origin
-  0 1 2 3 <- table source x
  -2-1 0 1 <- blockspace x
+  0 1 2 3 <- table source x
 ```
 
 <details><summary><strong>
