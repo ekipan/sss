@@ -400,7 +400,7 @@ returns to `qnext`'s caller, though it must take care to dodge
 the [›profiling instrument][#3p].
 
 <details><summary><strong>
-A more conventional version with flags instead of `rdrop`:
+An easier version with flags instead of <code>rdrop</code>:
 </strong></summary>
 
 ```forth
