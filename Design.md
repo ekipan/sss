@@ -22,7 +22,7 @@ Github readers, click the outline button on the top right.
 
 ### Intended Audience
 
-SSS is written in [Forth][fow], an old and grumpy language I
+SSS is written in [Forth][for], an old and grumpy language I
 adore. This text is for the Forth-curious: you've toyed
 around, don't need the stack explained _yet again,_ but
 haven't written much substance. I link references throughout
@@ -784,7 +784,7 @@ Happy stacking, comrade!
 [beb]: https://www.youtube.com/watch?v=Ny743c32gPg
 
 <!-- forth -->
-[fow]: https://en.wikipedia.org/wiki/Forth_(programming_language)
+[for]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [not]: https://forth-standard.org/standard/notation#subsection.2.2.2
 [glo]: https://forth-standard.org/standard/alpha
 [dur]: https://github.com/jkotlinski/durexforth
