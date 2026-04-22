@@ -1,5 +1,7 @@
-<!-- markdownlint-disable MD026 MD029 MD033 MD060 -->
+<!-- markdownlint-disable MD022 MD026 MD029 MD033 MD060 -->
+<!-- 22headbl 26headpunct 29ol123 33html 60tablecols -->
 
+[#00]: #sss-the-silent-soviet-stacker
 # SSS: The Silent Soviet Stacker
 
 A block-stacking game written in the number-stacking language
@@ -69,14 +71,14 @@ eclectic mixed spec, mostly TGM-like:
 - **Colors**: Guideline (cyan I, purple T, etc).
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
   All pieces bias right. <!--TODO-->
-- **Shift**: S/F keys, with [›mostly 50Hz][per] [DAS].
-- [**›Rotate**][blo]: J/K keys. Flipped JLT are downshifted to
+- **Shift**: S/F keys, with [›mostly 50Hz][#40] [DAS].
+- [**›Rotate**][#1t]: J/K keys. Flipped JLT are downshifted to
   lie flat, ISZ have only one vertical.
-- [**›Kicks**][tur]: Biased towards rotation. Tries sides then
+- [**›Kicks**][#2t]: Biased towards rotation. Tries sides then
   below then below sides. No 2-kick for I. No floorkicks.
 - [**Drop**][gho]: D soft, E hard. No lock delay.
 - **Hold**: L key.
-- **Generator**: [›Reroller][qne] queue. 4 slots,
+- **Generator**: [›Reroller][#2q] queue. 4 slots,
   4 tries, giving 3 next piece previews.
 - [**›Scoring**][sco]: 8 lines per gravity level. No points.
 - [**Gameover**][out]: Blockout only, exits to Forth.
@@ -104,6 +106,7 @@ screen:
 ## Diving In
 <!--------->
 
+[#1e]: #piece-example
 ### `piece` Example
 
 The `piece` word is the heart of this program. It computes
@@ -142,7 +145,7 @@ Packed hex `$yyxx` coordinates exist in three spaces:
 
 ![Canvas/piece origins encircled.](shots/origins.png)
 
-The [›orange value `8` above][exa] can be `lock`ed into the 4
+The [›orange value `8` above][#1e] can be `lock`ed into the 4
 well positions if not `hit?`-detected, or `plot`ted on screen.
 These use memory indexing `n th` words: `0 th-w` for example
 gives the address of the **(0,0)th space in the well.**
@@ -195,6 +198,7 @@ I could have just written this as:
 `b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
 
+[#1t]: #the-blocks-table
 ### The `blocks` Table
 
 ```forth
@@ -312,7 +316,7 @@ index into the blocks table, calls `b@` to scan out 4
 `p`ositions, and then a `c`olor.
 
 Besides the assembly `w! b@`, the rest of the program is Forth
-and just fast enough for [›mostly full 50fps][per] during play.
+and just fast enough for [›mostly full 50fps][#40] during play.
 
 ## Touring the Rest, Part 1: Game Stuff
 <!------------------------------------>
@@ -341,6 +345,7 @@ and just fast enough for [›mostly full 50fps][per] during play.
 2+3 and 1 should probably be separate words but I like the
 density.
 
+[#2n]: #new
 ### `new`
 
 ```forth
@@ -375,6 +380,7 @@ did `2 roll 4 + ( s4-or-z5 ) held!` but I decided to simplify
 and also compensate for the init queue having only one Z. Not
 very important but that's my rationale anyway.
 
+[#2q]: #qnext
 ### `qnext`
 
 ```forth
@@ -391,7 +397,7 @@ It uses `rdrop` for nonlocal returns: if `q?` detects a
 duplicate roll it returns to `qnext` to roll again, but if
 `qn` passes all four `q?` it queues the successful roll and
 returns to `qnext`'s caller, though it must take care to dodge
-the [›profiling instrument][pro]. Here's a more conventional
+the [›profiling instrument][#3p]. Here's a more conventional
 version more programmers will understand easier:
 
 ```forth
@@ -411,6 +417,7 @@ version more programmers will understand easier:
 > cognitive load just for its aesthetic, which I'm fond of.
 > `qnext` in both versions enqueues only once per call.
 
+[#2t]: #go-and-turnkick
 ### `go` and `turnkick`
 
 ```forth
@@ -449,6 +456,7 @@ it's strictly easier than TGM in that sense.
 <img alt="Example 20+ frames profile, showing color bands."
   src="shots/prof.png" align="right" width="15%">
 
+[#3p]: #profile
 ### `profile`
 
 ```forth
@@ -466,7 +474,7 @@ The code at `bx` ("border xor") toggles the
 `profile` adjusts the latest word to point to new code:
 `lda #color | jsr bx | jsr oldcode | lda #color | jmp bx`,
 instrumenting the word with border-flipping behavior to
-[›measure perf][per]. The phrase `name>string +` addresses
+[›measure perf][#40]. The phrase `name>string +` addresses
 the code field stored after the name.
 
 `''` ticks through an instrumented word, recovering the
@@ -478,6 +486,7 @@ instruction below.
 `0 prof` patches the first instruction at `bx` to an `rts`,
 disabling it. `1 prof` restores the `eor`.
 
+[#3s]: #sync-and-bg
 ### `sync` and `bg`
 
 ```forth
@@ -540,7 +549,7 @@ buffer.
 
 One consideration: invalid positions etc. in uninitialized
 game state will corrupt memory when trying to draw, so
-init [›tracks a `sig`nature][new] to prevent this.
+init [›tracks a `sig`nature][#2n] to prevent this.
 
 ### `10 value #10`
 
@@ -573,11 +582,12 @@ example unsafe word `: bad drop ;` only compiles to 2 bytes
 `inx | rts`. Another is `: nop ;` which is only an `rts`.
 I think these are the only unpatchable cases.
 
+[#40]: #performance-and-tradeoffs
 ## Performance and Tradeoffs
 <!------------------------->
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
-costs, eyeballing [›`1 prof` color bands][pro]:
+costs, eyeballing [›`1 prof` color bands][#3p]:
 
 | Frame% | While a Piece is in Play |
 |--------|--------------------------|
@@ -628,7 +638,7 @@ r \ it's pretty hard to play!
 > Obviously not for the faint-of-heart. A bad patch will crash
 > the program, but it saves a recompile! I do this kind of thing
 > sometimes while developing, it's how I determined the
-> [›`215` rasterline][syn] above.
+> [›`215` rasterline][#3s] above.
 
 ### Sound
 
@@ -668,8 +678,8 @@ I'm very fond of [lock delay][del], though I haven't given a
 huge amount of thought to implementing it. My intuition tells
 me it's not very simple.
 
+[#4r]: #rotation
 ### Rotation
-[rot]: #rotation
 
 The positions of the blocks in the [blocks table][#1t] has
 arguable the largest impact on game-feel, but it's perhaps
@@ -695,6 +705,7 @@ downshifted to lie flat, consistent with [ARS] and opposed to
 [SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating much
 of the need for [floorkicking][flo], which is unimplemented.
 
+[#4s]: #score
 ### Score
 
 `lines` count progresses through the gravity frames table but
@@ -715,21 +726,11 @@ expanded the big section 5 comment) I lament.
 
 ---
 
-[›Back to top][top]. Some next steps: get your hands dirty with
+[›Back to top][#00]. Some next steps: get your hands dirty with
 the source (good luck!) or give this thing a play (finally!).
 Happy stacking, comrade!
 
-<!-- these docs -->
-[top]: #sss-the-silent-soviet-stacker
-[exa]: #piece-example
-[blo]: #the-blocks-table
-[new]: #new
-[qne]: #qnext
-[tur]: #go-and-turnkick
-[pro]: #profile
-[syn]: #sync-and-bg
-[per]: #performance-and-tradeoffs
-[sco]: #score
+<!-- crosslinks -->
 [rea]: README.md
 [tin]: Tinkering.md
 [sss]: sss.fs
