@@ -69,8 +69,8 @@ eclectic mixed spec, mostly TGM-like:
 - **Colors**: Guideline (cyan I, purple T, etc).
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
   All pieces bias right. <!--TODO-->
-- **Shift**: S/F keys, with [mostly 50Hz][per] [DAS].
-- [**Rotate**][blo]: J/K keys. Flipped JLT are downshifted to
+- **Shift**: S/F keys, with [›mostly 50Hz][per] [DAS].
+- [**›Rotate**][blo]: J/K keys. Flipped JLT are downshifted to
   lie flat, ISZ have only one vertical.
 - [**›Kicks**][tur]: Biased towards rotation. Tries sides then
   below then below sides. No 2-kick for I. No floorkicks.
@@ -78,7 +78,7 @@ eclectic mixed spec, mostly TGM-like:
 - **Hold**: L key.
 - **Generator**: [›Reroller][qne] queue. 4 slots,
   4 tries, giving 3 next piece previews.
-- [**Scoring**][sco]: 8 lines per gravity level. No points.
+- [**›Scoring**][sco]: 8 lines per gravity level. No points.
 - [**Gameover**][out]: Blockout only, exits to Forth.
   No topout: pieces can't move up.
 
@@ -142,7 +142,7 @@ Packed hex `$yyxx` coordinates exist in three spaces:
 
 ![Canvas/piece origins encircled.](shots/origins.png)
 
-The [orange value `8` above][pie] can be `lock`ed into the 4
+The [›orange value `8` above][exa] can be `lock`ed into the 4
 well positions if not `hit?`-detected, or `plot`ted on screen.
 These use memory indexing `n th` words: `0 th-w` for example
 gives the address of the **(0,0)th space in the well.**
@@ -336,7 +336,7 @@ index into the blocks table, calls `b@` to scan out 4
 `p`ositions, and then a `c`olor.
 
 Besides the assembly `w! b@`, the rest of the program is Forth
-and just fast enough for [mostly full 50fps][per] during play.
+and just fast enough for [›mostly full 50fps][per] during play.
 
 ## Touring the Rest, Part 1: Game Stuff
 <!------------------------------------>
@@ -415,7 +415,7 @@ It uses `rdrop` for nonlocal returns: if `q?` detects a
 duplicate roll it returns to `qnext` to roll again, but if
 `qn` passes all four `q?` it queues the successful roll and
 returns to `qnext`'s caller, though it must take care to dodge
-the [profiling instrument][pro]. Here's a more conventional
+the [›profiling instrument][pro]. Here's a more conventional
 version more programmers will understand easier:
 
 ```forth
@@ -490,7 +490,7 @@ The code at `bx` ("border xor") toggles the
 `profile` adjusts the latest word to point to new code:
 `lda #color | jsr bx | jsr oldcode | lda #color | jmp bx`,
 instrumenting the word with border-flipping behavior to
-[measure perf][per]. The phrase `name>string +` addresses
+[›measure perf][per]. The phrase `name>string +` addresses
 the code field stored after the name.
 
 `''` ticks through an instrumented word, recovering the
@@ -564,7 +564,7 @@ buffer.
 
 One consideration: invalid positions etc. in uninitialized
 game state will corrupt memory when trying to draw, so
-init [tracks a `sig`nature][new] to prevent this.
+init [›tracks a `sig`nature][new] to prevent this.
 
 ### `10 value #10`
 
@@ -601,7 +601,7 @@ I think these are the only unpatchable cases.
 <!------------------------->
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
-costs, eyeballing [`1 prof` color bands][pro]:
+costs, eyeballing [›`1 prof` color bands][pro]:
 
 | Frame% | While a Piece is in Play |
 |--------|--------------------------|
@@ -652,7 +652,7 @@ r \ it's pretty hard to play!
 > Obviously not for the faint-of-heart. A bad patch will crash
 > the program, but it saves a recompile! I do this kind of thing
 > sometimes while developing, it's how I determined the
-> [`215` rasterline][syn] above.
+> [›`215` rasterline][syn] above.
 
 ### Sound
 
@@ -712,13 +712,13 @@ expanded the big section 5 comment) I lament.
 
 ---
 
-[Back to top][top]. Some next steps: get your hands dirty with
+[›Back to top][top]. Some next steps: get your hands dirty with
 the source (good luck!) or give this thing a play (finally!).
 Happy stacking, comrade!
 
 <!-- these docs -->
 [top]: #sss-the-silent-soviet-stacker
-[pie]: #piece-example
+[exa]: #piece-example
 [blo]: #the-blocks-table
 [new]: #new
 [qne]: #qnext
