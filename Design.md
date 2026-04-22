@@ -11,10 +11,9 @@ tinker with the live game state in the interpreter.
 - [Tinkering][tin]: Make your own dev environment.
 - [Forth source][sss]: Damn dense, beware dragons.
 
-Click the <!--TODO--> **▶ expand markers** for fluffier _why_
+Click the **▶ expand markers** for fluffier _why_
 explanations. Github readers, click the outline button on the
-top right.
-<!-- Raw readers try: grep -n '^#' Design.md -->
+top right. <!-- Raw readers try: grep -n '^#' Design.md -->
 
 ![A block falling into the well](shots/play.png)
 
@@ -246,10 +245,58 @@ create blocks \ compiled blockspace coords:
 ```
 
 > [!IMPORTANT]
-> The values here have some of the biggest impact on game-feel.
-> The details get weedy but if you're into that then here's
-> the [blocks rationale][rat] with ASCII art illustrations
-> and further reference links.
+> The values here have some of the biggest impact on
+> game-feel. The details get weedy but if you're into that:
+
+<details><summary><strong>
+Show full ASCII art tables.
+</strong></summary>
+
+```txt
+spawn in well:         rotate clockwise:
+
+|    I0 . . . .      | I1 . .[] . I2 I3 repeat
+|       . . . .      |    . .[] .
+|       . . . .      |    . .[] .
+| . . .[][]()[] . . .|    . .() .
+
+|    J0 . . . .      | J1 . . . . J2 . . . . J3 . . . .
+|       . . . .      |    . .[] .    . . . .    . .[][]
+|       .[][][]      |    . .[] .    .[] . .    . .[] .
+| . . . . . o[] . . .|    .[]() .    .[]()[]    . .() .
+
+|    L0 . . . .      | L1 . . . . L2 . . . . T3 . . . .
+|       . . . .      |    .[][] .    . . . .    . .[] .
+|       .[][][]      |    . .[] .    . . .[]    . .[] .
+| . . . .[] o . . . .|    . .() .    .[]()[]    . .()[]
+
+|    T0 . . . .      | T1 . . . . T2 . . . . T3 . . . .
+|       . . . .      |    . .[] .    . . . .    . .[] .
+|       .[][][]      |    .[][] .    . .[] .    . .[][]
+| . . . . .() . . . .|    . .() .    .[]()[]    . .() .
+
+|    S0 . . . .      | S1 . . . . S2 S3 repeat
+|       . . . .      |    .[] . .
+|       . .[][]      |    .[][] .
+| . . . .[]() . . . .|    . .() .
+
+|    Z0 . . . .      | Z1 . . . . Z2 Z3 repeat
+|       . . . .      |    . . .[]
+|       .[][] .      |    . .[][]
+| . . . . .()[] . . .|    . .() .
+
+|    O0 . . . .      | O1 O2 O3 repeat
+|       . . . .      |
+|       .[][] .      |
+| . . . .[]() . . . .|
+```
+
+The spawn orientation 0 is pointy-end down and J2 L2 T2 are
+downshifted to lie flat, consistent with [ARS] and opposed to
+[SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating much
+of the need for [floorkicking][flo], which is unimplemented.
+
+</details>
 
 ```forth
 \ \ zp: w = temp, lsb/msb,x = stack.
@@ -682,7 +729,6 @@ Happy stacking, comrade!
 [sco]: #score
 [rea]: README.md
 [tin]: Tinkering.md
-[rat]: Blocks.md
 [sss]: sss.fs
 [rec]: recent.fs
 [ben]: bench.fs
