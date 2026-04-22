@@ -41,13 +41,14 @@ admittedly not easy) [reconfiguration option][inp].
 ## This thing:
 <!----------->
 
-- **Is a personal project** optimized strictly for **my own
+- **Is my personal code garden** optimized to **bring me
   joy,** which among other things means a 50fps target with as
   little assembly code as necessary, because Forth is fun!
 - **Explores creative constraints.** durexForth is
   _fast,_ but not as fast as hand-rolled 6502. Arbitrary
   [source text constraints][den], too. They're my muse.
-- **Wants to be [tinkered with][tin],** so:
+- **Is a document suite,** because I think it:
+- **Wants to be [tinkered with][tin],** so it:
 - **Might motivate the Forth- or C64-curious,** but:
 - **Is NOT a Tetris product!** No sound, no menus, weird keys.
   General audiences will balk, but I play until Game Over to
