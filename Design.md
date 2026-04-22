@@ -1,8 +1,8 @@
 <!-- markdownlint-disable MD022 MD026 MD029 MD033 MD060 -->
 <!-- 22headbl 26headpunct 29ol123 33html 60tablecols -->
 
-[#00]: #sss-the-silent-soviet-stacker
 # SSS: The Silent Soviet Stacker
+[#00]: #sss-the-silent-soviet-stacker
 
 A block-stacking game written in the number-stacking language
 Forth, for the Commodore 64. Pause a game in progress then
@@ -72,15 +72,15 @@ eclectic mixed spec, mostly TGM-like:
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
   All pieces bias right. <!--TODO-->
 - **Shift**: S/F keys, with [›mostly 50Hz][#40] [DAS].
-- [**›Rotate**][#1t]: J/K keys. Flipped JLT are downshifted to
+- [**›Rotate**][#4r]: J/K keys. Flipped JLT are downshifted to
   lie flat, ISZ have only one vertical.
-- [**›Kicks**][#2t]: Biased towards rotation. Tries sides then
+- **Kicks**: Biased towards rotation. Tries sides then
   below then below sides. No 2-kick for I. No floorkicks.
-- [**Drop**][gho]: D soft, E hard. No lock delay.
+- [**›Drop**][#4g]: D soft, E hard. No lock delay.
 - **Hold**: L key.
 - **Generator**: [›Reroller][#2q] queue. 4 slots,
   4 tries, giving 3 next piece previews.
-- [**›Scoring**][sco]: 8 lines per gravity level. No points.
+- [**›Scoring**][#4s]: 8 lines per gravity level. No points.
 - [**Gameover**][out]: Blockout only, exits to Forth.
   No topout: pieces can't move up.
 
@@ -193,7 +193,7 @@ I could have just written this as:
 
 `>p (c-p)` does precomputation: expanding an 8-bit
 `c`haracter hex `$yx` into 16-bit `$0y0x`, then `2 -`
-[adjusts the origin][rot].
+[adjusts the origin][#4r].
 
 `b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
@@ -417,7 +417,6 @@ version more programmers will understand easier:
 > cognitive load just for its aesthetic, which I'm fond of.
 > `qnext` in both versions enqueues only once per call.
 
-[#2t]: #go-and-turnkick
 ### `go` and `turnkick`
 
 ```forth
@@ -652,6 +651,7 @@ The silence, it strikes a certain Soviet charm, no?
 I again recommend listening to [Mr. Beben's composition][beb]
 for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
 
+[#4g]: #ghost-and-sonic-drop
 ### Ghost and Sonic Drop
 
 Implementing the [ghost piece][gho] in a perfomant way is
@@ -745,6 +745,7 @@ Happy stacking, comrade!
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
 [del]: https://tetris.wiki/Lock_delay
+[rot]: https://tetris.wiki/Category:Rotation_systems
 [gap]: https://tetris.wiki/Stacking_for_Tetrises
 [srs]: https://tetris.wiki/Super_Rotation_System
 [mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
