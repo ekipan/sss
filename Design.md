@@ -190,11 +190,34 @@ I could have just written this as:
 ```
 
 `>p (c-p)` does precomputation: expanding an 8-bit `c`haracter
-hex `$yx` into 16-bit `$0y0x`, then subtracting source center
-`02` into compiled blockspace `p`osition `$0000`, which may or
-may not contain a block. Negative x borrows from the y coord
-but `hit?` bounds checks before you can corrupt memory outside
-well and canvasspace.
+hex `$yx` into 16-bit `$0y0x`, then `2 -` adjusts the origin.
+
+```txt
+3 . . . .
+2 . . . .
+1 . . . .
+0 . . o . <- origin
+  0 1 2 3 <- table source x
+ -2-1 0 1 <- blockspace x
+```
+
+<details><summary><strong>
+Why adjust?
+</strong></summary>
+
+The line clear check starts at the piece's origin row. To
+prevent marking out-of-bounds memory the origin must then be
+bounded inside the piece's blocks. Negative x borrows from the
+y coord but `hit?` bounds checks before memory outside well
+and canvasspace is corrupted.
+
+In [ARS] the I piece biases to the right, closer to the where
+players usually [gap]. In both ARS and [SRS] the 3-wide pieces
+JLTSZ, however, bias to the left. I chose to uniformly bias
+right, which is simpler, though it clashes with veteran player
+muscle memory. (TODO investigate decoupling clear check.)
+
+</details>
 
 `b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.

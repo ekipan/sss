@@ -1,31 +1,5 @@
 This is a rationale for the [blocks table][blo] of [SSS].
 
-The block table source (x, y) ranges (0..3, 0..3), though
-[when compiled][dat] the x coord is adjusted to blockspace
-(-2..1).
-
-```
-3   . . . .
-2   . . . .
-1   . . . .
-0   . . o . <- origin
-
-    0 1 2 3 <- table source x
-   -2-1 0 1 <- blockspace x
-```
-
-The adjustment allows to check for line clears at the piece's
-origin row. The origin itself must then be bounded by the
-piece's blocks or else the check risks going out of well
-bounds.
-
-In [ARS] the I piece biases to the right, closer to the where
-players usually [gap]. In both ARS and [SRS] the 3-wide pieces
-JLTSZ, however, bias to the left, so to support both I'd have
-to code exceptions. Instead I chose to uniformly bias right,
-which is simpler, though it clashes with veteran player muscle
-memory.
-
 ```
 spawn in well:         rotate clockwise:
 
