@@ -188,35 +188,9 @@ I could have just written this as:
 : b: ( '-) hex 8 0 do n: >p , loop decimal ;
 ```
 
-`>p (c-p)` does precomputation: expanding an 8-bit `c`haracter
-hex `$yx` into 16-bit `$0y0x`, then `2 -` adjusts the origin.
-
-```txt
-3 . . . .
-2 . . . .
-1 . . . .
-0 . . o . <- origin
- -2-1 0 1 <- blockspace x
-  0 1 2 3 <- table source x
-```
-
-<details><summary><strong>
-Why adjust?
-</strong></summary>
-
-The line clear check starts at the piece's origin row. To
-prevent marking out-of-bounds memory the origin must then be
-bounded inside the piece's blocks. Negative x borrows from the
-y coord but `hit?` bounds checks before memory outside well
-and canvasspace is corrupted.
-
-In [ARS] the I piece biases to the right, closer to the where
-players usually [gap]. In both ARS and [SRS] the 3-wide pieces
-JLTSZ, however, bias to the left. I chose to uniformly bias
-right, which is simpler, though it clashes with veteran player
-muscle memory. (TODO investigate decoupling clear check.)
-
-</details>
+`>p (c-p)` does precomputation: expanding an 8-bit
+`c`haracter hex `$yx` into 16-bit `$0y0x`, then `2 -`
+[adjusts the origin][rot].
 
 `b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
@@ -234,25 +208,18 @@ b: 01 02 03 13  03 02 12 22  \ l.
 ( 4 shapes omitted. )
 ```
 
-`blocks (-a)` gives the `a`ddress of the table. Again I could
-have written this without shorthand as below but the goal was
-for the data in the source to be compact and easier to read.
-
-```forth
-create blocks \ compiled blockspace coords:
--2 , -1 , 0 , 1 , 0 , $100 , $200 , $300 ,
-( etc etc )
-```
-
-> [!IMPORTANT]
-> The values here have some of the biggest impact on
-> game-feel. The details get weedy but if you're into that:
-
 <details><summary><strong>
-Show full ASCII art tables.
+Show ASCII art illustration.
 </strong></summary>
 
 ```txt
+3 . . . .
+2 . . . .
+1 . . . .
+0 . . o . <- origin
+ -2-1 0 1 <- blockspace x
+  0 1 2 3 <- table source x
+
 spawn in well:         rotate clockwise:
 
 |    I0 . . . .      | I1 . .[] . I2 I3 repeat
@@ -291,12 +258,21 @@ spawn in well:         rotate clockwise:
 | . . . .[]() . . . .|
 ```
 
-The spawn orientation 0 is pointy-end down and J2 L2 T2 are
-downshifted to lie flat, consistent with [ARS] and opposed to
-[SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating much
-of the need for [floorkicking][flo], which is unimplemented.
-
 </details>
+
+`blocks (-a)` gives the `a`ddress of the table. Again I could
+have written this without shorthand as below but the goal was
+for the data in the source to be compact and easier to read.
+
+```forth
+create blocks \ compiled blockspace coords:
+-2 , -1 , 0 , 1 , 0 , $100 , $200 , $300 ,
+( etc etc )
+```
+
+> [!IMPORTANT]
+> The values here have some of the biggest
+> [›impact on game-feel][rot].
 
 ```forth
 \ \ zp: w = temp, lsb/msb,x = stack.
@@ -692,6 +668,33 @@ I'm very fond of [lock delay][del], though I haven't given a
 huge amount of thought to implementing it. My intuition tells
 me it's not very simple.
 
+### Rotation
+[rot]: #rotation
+
+The positions of the blocks in the [blocks table][#1t] has
+arguable the largest impact on game-feel, but it's perhaps
+only noticeable to veteran Tetrisers. SSS uses neither TTC's
+[SRS] nor TGM's [ARS]. Piece origin is coupled to line clear
+check to save a few cycles and a few words of code, but the
+cognitive load (and doc burden) is pretty high:
+<!-- TODO in progress! -->
+
+The check starts at the origin row. Negative x borrows from
+the y coord but `hit?` bounds checks before memory outside
+well and canvasspace is corrupted, so the origin must be
+bounded inside the piece's blocks.
+
+In [ARS] the I piece biases to the right, closer to the where
+players usually [gap]. In both ARS and [SRS] the 3-wide pieces
+JLTSZ, however, bias to the left. I chose to uniformly bias
+right, which is simpler, though it clashes with veteran player
+muscle memory.
+
+The spawn orientation 0 is pointy-end down and J2 L2 T2 are
+downshifted to lie flat, consistent with [ARS] and opposed to
+[SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating much
+of the need for [floorkicking][flo], which is unimplemented.
+
 ### Score
 
 `lines` count progresses through the gravity frames table but
@@ -741,6 +744,7 @@ Happy stacking, comrade!
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
 [del]: https://tetris.wiki/Lock_delay
+[gap]: https://tetris.wiki/Stacking_for_Tetrises
 [srs]: https://tetris.wiki/Super_Rotation_System
 [mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
 [tgm]: https://tetris.wiki/Tetris_The_Grand_Master_(series)
