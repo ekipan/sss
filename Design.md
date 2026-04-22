@@ -69,11 +69,11 @@ eclectic mixed spec, mostly TGM-like:
 - **Playfield**: 10x23.
 - **Colors**: Guideline (cyan I, purple T, etc).
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
-  All pieces bias right. <!--TODO-->
+  All pieces [›bias right][#4k].
 - **Shift**: S/F keys, with [›mostly 50Hz][#40] [DAS].
 - [**›Rotate**][#4r]: J/K keys. Flipped JLT are downshifted to
   lie flat, ISZ have only one vertical.
-- **Kicks**: Biased towards rotation. Tries sides then
+- [**›Kicks**][#4k]: Biased towards rotation. Tries sides then
   below then below sides. No 2-kick for I. No floorkicks.
 - [**›Drop**][#4g]: D soft, E hard. No lock delay.
 - **Hold**: L key.
@@ -717,8 +717,8 @@ coords must be in-bounds, preventing memory corruption.
 To save a few cycles and a few words of code, `mark` is
 coupled to piece origin, which must then be surrounded or
 overlapped by blocks.
-<!--TODO WIP-->
 
+[#4k]: #spawn-kicks
 #### Spawn, Kicks
 
 In [ARS] the I piece biases to the right, closer to the where
