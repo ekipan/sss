@@ -42,6 +42,8 @@ better!
 
 ### Background
 
+<!-- TODO talk about [8bs] -->
+
 I was personally drawn to the [Commodore 64][c64] _only after_
 stumbling on [durexForth][dur]. They're both lots of fun! Also
 I only realized after _but apparently_ the C64 hosted the
@@ -787,7 +789,7 @@ Happy stacking, comrade!
 [ttc]: https://tetris.wiki/The_Tetris_Company
 [out]: https://tetris.wiki/Top_out
 [wal]: https://tetris.wiki/Wall_kick
-[beb]: https://www.youtube.com/watch?v=Ny743c32gPg
+[beb]: https://youtu.be/Ny743c32gPg
 
 <!-- forth -->
 [for]: https://en.wikipedia.org/wiki/Forth_(programming_language)
@@ -803,6 +805,7 @@ Happy stacking, comrade!
 [sta]: https://www.forth.com/starting-forth/
 [arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
 [exe]: https://www.forth.com/starting-forth/9-forth-execution/
+[8bs]: https://youtu.be/1XdgUK1NbpI
 
 <!-- c64 -->
 [650]: https://6502.org
