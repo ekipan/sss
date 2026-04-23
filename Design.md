@@ -492,6 +492,7 @@ disabling it. `1 prof` restores the `eor`.
 ```forth
 : sync ( -) [ 215 lda,# $d012 cmp,
   -5 bne, ] ;  6 profile
+: draw ( -) sync ( ... ) ;  6 profile
 ```
 
 The `6 profile` here temporarily **undoes** the `6 profile` of
@@ -554,12 +555,13 @@ init [›tracks a `sig`nature][#2n] to prevent this.
 ### `10 value #10`
 
 A durexForth literal `: example $1234 ;` compiles to 5 bytes
-of code: `jsr lit | !word $1234` and the `lit` routine has to
-juggle stacks to fetch the value. However, a phrase
-`$1234 value example` compiles 7 bytes:
-`lda #$12 | ldy #$34 | jmp pushya` then a 3-byte `jsr` on each
-use, both faster and potentially smaller. I define words `#10`
-and `4` since those are used pretty often.
+of code: `jsr lit | !word $1234` and the [`lit` routine][lit]
+takes 18 instructions juggle stacks and fetch the value.
+However, a phrase `$1234 value example` compiles 7 bytes:
+`lda #$12 | ldy #$34 | jmp pushya` where [`pushya`][pya] takes
+only 4 instructions, then a 3-byte `jsr` on each use, both
+faster and potentially smaller. I define words `#10` and `4`
+since those are used pretty often.
 
 ### Optional Tools `recent`, `bench`, `patch:`
 
@@ -791,6 +793,8 @@ Happy stacking, comrade!
 [not]: https://forth-standard.org/standard/notation#subsection.2.2.2
 [glo]: https://forth-standard.org/standard/alpha
 [dur]: https://github.com/jkotlinski/durexforth
+[lit]: https://github.com/jkotlinski/durexforth/blob/93e68ac1054d47f4fc018bcf1fe556b3a53fa963/asm/compiler.asm#L195-L219
+[pya]: https://github.com/jkotlinski/durexforth/blob/93e68ac1054d47f4fc018bcf1fe556b3a53fa963/asm/durexforth.asm#L117-L122
 [tim]: https://github.com/jkotlinski/durexforth/blob/master/forth/timer.fs
 [car]: https://github.com/jkotlinski/durexforth/releases
 [dfm]: https://jkotlinski.github.io/durexforth/
