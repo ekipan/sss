@@ -96,6 +96,14 @@ b: 01 02 11 12  01 02 11 12  \ oc
   blocks + w! b@ b@ b@ b@ drop r>
   colors + c@ ;  14 profile
 
+\ 3 | . . . .    l-piece, pointed down
+\ 2 | . . . .    in spawn orientation.
+\ 1 | .[][][]
+\ 0 | .[] o . <- origin
+\    --------
+\    -2-1 0 1 <- blockspace x
+\     0 1 2 3 <- table source x
+
 \ a piece is: center (p)osition hex
 \ $yyxx from bottom left, clockwise
 \ (t)urns count 0-3, and (s)hape index
