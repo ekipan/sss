@@ -773,6 +773,7 @@ Happy stacking, comrade!
 <!-- tetris -->
 [tet]: https://tetris.wiki/
 [ars]: https://tetris.wiki/Arika_Rotation_System
+[das]: https://tetris.wiki/DAS
 [dro]: https://tetris.wiki/Drop
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
