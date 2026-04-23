@@ -760,8 +760,8 @@ expanded the big section 5 comment) I lament.
 
 ---
 
-[›Back to top][#00]. Some next steps: get your hands dirty with
-the source (good luck!) or give this thing a play (finally!).
+[›Back to top][#00]. Some next steps: get your hands
+dirty with the source or give this thing a play finally.
 Happy stacking, comrade!
 
 <!-- crosslinks -->
