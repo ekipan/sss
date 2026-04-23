@@ -31,7 +31,7 @@ better!
 
 - Hardware: the [C64 wiki][c64], [Easy 6502][eas],
   [6502.org][650], though if details below intimidate you,
-  try to move past. The interesting stuff is the Tetris, so:
+  try to move past. The interesting stuff is the game, so:
 - A walk through the [Tetris wiki][tet] can't hurt!
 - If the above _doesn't_ describe you and you _do_ need stacks
   explained to you, [Starting Forth][sta] is your next step.
@@ -658,8 +658,8 @@ for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
 Implementing the [ghost piece][gho] in a perfomant way is
 subtle. Probably I'd check one row per frame, adding some
 complexity, to say nothing of drawing. I've seen NES
-Tetrislikes with the feature but the complexity cost probably
-outspends my joy budget.
+block-stackers with the feature but the complexity cost
+probably outspends my joy budget.
 
 Ghost calculation is necessary for [instant drop][dro] which I
 value enough to just do all at once on input, usually taking
@@ -688,7 +688,7 @@ me it's not very simple.
 
 The positions encoded are the larger part of a game's
 "[Rotation System][rot]" and have large impact on game-feel,
-but it's perhaps only noticeable to veteran Tetrisers.
+but it's perhaps only noticeable to veteran players.
 SSS uses neither TTC's [SRS] nor TGM's [ARS].
 
 ```forth
