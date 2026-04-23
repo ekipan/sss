@@ -133,7 +133,7 @@ ok \ paints rotated orange J piece at top of well.
 Packed hex `$yyxx` coordinates exist in three spaces:
 
 - **Blockspace:** `0 <= y <= 3, -2 <= x <= 1` <br>
-  `$0000` = piece center to compute blocks and check lines.
+  `$0000` = piece origin, where line clear check starts.
 - **Wellspace `th-w`:** `0 <= y <= 22, 0 <= x <= 9` <br>
   `$0000` = bottom left of playfield of `land`ed blocks.
 - **Canvasspace `th-c`:** `0 <= y <= 20, 0 <= x <= 14` <br>
@@ -200,8 +200,8 @@ literals with `n: >p ,`.
 ### The `blocks` Table
 
 ```forth
-create blocks \ center (c/.) at yx=02:
-b: 00 01 02 03  02 12 22 32  \ iici
+create blocks \ origin (x/.) at yx=02:
+b: 00 01 02 03  02 12 22 32  \ iixi
 b: 00 01 02 03  02 12 22 32
 b:  03 11 12 13  01 02 12 22 \    jjj
 b:  01 02 03 11  02 12 22 23 \     .j
@@ -297,10 +297,10 @@ For speed sake the table scan words `w! (a-) b@ (p-pp)` are
 written in assembly but for pedagogy sake I present above an
 older combined Forth definition of `b@ (pa-ppa)`.
 
-`b@ (pa-ppa)` takes a piece center position `p1` `$yyxx`, an
-address in the blocks table `a1`, and fetches `@` and adds `+`
-one cell of the table giving computed block position `p2`,
-keeping the piece center `p3=p1`, and moving to the next table
+`b@ (pa-ppa)` takes a piece position `p1` `$yyxx`, an address
+in the blocks table `a1`, and fetches `@` and adds `+` one
+cell of the table giving computed block position `p2`, keeping
+the piece position `p3=p1`, and moving to the next table
 address `a2=a1+2` ready to fetch the next block.
 
 > [!NOTE]
@@ -309,7 +309,7 @@ address `a2=a1+2` ready to fetch the next block.
 > underneath it. Another word, `>10+>`, is named to evoke this
 > idiom, though it uses `swap`s for speed.
 
-`piece (pts-ppppc)` takes a center `p`osition `$yyxx`, `t`urn
+`piece (pts-ppppc)` takes a piece `p`osition `$yyxx`, `t`urn
 count `0-3`, and `s`hape index `0-6`, combines `t` and `s` to
 index into the blocks table, calls `b@` to scan out 4
 `p`ositions, and then a `c`olor.

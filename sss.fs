@@ -76,21 +76,21 @@ create gravs 7 c: 33 25 21 17 15 13 12
 : th-g ( u-a) 3 rshift 15 min gravs + ;
 
 create colors 7 c: 3 8 6 4 5 2 7
-create blocks \ center (c/.) at yx=02:
-b: 00 01 02 03  02 12 22 32  \ iici
+create blocks \ origin (x/.) at yx=02:
+b: 00 01 02 03  02 12 22 32  \ iixi
 b: 00 01 02 03  02 12 22 32
 b:  03 11 12 13  01 02 12 22 \    jjj
 b:  01 02 03 11  02 12 22 23 \     .j
 b: 01 11 12 13  02 12 22 21  \ lll
 b: 01 02 03 13  03 02 12 22  \ l.
 b:  02 11 12 13  02 11 12 22 \    ttt
-b:  01 02 03 12  02 12 13 22 \     c
+b:  01 02 03 12  02 12 13 22 \     x
 b: 01 02 12 13  02 11 12 21  \  ss
-b: 01 02 12 13  02 11 12 21  \ sc
+b: 01 02 12 13  02 11 12 21  \ sx
 b:  03 02 11 12  02 12 13 23 \    zz
-b:  03 02 11 12  02 12 13 23 \     cz
+b:  03 02 11 12  02 12 13 23 \     xz
 b: 01 02 11 12  01 02 11 12  \ oo
-b: 01 02 11 12  01 02 11 12  \ oc
+b: 01 02 11 12  01 02 11 12  \ ox
 \ 7 shapes 4 turns 4 blocks 2 bytes.
 : piece ( pts-ppppc) dup >r 4* + 4* 2*
   blocks + w! b@ b@ b@ b@ drop r>
@@ -104,10 +104,10 @@ b: 01 02 11 12  01 02 11 12  \ oc
 \    -2-1 0 1 <- blockspace x
 \     0 1 2 3 <- table source x
 
-\ a piece is: center (p)osition hex
-\ $yyxx from bottom left, clockwise
-\ (t)urns count 0-3, and (s)hape index
-\ 0-6 ijltszo. stored to gamestate:
+\ a piece is: (p)osition hex $yyxx from
+\ bottom left, clockwise (t)urns count
+\ 0-3, and (s)hape index 0-6 ijltszo.
+\ stored to gamestate:
 \   enqueue (s-) ->tail, head->player.
 \   enter (-) row 19 col 5 turns 0.
 \   curr+! (pt-) move/rotate player.
