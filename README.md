@@ -77,8 +77,8 @@ Come, play with me.
 
 [des]: Design.md
 [inp]: Design.md#input
-[sco]: Design.md#sound
-[sou]: Design.md#score
+[sco]: Design.md#score
+[sou]: Design.md#sound
 [den]: Design.md#density
 [tin]: Tinkering.md
 [hfs]: Tinkering.md#getting-more-leverage
