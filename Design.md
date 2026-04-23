@@ -211,7 +211,7 @@ b: 01 02 03 13  03 02 12 22  \ l.
 ```
 
 <details><summary><strong>
-Show ASCII art illustration.
+Expand to show ASCII art illustrations.
 </strong></summary>
 
 ```txt
@@ -683,12 +683,13 @@ me it's not very simple.
 ### Rotation
 
 > [!NOTE]
-> Refer to the above [›blocks table][#1t] for details.
+> Expand the ASCII art section back in the
+> [›blocks table][#1t] for full details.
 
-The positions encoded, the larger part of a game's
-"[Rotation System][rot]," have large impact on game-feel, but
-it's perhaps only noticeable to veteran Tetrisers. SSS uses
-neither TTC's [SRS] nor TGM's [ARS].
+The positions encoded are the larger part of a game's
+"[Rotation System][rot]" and have large impact on game-feel,
+but it's perhaps only noticeable to veteran Tetrisers.
+SSS uses neither TTC's [SRS] nor TGM's [ARS].
 
 ```forth
 : >p ( ... ) 2 - ;
@@ -696,7 +697,9 @@ neither TTC's [SRS] nor TGM's [ARS].
 
 create blocks
 ( ... )
-b: 01 11 12 13 ( ... )
+b: 01 11 12 13
+( ... )
+
 \ 3 | . . . .    L-piece, pointed down
 \ 2 | . . . .    in spawn orientation.
 \ 1 | .[][][]
@@ -715,7 +718,7 @@ re-added to the blocks offsets and `hit?` checked, the final
 coords must be in-bounds, preventing memory corruption.
 To save a few cycles and a few words of code, `mark` is
 coupled to piece origin, which must then be surrounded or
-overlapped by blocks.
+overlapped by blocks. This ripples into:
 
 [#4k]: #spawn-kicks
 #### Spawn, Kicks
