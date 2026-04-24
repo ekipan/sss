@@ -26,8 +26,8 @@ SSS is written in [Forth][for], an old and grumpy language I
 adore. This text is for the Forth-curious: you've toyed
 around, don't need the stack explained _yet again,_ but
 haven't written much substance. I link references throughout
-for many gory details. Lemme know if you can think of more or
-better!
+for many gory details. Lemme know if something's still
+particularly muddy or you can think of more or better links!
 
 - Hardware: the [C64 wiki][c64], [Easy 6502][eas],
   [6502.org][650], though if details below intimidate you,
@@ -91,7 +91,7 @@ values. I use compact stack comments to fit the cramped C64
 screen:
 
 - `erase ( au-)` takes an address and unsigned count -> gives
-  no result but fills the named region of memory with zeroes.
+  no result but zeroes the named region of memory.
 - `curr ( -pts)` takes no arguments -> fetches piece position,
   turn count, and shape index from game state table.
 - `piece ( pts-ppppc)` takes those three values -> gives 4
@@ -101,7 +101,7 @@ screen:
   expect.
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
   conventional [ANS notation][not] when I think the clarity is
-  needed.
+  needed. `$` means hexadecimal.
 
 ## Diving In
 <!--------->
