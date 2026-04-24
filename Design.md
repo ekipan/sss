@@ -133,8 +133,8 @@ screen:
 ## Diving In
 <!--------->
 
-[#1e]: #piece-example
-### `piece` Example
+[#1e]: #example-session
+### Example Session
 
 The `piece` word is the heart of this program. It computes
 block positions from a piece description. Read this
@@ -305,6 +305,8 @@ create blocks \ compiled blockspace coords:
 -2 , -1 , 0 , 1 , 0 , $100 , $200 , $300 ,
 ( etc etc )
 ```
+
+### `piece` Computation
 
 ```forth
 \ \ zp: w = temp, lsb/msb,x = stack.
