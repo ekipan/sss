@@ -80,7 +80,7 @@ eclectic mixed spec, mostly TGM-like:
 - **Hold**: L key.
 - **Generator**: [›Reroller][#2q] queue. 4 slots,
   4 tries, giving 3 next piece previews.
-- [**›Scoring**][#4s]: 8 lines per gravity level. No points.
+- [**›Scoring**][#4p]: 8 lines per gravity level. No points.
 - [**Gameover**][out]: Blockout only, exits to Forth.
   No topout: pieces can't move up.
 
@@ -644,6 +644,7 @@ r \ it's pretty hard to play!
 > sometimes while developing, it's how I determined the
 > [›`215` rasterline][#3s] above.
 
+[#4s]: #sound
 ### Sound
 
 I've never done sound programming before. The SID looks neat,
@@ -739,7 +740,7 @@ The spawn orientation 0 is pointy-end down and
 row 0, obviating much of the need for [floorkicking][flo],
 which is unimplemented.
 
-[#4s]: #score
+[#4p]: #score
 ### Score
 
 `lines` count progresses through the gravity frames table but
@@ -805,7 +806,6 @@ Happy stacking, comrade!
 [sta]: https://www.forth.com/starting-forth/
 [arr]: https://www.forth.com/starting-forth/8-variables-constants-arrays/#Initializing_an_Array
 [exe]: https://www.forth.com/starting-forth/9-forth-execution/
-[8bs]: https://youtu.be/1XdgUK1NbpI
 
 <!-- c64 -->
 [650]: https://6502.org
@@ -820,5 +820,7 @@ Happy stacking, comrade!
 [con]: https://www.c64-wiki.com/wiki/control_character
 [int]: https://www.c64-wiki.com/wiki/Interrupt
 [ker]: https://www.c64-wiki.com/wiki/Kernal
+[8bs]: https://www.youtube.com/@8_Bit
+[8bf]: https://youtu.be/1XdgUK1NbpI
 
 <!-- end of Design.md -->
