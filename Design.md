@@ -89,6 +89,28 @@ eclectic mixed spec, mostly TGM-like:
 - [**Gameover**][out]: Blockout only, exits to Forth.
   No topout: pieces can't move up.
 
+### Architecture
+
+- [**C64**][c64]: a 6510 computer. CIA for timers, keyboard.
+  VIC-II for graphics. SID for sound ([unused][#4s]).
+- [**KERNAL**][ker]: An 8K 6510 program I haven't read.
+  Of note: an interrupt service routine that scans the
+  key matrix via the CIA and keeps an input buffer.
+- [**durexForth v4**][dur]: A 12.4K mixed 6510/Forth program.
+  A subroutine-threaded Forth, which means most Forth source
+  compiles into `jsr` instructions executed directly. It
+  unloads BASIC but calls into KERNAL.
+- **SSS**: A <3K compiled durexForth program.
+  - Uses `key` which calls into [KERNAL `$e5b4`][e5b].
+  - Canvas of inverted spaces in VIC-II screen memory `$400`,
+  - Animated by mutating color memory `$d800`.
+  - Game state at `$cc00`, outside the dictionary
+    to survive recompiles.
+
+Trivia: ~4K of durexForth is an optional vi-clone which I
+don't personally use. Could delete it but we're not strapped
+for memory.
+
 ### Comment Convention
 
 Forth subroutines are called "words" and operate on a stack of
@@ -816,6 +838,7 @@ Happy stacking, comrade!
 [650]: https://6502.org
 [xor]: https://github.com/impomatic/xorshift798
 [eas]: https://skilldrick.github.io/easy6502/
+[e5b]: https://sta.c64.org/cbm64kbdfunc.html
 [jif]: https://www.c64-wiki.com/wiki/160-162
 [buf]: https://www.c64-wiki.com/wiki/198
 [bor]: https://www.c64-wiki.com/wiki/53280
