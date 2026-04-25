@@ -54,8 +54,8 @@ online compilers like ideone.
 
 I'm also a big fan of [8-Bit Show and Tell][8bs]; Robin's such
 a charming presenter. A comment on his [64Forth episode][8bf]
-led me to [durexForth][dur] in early 2023 and got my hands on
-a C64 emulator for the first time. Lots of fun!
+led me to durexForth in early 2023 and got my hands on a C64
+emulator for the first time. Lots of fun!
 
 In December 2024 I saw someone on 4chan /g/ writing a Tetris
 in 6502 so I tried my hand at writing one myself. I start
@@ -64,8 +64,8 @@ together mostly fully-formed in a week or two and I've been
 picking at it to relax ever since.
 
 I only _later_ realized that the C64 hosted the
-[_very first_ commercial Tetris][mir] way back in 1988. (After
-a couple noncommercial ones.) You _need_ to listen to Mr.
+[_very first_ commercial Tetris][mir] way back in 1988, after
+a couple noncommercial ones. You _need_ to listen to Mr.
 Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
 
 A tenuous goal is to proselytize Forth by way of a working,
