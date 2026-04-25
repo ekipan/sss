@@ -88,10 +88,11 @@ eclectic mixed spec, mostly TGM-like:
 - [**›Kicks**][#4k]: Biased towards rotation. Tries sides then
   below then below sides. No 2-kick for I. No floorkicks.
 - [**›Drop**][#4g]: D soft, E hard. No lock delay.
+  Gravity increases every 8 lines.
 - **Hold**: L key.
 - **Generator**: [›Reroller][#2q] queue. 4 slots,
   4 tries, giving 3 next piece previews.
-- [**›Scoring**][#4p]: 8 lines per gravity level. No points.
+- [**›Score**][#4p]: None.
 - [**Gameover**][out]: Blockout only, exits to Forth.
   No topout: pieces can't move up.
 
