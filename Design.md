@@ -47,10 +47,9 @@ I've been interested in Forth for years. Mostly noodled
 with gforth via online compilers like ideone.
 
 I'm also a big fan of [8-Bit Show and Tell][8bs]; Robin's such
-a charming presenter. It was his [episode on 64Forth][8bf]
-that actually got me to fire up a [Commodore 64][c64] emulator
-and then stumble upon [durexForth][dur] in early 2023. Lots of
-fun!
+a charming presenter. A comment on his [64Forth episode][8bf]
+led me to [durexForth][dur] in early 2023 and got my hands on
+a C64 emulator for the first time. Lots of fun!
 
 In December 2024 I saw someone on 4chan /g/ writing a Tetris
 in 6502 so I tried my hand at writing one myself. I start
@@ -92,18 +91,19 @@ eclectic mixed spec, mostly TGM-like:
 
 ### Architecture
 
-- [**C64**][c64]: a 6510 computer. CIA for timers, keyboard.
-  VIC-II for graphics. SID for sound ([unused][#4s]).
+- [**Commodore 64**][c64]: a 6510 computer, a variant
+  of 6502. CIA for timers, keyboard. VIC-II for graphics.
+  SID for sound ([unused][#4s]).
 - [**KERNAL**][ker]: An 8K 6510 program I haven't read.
   Of note: an interrupt service routine that scans the
   key matrix via the CIA and keeps an input buffer.
-- [**durexForth v4**][dur]: A 12.4K mixed 6510/Forth program.
-  A subroutine-threaded Forth, which means most Forth source
-  compiles into `jsr` instructions executed directly. It
-  unloads BASIC but calls into KERNAL.
+- [**durexForth**][dur] (v4): A 12.4K mixed 6510/Forth
+  program. A subroutine-threaded Forth, which means most Forth
+  source compiles into `jsr` instructions executed directly.
+  It unloads BASIC but calls into KERNAL.
 - **SSS**: A <3K compiled durexForth program.
   - Uses `key` which calls into [KERNAL `$e5b4`][e5b].
-  - Canvas of inverted spaces in VIC-II screen memory `$400`,
+  - Canvas of reverse-video spaces in VIC-II screen `$400`,
   - Animated by mutating color memory `$d800`.
   - Game state at `$cc00`, outside the dictionary
     to survive recompiles.
