@@ -1,7 +1,7 @@
 <!-- markdownlint-disable blanks-around-headings ol-prefix no-inline-html table-column-style -->
 
 # SSS: The Silent Soviet Stacker
-[#00]: #sss-the-silent-soviet-stacker
+[##0]: #sss-the-silent-soviet-stacker
 
 A block-stacking game written in the number-stacking language
 Forth, for the Commodore 64. Pause a game in progress then
@@ -76,7 +76,7 @@ eclectic mixed spec, mostly TGM-like:
 - **Colors**: Guideline (cyan I, purple T, etc).
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
   All pieces [›bias right][#4k].
-- **Shift**: S/F keys, with [›mostly 50Hz][#40] [DAS].
+- **Shift**: S/F keys, with [›mostly 50Hz][##4] [DAS].
 - [**›Rotate**][#4r]: J/K keys. Flipped JLT are downshifted to
   lie flat, ISZ have only one vertical.
 - [**›Kicks**][#4k]: Biased towards rotation. Tries sides then
@@ -93,7 +93,7 @@ eclectic mixed spec, mostly TGM-like:
 
 - [**Commodore 64**][c64]: a 6510 computer, a variant
   of 6502. CIA for timers, keyboard. VIC-II for graphics.
-  SID for sound ([unused][#4s]).
+  SID for sound ([›unused][#4s]).
 - [**KERNAL**][ker]: An 8K 6510 program I haven't read.
   Of note: an interrupt service routine that scans the
   key matrix via the CIA and keeps an input buffer.
@@ -134,8 +134,8 @@ screen:
 ## Diving In
 <!--------->
 
-[#1e]: #example-session
 ### Example Session
+[#1e]: #example-session
 
 The `piece` word is the heart of this program. It computes
 block positions from a piece description. Read this
@@ -226,8 +226,8 @@ I could have just written this as:
 `b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
 
-[#1t]: #the-blocks-table
 ### The `blocks` Table
+[#1t]: #the-blocks-table
 
 ```forth
 create blocks \ origin (x/.) at yx=02:
@@ -347,7 +347,7 @@ index into the blocks table, calls `b@` to scan out 4
 `p`ositions, and then a `c`olor.
 
 Besides the assembly `w! b@`, the rest of the program is Forth
-and just fast enough for [›mostly full 50fps][#40] during play.
+and just fast enough for [›mostly full 50fps][##4] during play.
 
 ## Touring the Rest, Part 1: Game Stuff
 <!------------------------------------>
@@ -376,8 +376,8 @@ and just fast enough for [›mostly full 50fps][#40] during play.
 2+3 and 1 should probably be separate words but I like the
 density.
 
-[#2n]: #new
 ### `new`
+[#2n]: #new
 
 ```forth
 : entropy ( -u) $a1 @ dup 0= + ;
@@ -411,8 +411,8 @@ did `2 roll 4 + ( s4-or-z5 ) held!` but I decided to simplify
 and also compensate for the init queue having only one Z. Not
 very important but that's my rationale anyway.
 
-[#2q]: #qnext
 ### `qnext`
+[#2q]: #qnext
 
 ```forth
 \ roll (u-u) 0 <= u2 < u1.
@@ -488,8 +488,8 @@ move there. `turnkick` calls it up to six times to implement
 <img alt="Example 20+ frames profile, showing color bands."
   src="shots/prof.png" align="right" width="15%">
 
-[#3p]: #profile
 ### `profile`
+[#3p]: #profile
 
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
@@ -506,7 +506,7 @@ The code at `bx` ("border xor") toggles the
 `profile` adjusts the latest word to point to new code:
 `lda #color | jsr bx | jsr oldcode | lda #color | jmp bx`,
 instrumenting the word with border-flipping behavior to
-[›measure perf][#40]. The phrase `name>string +` addresses
+[›measure perf][##4]. The phrase `name>string +` addresses
 the code field stored after the name.
 
 `''` ticks through an instrumented word, recovering the
@@ -518,8 +518,8 @@ instruction below.
 `0 prof` patches the first instruction at `bx` to an `rts`,
 disabling it. `1 prof` restores the `eor`.
 
-[#3s]: #sync-and-bg
 ### `sync` and `bg`
+[#3s]: #sync-and-bg
 
 ```forth
 : sync ( -) [ 215 lda,# $d012 cmp,
@@ -616,8 +616,8 @@ example unsafe word `: bad drop ;` only compiles to 2 bytes
 `inx | rts`. Another is `: nop ;` which is only an `rts`.
 I think these are the only unpatchable cases.
 
-[#40]: #performance-and-tradeoffs
 ## Performance and Tradeoffs
+[##4]: #performance-and-tradeoffs
 <!------------------------->
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
@@ -674,8 +674,8 @@ r \ it's pretty hard to play!
 > sometimes while developing, it's how I determined the
 > [›`215` rasterline][#3s] above.
 
-[#4s]: #sound
 ### Sound
+[#4s]: #sound
 
 I've never done sound programming before. The SID looks neat,
 though I wonder if the extra code might strain the already
@@ -687,8 +687,8 @@ The silence, it strikes a certain Soviet charm, no?
 I again recommend listening to [Mr. Beben's composition][beb]
 for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
 
-[#4g]: #ghost-and-sonic-drop
 ### Ghost and Sonic Drop
+[#4g]: #ghost-and-sonic-drop
 
 Implementing the [ghost piece][gho] in a perfomant way is
 subtle. Probably I'd check one row per frame, adding some
@@ -714,8 +714,8 @@ I'm very fond of [lock delay][del], though I haven't given a
 huge amount of thought to implementing it. My intuition tells
 me it's not very simple.
 
-[#4r]: #rotation
 ### Rotation
+[#4r]: #rotation
 
 > [!NOTE]
 > Expand the ASCII art section back in the
@@ -755,8 +755,8 @@ To save a few cycles and a few words of code, `mark` is
 coupled to piece origin, which must then be surrounded or
 overlapped by blocks. This ripples into:
 
-[#4k]: #spawn-kicks
 #### Spawn, Kicks
+[#4k]: #spawn-kicks
 
 In [ARS] the I piece biases to the right, closer to the where
 players usually [gap]. In both ARS and [SRS] the 3-wide pieces
@@ -770,8 +770,8 @@ The spawn orientation 0 is pointy-end down and
 row 0, obviating much of the need for [floorkicking][flo],
 which is unimplemented.
 
-[#4p]: #score
 ### Score
+[#4p]: #score
 
 `lines` count progresses through the gravity frames table but
 no scoring beyond that. The performance cost of computing
@@ -791,7 +791,7 @@ expanded the big section 5 comment) I lament.
 
 ---
 
-[›Back to top][#00]. Some next steps: get your hands
+[›Back to top][##0]. Some next steps: get your hands
 dirty with the source or give this thing a play finally.
 Happy stacking, comrade!
 
