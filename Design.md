@@ -29,9 +29,10 @@ haven't written much substance. I link references throughout
 for many gory details. Lemme know if something's still
 particularly muddy or you can think of more or better links!
 
-- Hardware: the [C64 wiki][c64], [Easy 6502][eas],
-  [6502.org][650], though if details below intimidate you,
-  try to move past. The interesting stuff is the game, so:
+- Platform: Joe Forster's [essential C64 docs][joe],
+  the [C64 wiki][c64], [Easy 6502][eas], [6502.org][650].
+  If details below intimidate you, try to move past.
+  The interesting stuff is the game, so:
 - A walk through the [Tetris wiki][tet] can't hurt!
 - If the above _doesn't_ describe you and you _do_ need stacks
   explained to you, [Starting Forth][sta] is your next step.
@@ -840,6 +841,7 @@ Happy stacking, comrade!
 [650]: https://6502.org
 [xor]: https://github.com/impomatic/xorshift798
 [eas]: https://skilldrick.github.io/easy6502/
+[joe]: https://sta.c64.org/cbmdocs.html
 [e5b]: https://sta.c64.org/cbm64kbdfunc.html
 [jif]: https://www.c64-wiki.com/wiki/160-162
 [buf]: https://www.c64-wiki.com/wiki/198
