@@ -78,6 +78,10 @@ strongly admire [Tetris The Grandmaster (TGM)][tgm], plus
 platform constraints and my own preferences make for an
 eclectic mixed spec, mostly TGM-like:
 
+- **Starting**: You're expected to compile SSS at the
+  durexForth prompt then type `new` or `r` to play. See
+  [README][rea] to set up an emulator, and optionally
+  [Tinkering][tin] to save the source to a disk image.
 - **Playfield**: 10x23.
 - **Colors**: Guideline (cyan I, purple T, etc).
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
@@ -93,7 +97,7 @@ eclectic mixed spec, mostly TGM-like:
 - **Generator**: [›Reroller][#2q] queue. 4 slots,
   4 tries, giving 3 next piece previews.
 - [**›Score**][#4p]: None.
-- [**Gameover**][out]: Blockout only, exits to Forth.
+- [**Gameover**][out]: Blockout only, exits back to Forth.
   No topout: pieces can't move up.
 
 ### Architecture
