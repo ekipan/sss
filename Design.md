@@ -43,8 +43,14 @@ particularly muddy or you can think of more or better links!
 
 ### Background
 
-I've been interested in Forth for years. Mostly noodled
-with gforth via online compilers like ideone.
+I'm a hobby coder. Solving my own problems, passing the time.
+I got paid for it for a few years: .NET business stuff that I
+hated for an optimistic but sadly doomed startup in my small
+Rust Belt town.
+
+I feel like hobbyists like me are drawn to Forth. I've been
+interested for some years. Mostly I noodled with gforth via
+online compilers like ideone.
 
 I'm also a big fan of [8-Bit Show and Tell][8bs]; Robin's such
 a charming presenter. A comment on his [64Forth episode][8bf]
