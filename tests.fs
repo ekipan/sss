@@ -5,13 +5,14 @@ require sss.fs \ start w/ either file.
 marker --tests-- \ reclaimed if ok.
 : test  --tests-- test ; \ if failed.
 
-\ set a known state to load with ll.
-decimal 123 seeded ss bg
+\ set known state for tests.
+decimal bg ss \ and keep current game.
+: reset ( -) 123 seeded ; reset
 
 depth constant d0 \ tests, sections:
 : & ( nfn-f) rot = and ;
 : ? ( f-) 0= abort" x" '.' emit ;
-: .. ( u-) cr . depth d0 - . ll
+: .. ( u-) cr . depth d0 - . reset
   s" -- marker --" evaluate ;
 marker -- \ reset each section.
 
@@ -70,7 +71,8 @@ $1305 2 1 piece plot \ on screen.
 4 .. \ var+ hold pinned? unpin
 
 5 1 var+ v  6 = ?  v 5 = ? \ def/scan.
-1 well +! well @ 1 = ?  ll well @ 0 = ?
+reset 1 well +! well @ 1 = ?
+reset well @ 0 = ?
 5 shape c! hold pinned? ? \ hold pins.
 shape c@ 5 = ? \ depends on seed.
 unpin hold shape c@ 5 = ?
@@ -83,7 +85,7 @@ unpin hold shape c@ 5 = ?
 
 : q enqueue ;  1 q 2 q 3 q 4 q enter
 curr 1 = ? 0 = ? $1305 = ? \ top j.
-ll 7 roll ll 7 roll = ?
+reset 7 roll reset 7 roll = ?
 
 space \ hit? lock
 
@@ -100,4 +102,4 @@ $102 i hit? 0= ? \ above.
 
 create t 2 ,  t tick 0= ?  t tick ?
 
---tests-- \ ok!
+--tests-- ll \ ok!
