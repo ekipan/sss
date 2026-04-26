@@ -85,18 +85,18 @@ eclectic mixed spec, mostly TGM-like:
 - **Playfield**: 10x23.
 - **Colors**: Guideline (cyan I, purple T, etc).
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
-  All pieces [›bias right][#4k].
-- **Shift**: S/F keys, with [›mostly 50Hz][##4] [DAS].
-- [**›Rotate**][#4r]: J/K keys. Flipped JLT are downshifted to
+  All pieces [›bias right][#5k].
+- **Shift**: S/F keys, with [›mostly 50Hz][##5] [DAS].
+- [**›Rotate**][#5r]: J/K keys. Flipped JLT are downshifted to
   lie flat, ISZ have only one vertical.
-- [**›Kicks**][#4k]: Biased towards rotation. Tries sides then
+- [**›Kicks**][#5k]: Biased towards rotation. Tries sides then
   below then below sides. No 2-kick for I. No floorkicks.
-- [**›Drop**][#4g]: D soft, E hard. No lock delay.
+- [**›Drop**][#5g]: D soft, E hard. No lock delay.
   Gravity increases every 8 lines.
 - **Hold**: L key.
-- **Generator**: [›Reroller][#2q] queue. 4 slots,
+- **Generator**: [›Reroller][#3q] queue. 4 slots,
   4 tries, giving 3 next piece previews.
-- [**›Score**][#4p]: None.
+- [**›Score**][#5p]: None.
 - [**Gameover**][out]: Blockout only, exits back to Forth.
   No topout: pieces can't move up.
 
@@ -104,7 +104,7 @@ eclectic mixed spec, mostly TGM-like:
 
 - [**Commodore 64**][c64]: a 6510 computer, a variant
   of 6502. CIA for timers, keyboard. VIC-II for graphics.
-  SID for sound ([›unused][#4s]).
+  SID for sound ([›unused][#5s]).
 - [**KERNAL**][ker]: An 8K 6510 program I haven't read.
   Of note: an interrupt service routine that scans the
   key matrix via the CIA and keeps an input buffer.
@@ -146,7 +146,7 @@ screen:
 <!--------->
 
 ### Example Session
-[#1e]: #example-session
+[#2e]: #example-session
 
 The `piece` word is the heart of this program. It computes
 block positions from a piece description. Read this
@@ -184,7 +184,7 @@ Packed hex `$yyxx` coordinates exist in three spaces:
 
 ![Canvas/piece origins encircled.](shots/origins.png)
 
-The [›orange value `8` above][#1e] can be `lock`ed into the 4
+The [›orange value `8` above][#2e] can be `lock`ed into the 4
 well positions if not `hit?`-detected, or `plot`ted on screen.
 These use memory indexing `n th` words: `0 th-w` for example
 gives the address of the **(0,0)th space in the well.**
@@ -232,13 +232,13 @@ I could have just written this as:
 
 `>p (c-p)` does precomputation: expanding an 8-bit
 `c`haracter hex `$yx` into 16-bit `$0y0x`, then `2 -`
-[›adjusts the origin][#4r].
+[›adjusts the origin][#5r].
 
 `b: ('-)` loops 8 times, parsing, expanding, and compiling hex
 literals with `n: >p ,`.
 
 ### The `blocks` Table
-[#1t]: #the-blocks-table
+[#2t]: #the-blocks-table
 
 ```forth
 create blocks \ origin (x/.) at yx=02:
@@ -306,7 +306,7 @@ spawn in well:         rotate clockwise:
 
 > [!IMPORTANT]
 > The values here have some of the biggest
-> [›impact on game-feel][#4r].
+> [›impact on game-feel][#5r].
 
 `blocks (-a)` gives the `a`ddress of the table. Again I could
 have written this without shorthand as below but the goal was
@@ -358,7 +358,7 @@ index into the blocks table, calls `b@` to scan out 4
 `p`ositions, and then a `c`olor.
 
 Besides the assembly `w! b@`, the rest of the program is Forth
-and just fast enough for [›mostly full 50fps][##4] during play.
+and just fast enough for [›mostly full 50fps][##5] during play.
 
 ## Touring the Rest, Part 1: Game Stuff
 <!------------------------------------>
@@ -388,7 +388,7 @@ and just fast enough for [›mostly full 50fps][##4] during play.
 density.
 
 ### `new`
-[#2n]: #new
+[#3n]: #new
 
 ```forth
 : entropy ( -u) $a1 @ dup 0= + ;
@@ -423,7 +423,7 @@ and also compensate for the init queue having only one Z. Not
 very important but that's my rationale anyway.
 
 ### `qnext`
-[#2q]: #qnext
+[#3q]: #qnext
 
 ```forth
 \ roll (u-u) 0 <= u2 < u1.
@@ -439,7 +439,7 @@ It uses `rdrop` for nonlocal returns: if `q?` detects a
 duplicate roll it returns to `qnext` to roll again, but if
 `qn` passes all four `q?` it queues the successful roll and
 returns to `qnext`'s caller, though it must take care to dodge
-the [›profiling instrument][#3p].
+the [›profiling instrument][#4p].
 
 <details><summary><strong>
 An easier version with flags instead of <code>rdrop</code>:
@@ -491,7 +491,7 @@ move there. `turnkick` calls it up to six times to implement
 > chose to keep the code simple without an exception for it.
 > I suspect most players will never notice.
 >
-> [›No floorkicks][#4r], either.
+> [›No floorkicks][#5r], either.
 
 ## Touring the Rest, Part 2: Dev Stuff
 <!----------------------------------->
@@ -500,7 +500,7 @@ move there. `turnkick` calls it up to six times to implement
   src="shots/prof.png" align="right" width="15%">
 
 ### `profile`
-[#3p]: #profile
+[#4p]: #profile
 
 ```forth
 create bx  $d020 eor, $d020 sta, rts,
@@ -517,7 +517,7 @@ The code at `bx` ("border xor") toggles the
 `profile` adjusts the latest word to point to new code:
 `lda #color | jsr bx | jsr oldcode | lda #color | jmp bx`,
 instrumenting the word with border-flipping behavior to
-[›measure perf][##4]. The phrase `name>string +` addresses
+[›measure perf][##5]. The phrase `name>string +` addresses
 the code field stored after the name.
 
 `''` ticks through an instrumented word, recovering the
@@ -530,7 +530,7 @@ instruction below.
 disabling it. `1 prof` restores the `eor`.
 
 ### `sync` and `bg`
-[#3s]: #sync-and-bg
+[#4s]: #sync-and-bg
 
 ```forth
 : sync ( -) [ 215 lda,# $d012 cmp,
@@ -593,7 +593,7 @@ buffer.
 
 One consideration: invalid positions etc. in uninitialized
 game state will corrupt memory when trying to draw, so
-init [›tracks a `sig`nature][#2n] to prevent this.
+init [›tracks a `sig`nature][#3n] to prevent this.
 
 ### `10 value #10`
 
@@ -628,11 +628,11 @@ example unsafe word `: bad drop ;` only compiles to 2 bytes
 I think these are the only unpatchable cases.
 
 ## Performance and Tradeoffs
-[##4]: #performance-and-tradeoffs
+[##5]: #performance-and-tradeoffs
 <!------------------------->
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
-costs, eyeballing [›`1 prof` color bands][#3p]:
+costs, eyeballing [›`1 prof` color bands][#4p]:
 
 | Frame% | While a Piece is in Play |
 |--------|--------------------------|
@@ -683,10 +683,10 @@ r \ it's pretty hard to play!
 > Obviously not for the faint-of-heart. A bad patch will crash
 > the program, but it saves a recompile! I do this kind of thing
 > sometimes while developing, it's how I determined the
-> [›`215` rasterline][#3s] above.
+> [›`215` rasterline][#4s] above.
 
 ### Sound
-[#4s]: #sound
+[#5s]: #sound
 
 I've never done sound programming before. The SID looks neat,
 though I wonder if the extra code might strain the already
@@ -699,7 +699,7 @@ I again recommend listening to [Mr. Beben's composition][beb]
 for the [1988 Mirrorsoft Tetris][mir]. Sets a hell of a mood.
 
 ### Ghost and Sonic Drop
-[#4g]: #ghost-and-sonic-drop
+[#5g]: #ghost-and-sonic-drop
 
 Implementing the [ghost piece][gho] in a perfomant way is
 subtle. Probably I'd check one row per frame, adding some
@@ -726,11 +726,11 @@ huge amount of thought to implementing it. My intuition tells
 me it's not very simple.
 
 ### Rotation
-[#4r]: #rotation
+[#5r]: #rotation
 
 > [!NOTE]
 > Expand the ASCII art section back in the
-> [›blocks table][#1t] for full details.
+> [›blocks table][#2t] for full details.
 
 The positions encoded are the larger part of a game's
 "[Rotation System][rot]" and have large impact on game-feel,
@@ -767,7 +767,7 @@ coupled to piece origin, which must then be surrounded or
 overlapped by blocks. This ripples into:
 
 #### Spawn, Kicks
-[#4k]: #spawn-kicks
+[#5k]: #spawn-kicks
 
 In [ARS] the I piece biases to the right, closer to the where
 players usually [gap]. In both ARS and [SRS] the 3-wide pieces
@@ -776,13 +776,13 @@ right, which is simpler, though it clashes with veteran player
 muscle memory.
 
 The spawn orientation 0 is pointy-end down and
-[›J2 L2 T2][#1t] are downshifted to lie flat, consistent with
+[›J2 L2 T2][#2t] are downshifted to lie flat, consistent with
 [ARS] and opposed to [SRS]. Unlike both, I0 I2 _also_ rest on
 row 0, obviating much of the need for [floorkicking][flo],
 which is unimplemented.
 
 ### Score
-[#4p]: #score
+[#5p]: #score
 
 `lines` count progresses through the gravity frames table but
 no scoring beyond that. The performance cost of computing
