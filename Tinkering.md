@@ -78,9 +78,9 @@ routines as C64 BASIC, so you can press:
 See the C64 programmer's reference: The [Screen Editor][edi]
 section starts mid-page, click the right arrow to continue
 reading. Unlike BASIC, durexForth doesn't store source by line
-number but instead has its own separate file editor. See the
-durexForth manual for [editor introduction][dv0] and
-[details][dv1].
+number but instead has its own separate file editor, the `v`
+command in the session above. See the durexForth manual for
+[editor introduction][dv0] and [details][dv1].
 
 > [!NOTE]
 > The screen editor also has a weird 80-column feature that
