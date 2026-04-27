@@ -65,7 +65,7 @@ info and next steps in the [design doc][des].
 The durexForth interpreter uses the same KERNAL screen-editor
 routines as C64 BASIC, so you can press:
 
-- Up/Down then Return to re-enter input elsewhere on screen,
+- Up/Down to move, then Return to re-enter input elsewhere on screen,
 - Left/Right to overtype input text,
 - Delete/Insert to move characters on the current line.
   Inserted blanks accept nearly _every_ key, including
@@ -77,10 +77,7 @@ routines as C64 BASIC, so you can press:
 
 See the C64 programmer's reference: The [Screen Editor][edi]
 section starts mid-page, click the right arrow to continue
-reading. Unlike BASIC, durexForth doesn't store source by line
-number but instead has its own separate file editor, the `v`
-command in the session above. See the durexForth manual for
-[editor introduction][dv0] and [details][dv1].
+reading.
 
 > [!NOTE]
 > The screen editor also has a weird 80-column feature that
@@ -88,11 +85,14 @@ command in the session above. See the durexForth manual for
 > column. I don't fully understand it so I try to stay within
 > the 40.
 
-After experimenting on screen you'll want to edit source on
-disk. The above session saves to a disk file and uses the `v`
-vi-clone, but C64 disk operations are _painfully slow._ I use
-JiffyDOS and VICE HFS (below) to cope. JiffyDOS config is out
-of document scope but if you're also feeling stifled maybe
+Unlike BASIC, durexForth doesn't store source by line
+number but instead has its own separate file editor: the `v`
+command in the session above. See the durexForth manual for
+[editor introduction][dv0] and [details][dv1].
+
+`v` is capable but C64 disk operations are _painfully slow._ I
+use JiffyDOS and VICE HFS (below) to cope. JiffyDOS config is
+out of document scope but if you're also feeling stifled maybe
 try:
 
 ## Getting More Leverage
