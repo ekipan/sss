@@ -817,12 +817,12 @@ Happy stacking, comrade!
 <!-- tetris -->
 [tet]: https://tetris.wiki/
 [ars]: https://tetris.wiki/Arika_Rotation_System
+[rot]: https://tetris.wiki/Category:Rotation_systems
 [das]: https://tetris.wiki/DAS
 [dro]: https://tetris.wiki/Drop
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
 [del]: https://tetris.wiki/Lock_delay
-[rot]: https://tetris.wiki/Category:Rotation_systems
 [gap]: https://tetris.wiki/Stacking_for_Tetrises
 [srs]: https://tetris.wiki/Super_Rotation_System
 [mir]: https://tetris.wiki/Tetris_(Mirrorsoft)
