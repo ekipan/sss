@@ -93,7 +93,7 @@ eclectic mixed spec, mostly TGM-like:
   below then below sides. No 2-kick for I. No floorkicks.
 - [**›Drop**][#5g]: D soft, E hard. No lock delay.
   Gravity increases every 8 lines.
-- **Hold**: L key.
+- [**Hold**][hol]: L key.
 - **Generator**: [›Reroller][#3q] queue. 4 slots,
   4 tries, giving 3 next piece previews.
 - [**›Score**][#5p]: None.
@@ -822,6 +822,7 @@ Happy stacking, comrade!
 [dro]: https://tetris.wiki/Drop
 [flo]: https://tetris.wiki/Floor_kick
 [gho]: https://tetris.wiki/Ghost_piece
+[hol]: https://tetris.wiki/Hold_piece
 [del]: https://tetris.wiki/Lock_delay
 [gap]: https://tetris.wiki/Stacking_for_Tetrises
 [srs]: https://tetris.wiki/Super_Rotation_System
