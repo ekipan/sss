@@ -182,7 +182,7 @@ design doc. There's tons there, take your time.
 [mak]: https://github.com/jkotlinski/durexforth/blob/master/Makefile
 [584]: https://github.com/jkotlinski/durexforth/issues/584
 [vic]: https://vice-emu.sourceforge.io/
-[edi]: https://www.devili.iki.fi/Computers/Commodore/C64/Programmers_Reference/Chapter_2/page_094.html
+[edi]: https://www.devili.iki.fi/Computers/Commodore/C64/Programmers_Reference/Chapter_2/page_094.html#Screen
 [dv0]: https://jkotlinski.github.io/durexforth/#_introducing_the_editor
 [dv1]: https://jkotlinski.github.io/durexforth/#_editor
 [sta]: https://www.forth.com/starting-forth/
