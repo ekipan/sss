@@ -80,8 +80,8 @@ eclectic mixed spec, mostly TGM-like:
 
 - **Starting**: You're expected to compile SSS at the
   durexForth prompt then type `new` or `r` to play. See
-  [README][rea] to set up an emulator, and optionally
-  [Tinkering][tin] to save the source to a disk image.
+  README to [set up an emulator][rea], and optionally
+  Tinkering to [save the source to a disk image][tin].
 - **Playfield**: 10x23.
 - **Colors**: Guideline (cyan I, purple T, etc).
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
