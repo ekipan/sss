@@ -77,7 +77,10 @@ routines as C64 BASIC, so you can press:
 
 See the C64 programmer's reference: The [Screen Editor][edi]
 section starts mid-page, click the right arrow to continue
-reading.
+reading. Unlike BASIC, durexForth doesn't store source by line
+number but instead has its own separate file editor. See the
+durexForth manual for [editor introduction][dv0] and
+[details][dv1].
 
 > [!NOTE]
 > The screen editor also has a weird 80-column feature that
@@ -180,6 +183,8 @@ design doc. There's tons there, take your time.
 [584]: https://github.com/jkotlinski/durexforth/issues/584
 [vic]: https://vice-emu.sourceforge.io/
 [edi]: https://www.devili.iki.fi/Computers/Commodore/C64/Programmers_Reference/Chapter_2/page_094.html
+[dv0]: https://jkotlinski.github.io/durexforth/#_introducing_the_editor
+[dv1]: https://jkotlinski.github.io/durexforth/#_editor
 [sta]: https://www.forth.com/starting-forth/
 
 <!-- end of Tinkering.md -->
