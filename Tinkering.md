@@ -62,19 +62,22 @@ info and next steps in the [design doc][des].
 
 ### Basic (and BASIC) Screen-Editing
 
-The durexForth interpreter uses the same KERNAL
-[screen-editor][edi] (starts mid-page, click the right arrow
-to continue reading) routines as C64 BASIC, so you can press:
+The durexForth interpreter uses the same KERNAL screen-editor
+routines as C64 BASIC, so you can press:
 
-- Up/Down to re-enter other input elsewhere on screen,
+- Up/Down then Return to re-enter input elsewhere on screen,
 - Left/Right to overtype input text,
 - Delete/Insert to move characters on the current line.
   Inserted blanks accept nearly _every_ key, including
-  controls such as the arrows, putting the control codes
+  controls such as the cursors, putting the control codes
   directly into your source, but you can press:
 - Shift-Return to abandon the current line and move to the
   next.
 - Shift-Home to clear the screen.
+
+See the C64 programmer's reference: The [Screen Editor][edi]
+section starts mid-page, click the right arrow to continue
+reading.
 
 > [!NOTE]
 > The screen editor also has a weird 80-column feature that
