@@ -110,15 +110,15 @@ eclectic mixed spec, mostly TGM-like:
 - [**Commodore 64**][c64]: a 6510 computer, a variant
   of 6502. CIA for timers, keyboard. VIC-II for graphics.
   SID for sound ([›unused][#5s]).
-- [**KERNAL**][ker]: An 8K 6510 program I haven't read.
+- [**Kernal**][ker]: An 8K 6510 program I haven't read.
   Of note: an interrupt service routine that scans the
   key matrix via the CIA and keeps an input buffer.
 - [**durexForth**][dur] (v4): A 12.4K mixed 6510/Forth
   program. A subroutine-threaded Forth, which means most Forth
   source compiles into `jsr` instructions executed directly.
-  It unloads BASIC but calls into KERNAL.
+  It unloads BASIC but calls into Kernal.
 - **SSS**: A <3K compiled durexForth program.
-  - Uses `key` which calls into [KERNAL `$e5b4`][e5b].
+  - Uses `key` which calls into [Kernal `$e5b4`][e5b].
   - Canvas of reverse-video spaces in VIC-II screen `$400`,
   - Animated by mutating color memory `$d800`.
   - Game state at `$cc00`, outside the dictionary
@@ -380,7 +380,7 @@ and just fast enough for [›mostly full 50fps][##5] during play.
 
 `kbinit` stores 3 bytes:
 
-1. `$80` configures the [KERNAL][ker] to
+1. `$80` configures the [Kernal][ker] to
    [repeat all keys][rep], not just the cursors.
 2. `$b` repeat delay of 11 frames.
 3. `0` flushes the [key buffer][buf].
@@ -645,7 +645,7 @@ costs, eyeballing [›`1 prof` color bands][#4p]:
 
 | Frame% | While a Piece is in Play |
 |--------|--------------------------|
-| 0-7%   | KERNAL [interrupt][int]. Rolls through the frame, stepping on `sync` and dropping 1 frame every 4 or 5. |
+| 0-7%   | Kernal [interrupt][int]. Rolls through the frame, stepping on `sync` and dropping 1 frame every 4 or 5. |
 | 17-19% | `piece hit?` move/gameover check. |
 | 13%    | idle `draw step`, tons of margin. |
 | 95%    | busy `draw step`, holding `j` to rotate every frame. |

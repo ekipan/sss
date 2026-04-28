@@ -62,7 +62,7 @@ info and next steps in the [design doc][des].
 
 ### Basic (and BASIC) Screen-Editing
 
-The durexForth interpreter uses the same KERNAL screen-editor
+The durexForth interpreter uses the same Kernal screen-editor
 routines as C64 BASIC, so you can press:
 
 - Up/Down to move, then Return to re-enter input elsewhere on screen,
