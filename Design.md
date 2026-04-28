@@ -117,7 +117,7 @@ eclectic mixed spec, mostly TGM-like:
   program. A subroutine-threaded Forth, which means most Forth
   source compiles into `jsr` instructions executed directly.
   It unloads BASIC but calls into Kernal.
-- **SSS**: A <3K compiled durexForth program.
+- [**SSS**][sss]: A <3K compiled durexForth program.
   - Uses `key` which calls into [Kernal `$e5b4`][e5b].
   - Canvas of reverse-video spaces in VIC-II screen `$400`,
   - Animated by mutating color memory `$d800`.
