@@ -712,11 +712,13 @@ b: 01 11 12 13
 ```
 
 Negative x in the table borrows from the y coord but when
-re-added to the blocks offsets and `hit?` checked, the final
-coords must be in-bounds, preventing memory corruption.
+re-added to the piece position and `hit?` checked, the final
+block coords must be in-bounds, preventing memory corruption.
 To save a few cycles and a few words of code, `mark` is
 coupled to piece origin, which must then be surrounded or
-overlapped by blocks. This ripples into:
+overlapped by blocks, thus the `2 -` adjustment.
+
+This ripples into:
 
 #### Spawn, Kicks
 [#5k]: #spawn-kicks
