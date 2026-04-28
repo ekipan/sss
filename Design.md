@@ -12,13 +12,18 @@ tinker with the live game state in the interpreter.
 - [Tinkering][tin]: Make your own dev environment.
 - [Forth source][sss]: Damn dense, beware dragons.
 
-Github readers, click the outline button on the top right.
-<!-- Raw readers try: grep -n '^#' Design.md -->
-
 ![A block falling into the well](shots/play.png)
 
 ## Front Matter
 <!------------>
+
+Github readers, click the outline button on the top right.
+<!-- Raw readers try: grep -n '^#' Design.md -->
+
+- To skip the fluff, jump to [›Comment Convention][#1c].
+- Leading into: [›Diving In][##2] to core design, then:
+- Two whirlwind tours: [›Game Stuff][##3], [›Dev Stuff][##4].
+- The fluffiest "whys" at: [›Performance and Tradeoffs][##5].
 
 ### Intended Audience
 
@@ -124,6 +129,7 @@ don't personally use. Could delete it but we're not strapped
 for memory.
 
 ### Comment Convention
+[#1c]: #comment-convention
 
 Forth subroutines are called "words" and operate on a stack of
 values. I use compact stack comments to fit the cramped C64
@@ -143,6 +149,7 @@ screen:
   needed. `$` means hexadecimal.
 
 ## Diving In
+[##2]: #diving-in
 <!--------->
 
 ### Example Session
@@ -361,6 +368,7 @@ Besides the assembly `w! b@`, the rest of the program is Forth
 and just fast enough for [›mostly full 50fps][##5] during play.
 
 ## Touring the Rest, Part 1: Game Stuff
+[##3]: #touring-the-rest-part-1-game-stuff
 <!------------------------------------>
 
 ### `kbinit`
@@ -494,6 +502,7 @@ move there. `turnkick` calls it up to six times to implement
 > [›No floorkicks][#5r], either.
 
 ## Touring the Rest, Part 2: Dev Stuff
+[##4]: #touring-the-rest-part-2-dev-stuff
 <!----------------------------------->
 
 <img alt="Example 20+ frames profile, showing color bands."
