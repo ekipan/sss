@@ -396,23 +396,6 @@ duplicate roll it returns to `qnext` to roll again, but if
 returns to `qnext`'s caller, though it must take care to dodge
 the [›profiling instrument][#4p].
 
-<details><summary><strong>
-An easier version with flags instead of <code>rdrop</code>:
-</strong></summary>
-
-```forth
-\ macro: ;then = exit then
-: reroll ( s-s) drop 7 roll ;
-: q? ( sfi-sf) swap if drop 1 ;then
-  th-q c@ over = ;
-: qn ( sf-sf) if reroll 0
-  0 q? 1 q? 2 q? 3 q? ;then 0 ;
-: qnext ( -) 0 1 qn qn qn
-  if reroll then enqueue ;
-```
-
-</details>
-
 > [!NOTE]
 > This isn't critical path so the codesize and cycle savings
 > aren't important but I choose to spend the extra `rdrop`
@@ -422,6 +405,7 @@ An easier version with flags instead of <code>rdrop</code>:
 ### `go` and `turnkick`
 
 ```forth
+\ macro: ;then = exit then
 : t@+ ( t-t) turns c@ + 3 and ;
 : curr+ ( pt-pts) swap pos @ +
   swap t@+  shape c@ ;
