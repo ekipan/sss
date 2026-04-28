@@ -446,7 +446,7 @@ move there. `turnkick` calls it up to six times to implement
 > chose to keep the code simple without an exception for it.
 > I suspect most players will never notice.
 >
-> [›No floorkicks][#5r], either.
+> [›No floorkicks][#5k], either.
 
 ## Touring the Rest, Part 2: Dev Stuff
 [##4]: #touring-the-rest-part-2-dev-stuff
