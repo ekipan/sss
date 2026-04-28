@@ -258,59 +258,6 @@ b: 01 02 03 13  03 02 12 22  \ l.
 ( 4 shapes omitted. )
 ```
 
-<details><summary><strong>
-Expand to show ASCII art illustrations.
-</strong></summary>
-
-```txt
-3 | . . . .    L-piece, pointed down
-2 | . . . .    in spawn orientation.
-1 | .[][][]
-0 | .[] o . <- origin
-   --------
-   -2-1 0 1 <- blockspace x
-    0 1 2 3 <- table source x
-
-spawn in well:         rotate clockwise:
-
-|    I0 . . . .      | I1 . .[] . I2 I3 repeat
-|       . . . .      |    . .[] .
-|       . . . .      |    . .[] .
-| . . .[][]()[] . . .|    . .() .
-
-|    J0 . . . .      | J1 . . . . J2 . . . . J3 . . . .
-|       . . . .      |    . .[] .    . . . .    . .[][]
-|       .[][][]      |    . .[] .    .[] . .    . .[] .
-| . . . . . o[] . . .|    .[]() .    .[]()[]    . .() .
-
-|    L0 . . . .      | L1 . . . . L2 . . . . L3 . . . .
-|       . . . .      |    .[][] .    . . . .    . .[] .
-|       .[][][]      |    . .[] .    . . .[]    . .[] .
-| . . . .[] o . . . .|    . .() .    .[]()[]    . .()[]
-
-|    T0 . . . .      | T1 . . . . T2 . . . . T3 . . . .
-|       . . . .      |    . .[] .    . . . .    . .[] .
-|       .[][][]      |    .[][] .    . .[] .    . .[][]
-| . . . . .() . . . .|    . .() .    .[]()[]    . .() .
-
-|    S0 . . . .      | S1 . . . . S2 S3 repeat
-|       . . . .      |    .[] . .
-|       . .[][]      |    .[][] .
-| . . . .[]() . . . .|    . .() .
-
-|    Z0 . . . .      | Z1 . . . . Z2 Z3 repeat
-|       . . . .      |    . . .[]
-|       .[][] .      |    . .[][]
-| . . . . .()[] . . .|    . .() .
-
-|    O0 . . . .      | O1 O2 O3 repeat
-|       . . . .      |
-|       .[][] .      |
-| . . . .[]() . . . .|
-```
-
-</details>
-
 > [!IMPORTANT]
 > The values here have some of the biggest
 > [›impact on game-feel][#5r].
@@ -737,14 +684,10 @@ me it's not very simple.
 ### Rotation
 [#5r]: #rotation
 
-> [!NOTE]
-> Expand the ASCII art section back in the
-> [›blocks table][#2t] for full details.
-
-The positions encoded are the larger part of a game's
-"[Rotation System][rot]" and have large impact on game-feel,
-but it's perhaps only noticeable to veteran players.
-SSS uses neither TTC's [SRS] nor TGM's [ARS].
+The positions encoded in the [›`blocks` table][#2t] are the
+larger part of a game's "[Rotation System][rot]" and have
+large impact on game-feel, but it's perhaps only noticeable to
+veteran players. SSS uses neither TTC's [SRS] nor TGM's [ARS].
 
 ```forth
 : >p ( ... ) 2 - ;
@@ -778,17 +721,61 @@ overlapped by blocks. This ripples into:
 #### Spawn, Kicks
 [#5k]: #spawn-kicks
 
+<details><summary><strong>
+Expand for the complete `blocks` table:
+</strong></summary>
+
+```txt
+spawn in well:         rotate clockwise:
+
+|    I0 . . . .      | I1 . .[] . I2 I3 repeat
+|       . . . .      |    . .[] .
+|       . . . .      |    . .[] .
+| . . .[][]()[] . . .|    . .() .
+
+|    J0 . . . .      | J1 . . . . J2 . . . . J3 . . . .
+|       . . . .      |    . .[] .    . . . .    . .[][]
+|       .[][][]      |    . .[] .    .[] . .    . .[] .
+| . . . . . o[] . . .|    .[]() .    .[]()[]    . .() .
+
+|    L0 . . . .      | L1 . . . . L2 . . . . L3 . . . .
+|       . . . .      |    .[][] .    . . . .    . .[] .
+|       .[][][]      |    . .[] .    . . .[]    . .[] .
+| . . . .[] o . . . .|    . .() .    .[]()[]    . .()[]
+
+|    T0 . . . .      | T1 . . . . T2 . . . . T3 . . . .
+|       . . . .      |    . .[] .    . . . .    . .[] .
+|       .[][][]      |    .[][] .    . .[] .    . .[][]
+| . . . . .() . . . .|    . .() .    .[]()[]    . .() .
+
+|    S0 . . . .      | S1 . . . . S2 S3 repeat
+|       . . . .      |    .[] . .
+|       . .[][]      |    .[][] .
+| . . . .[]() . . . .|    . .() .
+
+|    Z0 . . . .      | Z1 . . . . Z2 Z3 repeat
+|       . . . .      |    . . .[]
+|       .[][] .      |    . .[][]
+| . . . . .()[] . . .|    . .() .
+
+|    O0 . . . .      | O1 O2 O3 repeat
+|       . . . .      |
+|       .[][] .      |
+| . . . .[]() . . . .|
+```
+
+</details>
+
 In [ARS] the I piece biases to the right, closer to the where
 players usually [gap]. In both ARS and [SRS] the 3-wide pieces
 JLTSZ, however, bias to the left. I chose to uniformly bias
 right, which is simpler, though it clashes with veteran player
 muscle memory.
 
-The spawn orientation 0 is pointy-end down and
-[›J2 L2 T2][#2t] are downshifted to lie flat, consistent with
-[ARS] and opposed to [SRS]. Unlike both, I0 I2 _also_ rest on
-row 0, obviating much of the need for [floorkicking][flo],
-which is unimplemented.
+The spawn orientation 0 is pointy-end down and J2 L2 T2 are
+downshifted to lie flat, consistent with [ARS] and opposed to
+[SRS]. Unlike both, I0 I2 _also_ rest on row 0, obviating much
+of the need for [floorkicking][flo], which is unimplemented.
 
 ### Score
 [#5p]: #score
