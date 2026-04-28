@@ -1,6 +1,6 @@
 \ \ eg: 7 5 bench * ( measure cycles. )
-code now ( -j) sei, $a1 ldy, $a2 lda,
-  cli, ' pushya jmp,
+code now ( -- jiffies ) sei, $a1 ldy,
+  $a2 lda, cli, ' pushya jmp,
 
 code ti  $a ldx,# $b jmp,
 ' ti 1+ dup dup 2+ ( 'a 'a 'b )
