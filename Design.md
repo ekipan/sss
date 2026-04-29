@@ -14,8 +14,8 @@ tinker with the live game state in the interpreter.
 
 ![A block falling into the well](shots/play.png)
 
-## Front Matter
-<!------------>
+## This Document
+<!------------->
 
 <!-- TOC for raw readers: $ grep -n '^#' Design.md -->
 Github readers, click the outline button on the top right.
