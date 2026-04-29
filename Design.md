@@ -17,13 +17,14 @@ tinker with the live game state in the interpreter.
 ## Front Matter
 <!------------>
 
+<!-- TOC for raw readers: $ grep -n '^#' Design.md -->
 Github readers, click the outline button on the top right.
-<!-- Raw readers try: grep -n '^#' Design.md -->
+To skip the background fluff, jump to [›Architecture][#1a],
+or [›Comment Convention][#1c] which leads into:
 
-- To skip the fluff, jump to [›Comment Convention][#1c].
-- Leading into: [›Diving In][##2] to core design, then:
+- [›Diving In][##2] to core design, then:
 - Two whirlwind tours: [›Game Stuff][##3], [›Dev Stuff][##4].
-- The fluffiest "whys" at: [›Performance and Tradeoffs][##5].
+- Finally, [›Performance and Tradeoffs][##5] rationale.
 
 ### Intended Audience
 
@@ -101,6 +102,7 @@ eclectic mixed spec, mostly TGM-like:
   No topout: pieces can't move up.
 
 ### Architecture
+[#1a]: #architecture
 
 - [**Commodore 64**][c64]: a 6510 computer, a variant
   of 6502. CIA for timers, keyboard. VIC-II for graphics.
