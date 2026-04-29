@@ -395,10 +395,11 @@ returns to `qnext`'s caller, though it must take care to dodge
 the [›profiling instrument][#4p].
 
 > [!NOTE]
+> `enqueue` is only called once. It's also possible to write
+> more conventionally with flags and `if` instead of `rdrop`.
 > This isn't critical path so the codesize and cycle savings
 > aren't important but I choose to spend the extra `rdrop`
 > cognitive load just for its aesthetic, which I'm fond of.
-> `qnext` in both versions enqueues only once per call.
 
 ### `go` and `turnkick`
 
