@@ -168,8 +168,10 @@ hit? .
 1305 2 1 piece plot
 ok \ paints rotated orange J piece at top of well.
 \ though the 1404 above overwrites part of that canvas.
-0 0 0 piece .s hit? . \ bottom left(0) flat(0) I(0) piece.
--2 -1 0 1 3 -1 ok \ coords out of bounds (last -1)
+0 0 0 piece .s \ bottom left(0) flat(0) I(0) piece.
+-2 -1 0 1 3 ok \ 2/4 blocks out of bounds, cyan(3) color.
+hit? .
+-1 ok \ out of bounds counts as colliding with the wall.
 ```
 
 ![This session.](shots/piece.png)
