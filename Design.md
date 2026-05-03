@@ -692,7 +692,7 @@ b: 01 11 12 13
 \     0 1 2 3 <- table source x
 
 : row ( compute from current piece origin ) ;
-: mark ( write to wellspace ) ;
+: mark ( overwrite filled lines in wellspace ) ;
 : land ( ... ) row mark ( ... ) ;
 ```
 
