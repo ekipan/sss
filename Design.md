@@ -69,9 +69,9 @@ I only _later_ realized that the C64 hosted the
 a couple noncommercial ones. You _need_ to listen to Mr.
 Wally Beben's [sprawling 26-minute opus][beb] if you haven't!
 
-See the README for [full mission statement][thi], but in
-short this is my code garden, plus a document to share it.
-To be an example working, nontrivial Forth program.
+See the README for [full mission statement][thi], but in short
+this is my code garden. A working, nontrivial Forth program,
+plus documentation to make it an example.
 
 ### Spec
 
