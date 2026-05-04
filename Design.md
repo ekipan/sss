@@ -8,7 +8,7 @@ Forth, for the Commodore 64. Pause a game in progress then
 tinker with the live game state in the interpreter.
 
 - [README][rea]: Jump in and play.
-- **Design Tour (here)**: Tutorial, background, reference.
+- **Design Tour (here)**: Understand the code.
 - [Tinkering][tin]: Make your own dev environment.
 - [Forth source][sss]: Damn dense, beware dragons.
 

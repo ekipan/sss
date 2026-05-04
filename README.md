@@ -71,7 +71,7 @@ Come, play with me.
 ## Further Reading
 <!--------------->
 
-- [Design Tour][des]: Tutorial, background, reference.
+- [Design Tour][des]: Understand the code.
 - [Tinkering][tin]: Make your own dev environment.
 - [Forth source][sss]: Damn dense, beware dragons.
 
