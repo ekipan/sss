@@ -111,10 +111,11 @@ eclectic mixed spec, mostly TGM-like:
 - [**Kernal**][ker]: An 8K 6510 program I haven't read.
   Of note: an interrupt service routine that scans the
   key matrix via the CIA and keeps an input buffer.
-- [**durexForth**][dur] (v4): A 12.4K mixed 6510/Forth
-  program. A subroutine-threaded Forth, which means most Forth
-  source compiles into `jsr` instructions executed directly.
-  It unloads BASIC but calls into Kernal.
+- [**durexForth**][dur]: A mixed assembly/Forth program
+  compiled (v4) to 12.4K* of 6510 code. A
+  subroutine-threaded Forth, so it compiles most Forth source
+  into `jsr` instructions executed directly. It unloads BASIC
+  but calls into Kernal.
 - [**SSS**][sss]: A <3K compiled durexForth program.
   - Uses `key` which calls into [Kernal `$e5b4`][e5b].
   - Canvas of reverse-video spaces in VIC-II screen `$400`,
@@ -122,9 +123,9 @@ eclectic mixed spec, mostly TGM-like:
   - Game state at `$cc00`, outside the dictionary
     to survive recompiles.
 
-Trivia: ~4K of durexForth is an optional vi-clone which I
-don't personally use. Could delete it but we're not strapped
-for memory.
+\* About 4K of durexForth is an optional vi-clone which I
+don't personally use and could delete, so compiled SSS amounts
+to about 19K of software on the C64.
 
 ### Comment Convention
 [#1c]: #comment-convention
