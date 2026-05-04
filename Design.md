@@ -540,7 +540,7 @@ init [›tracks a `sig`nature][#3n] to prevent this.
 
 A durexForth literal `: example $1234 ;` compiles to 5 bytes
 of code: `jsr lit | !word $1234` and the [`lit` routine][lit]
-takes 18 instructions juggle stacks and fetch the value.
+takes 18 instructions to juggle stacks and fetch the value.
 However, a phrase `$1234 value example` compiles 7 bytes:
 `lda #$12 | ldy #$34 | jmp pushya` where [`pushya`][pya] takes
 only 4 instructions, then a 3-byte `jsr` on each use, both
