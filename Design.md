@@ -132,7 +132,7 @@ to about 19K of software on the C64.
 
 Forth subroutines are called "words" and operate on a stack of
 values. I use compact stack comments to fit the cramped C64
-screen:
+screen, one letter per stack cell:
 
 - `erase ( au-)` takes an address and unsigned count -> gives
   no result but zeroes the named region of memory.
