@@ -199,6 +199,7 @@ create old 5 , 0 , \ (pts) to erase.
   #queue d? if 1 $110d q q q 2drop then
   #held d? if held@ $050d slot then
   0 dirty ! ;  6 profile
+: dd ( -) #all d! draw ;
 
 2 . \ rules: queue, well, player.
 
@@ -276,7 +277,6 @@ $-100 constant down            \ player
   'e' of slam 0 ;then
   page help ;  11 profile
 
-: dd ( -) #all d! draw ;
 : r ( -) kbinit bg dd
   begin step draw until ;
 : new ( -) entropy seeded r ;
