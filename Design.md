@@ -112,9 +112,9 @@ eclectic mixed spec, mostly TGM-like:
   Of note: an interrupt service routine that scans the
   key matrix via the CIA and keeps an input buffer.
 - [**durexForth**][dur]: A mixed assembly/Forth program
-  compiled (v4) to 12.4K* of 6510 code. A
-  subroutine-threaded Forth, so it compiles most Forth source
-  into `jsr` instructions executed directly. It unloads BASIC
+  compiled (v4) to 12.4K* of 6510 code. A subroutine-threaded
+  Forth, so it compiles most Forth source into `jsr`
+  instructions executed directly. It [banks out][ban] BASIC
   but calls into Kernal.
 - [**SSS**][sss]: A <3K compiled durexForth program.
   - Uses `key` which calls into [Kernal `$e5b4`][e5b].
@@ -844,6 +844,7 @@ Happy stacking, comrade!
 [buf]: https://www.c64-wiki.com/wiki/198
 [bor]: https://www.c64-wiki.com/wiki/53280
 [rep]: https://www.c64-wiki.com/wiki/650
+[ban]: https://www.c64-wiki.com/wiki/Bank_Switching
 [c64]: https://www.c64-wiki.com/wiki/C64
 [col]: https://www.c64-wiki.com/wiki/Color
 [con]: https://www.c64-wiki.com/wiki/control_character
