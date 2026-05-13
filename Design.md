@@ -145,7 +145,8 @@ screen, one letter per stack cell:
   expect.
 - `split ( $yyxx -- $xx $yy )` sometimes I lean closer to
   conventional [ANS notation][not] when I think the clarity is
-  needed. `$` means hexadecimal.
+  needed. `$` means hexadecimal, so the phrase `$0405 split`
+  leaves `5 4` on the stack.
 
 ## Diving In
 [##2]: #diving-in
