@@ -685,9 +685,9 @@ create blocks
 b: 01 11 12 13
 ( ... )
 
-\ 3 | . . . .    L-piece, pointed down
-\ 2 | . . . .    in spawn orientation.
-\ 1 | .[][][]
+\ 3 | . . . .    b: 01 11 12 13
+\ 2 | . . . .    l-piece, pointed down
+\ 1 | .[][][]    in spawn orientation.
 \ 0 | .[] o . <- origin
 \    --------
 \    -2-1 0 1 <- blockspace x
