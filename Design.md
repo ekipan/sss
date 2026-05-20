@@ -1,7 +1,7 @@
 <!-- markdownlint-disable blanks-around-headings ol-prefix no-inline-html table-column-style -->
 
 # SSS: The Silent Soviet Stacker
-[##0]: #sss-the-silent-soviet-stacker
+[#0]: #sss-the-silent-soviet-stacker
 
 A block-stacking game written in the number-stacking language
 Forth, for the Commodore 64. Pause a game in progress then
@@ -22,9 +22,9 @@ Github readers, click the outline button on the top right.
 To skip the background fluff, jump to [›Architecture][#1a],
 or [›Comment Convention][#1c] which leads into:
 
-- [›Diving In][##2] to core design, then:
-- Two whirlwind tours: [›Game Stuff][##3], [›Dev Stuff][##4].
-- Finally, [›Performance and Tradeoffs][##5] rationale.
+- [›Diving In][#2] to core design, then:
+- Two whirlwind tours: [›Game Stuff][#3], [›Dev Stuff][#4].
+- Finally, [›Performance and Tradeoffs][#5] rationale.
 
 ### Intended Audience
 
@@ -88,7 +88,7 @@ eclectic mixed spec, mostly TGM-like:
 - **Colors**: Guideline (cyan I, purple T, etc).
 - **Spawn**: Row 19 (counting from 0), pointy-end-down.
   All pieces [›bias right][#5k].
-- **Shift**: S/F keys, with [›mostly 50Hz][##5] [DAS].
+- **Shift**: S/F keys, with [›mostly 50Hz][#5] [DAS].
 - [**›Rotate**][#5r]: J/K keys. Flipped JLT are downshifted to
   lie flat, ISZ have only one vertical.
 - [**›Kicks**][#5k]: Biased towards rotation. Tries sides then
@@ -149,7 +149,7 @@ screen, one letter per stack cell:
   leaves `5 4` on the stack.
 
 ## Diving In
-[##2]: #diving-in
+[#2]: #diving-in
 <!--------->
 
 ### Example Session
@@ -314,10 +314,10 @@ index into the blocks table, calls `b@` to scan out 4
 `p`ositions, and then a `c`olor.
 
 Besides the assembly `w! b@`, the rest of the program is Forth
-and just fast enough for [›mostly full 50fps][##5] during play.
+and just fast enough for [›mostly full 50fps][#5] during play.
 
 ## Touring the Rest, Part 1: Game Stuff
-[##3]: #touring-the-rest-part-1-game-stuff
+[#3]: #touring-the-rest-part-1-game-stuff
 <!------------------------------------>
 
 ### `kbinit`
@@ -436,7 +436,7 @@ move there. `turnkick` calls it up to six times to implement
 > [›No floorkicks][#5k], either.
 
 ## Touring the Rest, Part 2: Dev Stuff
-[##4]: #touring-the-rest-part-2-dev-stuff
+[#4]: #touring-the-rest-part-2-dev-stuff
 <!----------------------------------->
 
 <img alt="Example 20+ frames profile, showing color bands."
@@ -460,7 +460,7 @@ The code at `bx` ("border xor") toggles the
 `profile` adjusts the latest word to point to new code:
 `lda #color | jsr bx | jsr oldcode | lda #color | jmp bx`,
 instrumenting the word with border-flipping behavior to
-[›measure perf][##5]. The phrase `name>string +` addresses
+[›measure perf][#5]. The phrase `name>string +` addresses
 the code field stored after the name.
 
 `''` ticks through an instrumented word, recovering the
@@ -571,7 +571,7 @@ example unsafe word `: bad drop ;` only compiles to 2 bytes
 I think these are the only unpatchable cases.
 
 ## Performance and Tradeoffs
-[##5]: #performance-and-tradeoffs
+[#5]: #performance-and-tradeoffs
 <!------------------------->
 
 The PAL C64 has a ~19,700 cycle budget per 50Hz frame. Cycle
@@ -787,7 +787,7 @@ expanded the big section 5 comment) I lament.
 
 ---
 
-[›Back to top][##0]. Some next steps: get your hands
+[›Back to top][#0]. Some next steps: get your hands
 dirty with the source or give this thing a play finally.
 Happy stacking, comrade!
 
