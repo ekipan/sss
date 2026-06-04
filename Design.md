@@ -279,7 +279,7 @@ create blocks \ compiled blockspace coords:
 ```forth
 \ \ zp: w = temp, lsb/msb,x = stack.
 \ : w! ( a-) [ lsb ldy,x w sty, msb ldy,x
-\   w 1+ sty, inx, 0 ldy,# ] ;
+\   w 1+ sty, inx, 0 ldy,# ] ; \ ptr>zp.
 \ : b@ ( p -- p+a@ p ; a+=2.) dup [ clc,
 \   w lda,(y) iny, lsb 1+ dup adc,x sta,x
 \   w lda,(y) iny, msb 1+ dup adc,x sta,x
@@ -384,8 +384,8 @@ very important but that's my rationale anyway.
 
 ```forth
 \ roll (u-u) 0 <= u2 < u1.
-: q? ( si-s/si-) th-q c@ over =
-  if drop rdrop then ;
+: q? ( si-s/si-; ret twice if dup.)
+  th-q c@ over = if drop rdrop then ;
 : qn ( -) 7 roll 0 q? 1 q? 2 q? 3 q?
   enqueue r> rdrop >r ;  12 profile
 : qnext ( -) qn qn qn 7 roll enqueue ;
@@ -477,7 +477,7 @@ disabling it. `1 prof` restores the `eor`.
 
 ```forth
 : sync ( -) [ 215 lda,# $d012 cmp,
-  -5 bne, ] ;  6 profile
+  -5 bne, ] ;  6 profile \ de-flicker.
 : draw ( -) sync ( ... ) ;  6 profile
 ```
 
@@ -496,8 +496,9 @@ updates happen right after the scanline passes. Tradeoffs:
 : rect ( awh-a) 0 do  2dup $a0 ( rvbl )
   fill  swap 40- swap loop  drop ;
 : bg ( -) 0 $d020 ( black bg+border ) !
-  11 $286 ( gray fg ) c! page tilemem
-  38 + 19 21 rect 2+ #10 3 rect drop ;
+  11 $286 ( gray fg ) c! page
+  tilemem 38 ( origin 1down2left ) +
+  19 21 rect 2+ #10 3 rect drop ;
 ```
 
 The reverse-video spaces `$a0` make pleasant squares and also

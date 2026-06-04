@@ -31,7 +31,7 @@ create bx  $d020 eor, $d020 sta, rts,
   if $4d else $60 then bx c! ;  0 prof
 
 : sync ( -) [ 215 lda,# $d012 cmp, \ hw
-  -5 bne, ] ;  6 profile
+  -5 bne, ] ;  6 profile \ de-flicker.
 : kbinit ( -) $b80 $28a ! 0 $c6 c! ;
 : kbpoll ( -c; w/ fast repeat hack.)
   key? if 1 $28b c! key ;then 0 ;
@@ -40,24 +40,27 @@ create bx  $d020 eor, $d020 sta, rts,
 13 22 ( col row ) 40* + dup    \ screen
 $d800 + constant colormem \ bottom left
 $0400 + constant tilemem  \ of well.
+\ bg canvas, middle of 25x40 screen:
 : rect ( awh-a) 0 do  2dup $a0 ( rvbl )
   fill  swap 40- swap loop  drop ;
 : bg ( -) 0 $d020 ( black bg+border ) !
-  11 $286 ( gray fg ) c! page tilemem
-  38 + 19 21 rect 2+ #10 3 rect drop ;
+  11 $286 ( gray fg ) c! page
+  tilemem 38 ( origin 1down2left ) +
+  19 21 rect 2+ #10 3 rect drop ;
+\ paint well, plot piece, rub slot:
 : p+ ( aa-aa) 2dup #10 move >10+> 40- ;
-8 profile
+8 profile \ move one row of well.
 : paint ( aa-) >r colormem begin p+
   over r@ = until  rdrop 2drop ;
 : th-c ( p-a) split 40* - colormem + ;
 : p! ( pc-c) dup rot th-c c! ;
 : plot ( ppppc-) p! p! p! p! drop ;
 : rub ( p-) th-c 2 - dup 4 erase 40-
-  4 erase ;
+  4 erase ; \ 2x4 slots beside well.
 
 \ zp: w = temp, lsb/msb,x = stack.
 : w! ( a-) [ lsb ldy,x w sty, msb ldy,x
-  w 1+ sty, inx, 0 ldy,# ] ;
+  w 1+ sty, inx, 0 ldy,# ] ; \ ptr>zp.
 : b@ ( p -- p+a@ p ; a+=2.) dup [ clc,
   w lda,(y) iny, lsb 1+ dup adc,x sta,x
   w lda,(y) iny, msb 1+ dup adc,x sta,x
@@ -166,7 +169,7 @@ well - constant size
 : held! ( s-) held c! ;
 : unpin ( -) held@ held! ;
 : hold ( -) held@  shape c@ 8 or held!
-  shape c! ;
+  shape c! ; \ pin for one tryhold.
 
 : th-q ( i-a) head c@ + 3 and queue + ;
 : enqueue ( s-) 1 head +!  3 th-q c!
@@ -203,11 +206,11 @@ create old 5 , 0 , \ (pts) to erase.
 
 2 . \ rules: queue, well, player.
 
-\ tgmlike reroller rng.
+\ tgmlike reroll rng. nonlocal returns.
 : roll ( u-u; 0 <= u2 < u1.) seed @
   31421 * 6927 + dup seed !  um* nip ;
-: q? ( si-s/si-) th-q c@ over =
-  if drop rdrop then ;
+: q? ( si-s/si-; ret twice if dup.)
+  th-q c@ over = if drop rdrop then ;
 : qn ( -) 7 roll 0 q? 1 q? 2 q? 3 q?
   enqueue r> rdrop >r ;  12 profile
 : qnext ( -) qn qn qn 7 roll enqueue ;
@@ -243,7 +246,7 @@ $-100 constant down            \ player
   if 2drop 1 ;then  curr+! #go d! 0 ;
 : fall ( -f) down 0 go if  land else
   0 then  lines @ th-g c@ %grav ! ;
-: slam ( -) 0 begin
+: slam ( -) 0 begin \ scan for hit:
   down + dup 0 curr+ piece hit? until
   down - 0 curr+! #go d!  1 %grav ! ;
 : tk ( pt) go 0= if rdrop rdrop then ;
